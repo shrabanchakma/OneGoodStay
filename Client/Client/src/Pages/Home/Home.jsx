@@ -1,4 +1,5 @@
 import RecentSearch from "../../components/RecentSearch.jsx/RecentSearch";
+import RecentViews from "../../components/RecentViews/RecentViews";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
     <div className="space-y-14">
       <SearchBar />
       <RecentSearch />
+      <RecentViews />
     </div>
   );
 };
