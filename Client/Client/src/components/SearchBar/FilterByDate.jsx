@@ -6,6 +6,7 @@ import {
   Transition,
 } from "@headlessui/react";
 import { MdDateRange } from "react-icons/md";
+import Calender from "./Calender";
 
 const FilterByDate = () => {
   return (
@@ -28,28 +29,10 @@ const FilterByDate = () => {
         >
           <MenuItems
             anchor="bottom"
-            className="bg-white w-1/5 origin-top-left border-[1px] rounded-lg min-h-24"
+            className="bg-white w-auto origin-top-left border-[1px] rounded-lg min-h-24"
           >
             <MenuItem>
-              <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
-                <button className="text-xl flex justify-start items-center gap-2 font-medium">
-                  1.Dhaka
-                </button>
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
-                <button className="text-xl flex justify-start items-center gap-2 font-medium">
-                  2.Rajshahi
-                </button>
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
-                <button className="text-xl flex justify-start items-center gap-2 font-medium">
-                  3.Khagrachari
-                </button>
-              </button>
+              <Calender />
             </MenuItem>
           </MenuItems>
         </Transition>
