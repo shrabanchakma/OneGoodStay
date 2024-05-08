@@ -6,11 +6,13 @@ import {
   Transition,
 } from "@headlessui/react";
 import { FaUser } from "react-icons/fa";
+import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
+
 const FilterByGuestNumbers = () => {
   return (
     <div className="w-full">
       <Menu>
-        <MenuButton className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4">
+        <MenuButton className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-sky-500">
           <FaUser className="text-2xl" />
           <div>
             <h3 className="font-medium">Travelers</h3>
@@ -27,28 +29,17 @@ const FilterByGuestNumbers = () => {
         >
           <MenuItems
             anchor="bottom"
-            className="bg-white w-1/5 origin-top-left border-[1px] rounded-lg min-h-24"
+            className="bg-white w-[380px] origin-top-left border-[1px] rounded-lg h-24"
           >
             <MenuItem>
-              <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
-                <button className="text-xl flex justify-start items-center gap-2 font-medium">
-                  1.Dhaka
-                </button>
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
-                <button className="text-xl flex justify-start items-center gap-2 font-medium">
-                  2.Rajshahi
-                </button>
-              </button>
-            </MenuItem>
-            <MenuItem>
-              <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
-                <button className="text-xl flex justify-start items-center gap-2 font-medium">
-                  3.Khagrachari
-                </button>
-              </button>
+              <div className="flex items-center justify-between px-3  h-full">
+                <p className="text-xl">Guests</p>
+                <div className="flex items-center gap-2">
+                  <CiCircleMinus className="text-4xl" />
+                  0
+                  <CiCirclePlus className="text-4xl" />
+                </div>
+              </div>
             </MenuItem>
           </MenuItems>
         </Transition>

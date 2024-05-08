@@ -12,7 +12,7 @@ const FilterByDate = () => {
   return (
     <div className="w-full">
       <Menu>
-        <MenuButton className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4">
+        <MenuButton className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-sky-500 ">
           <MdDateRange className="text-2xl" />
           <div>
             <h3 className="font-medium">Dates</h3>
