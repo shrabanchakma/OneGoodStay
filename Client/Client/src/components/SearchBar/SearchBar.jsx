@@ -1,3 +1,4 @@
+import Heading from "../Shared/Heading";
 import FilterByDate from "./FilterByDate";
 import FilterByGuestNumbers from "./FilterByGuestNumbers";
 import FilterByPlace from "./FilterByPlace";
@@ -5,7 +6,7 @@ import FilterByPlace from "./FilterByPlace";
 const SearchBar = () => {
   return (
     <div>
-      <p className="text-3xl font-medium mb-2">Where to?</p>
+      <Heading label="Where to?" />
       <div className="flex items-center gap-3">
         {/* filter search */}
         <div className="w-11/12 flex items-center justify-evenly gap-4  ">
