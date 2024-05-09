@@ -1,7 +1,7 @@
 import { FaStar } from "react-icons/fa";
 const RoomOverview = () => {
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mt-10">
       {/* todo: make it dynamic */}
       <h1 className="text-2xl font-medium">Wingate by Wyndham Kamloops</h1>
       <div className="flex gap-4 mb-2">
@@ -11,7 +11,7 @@ const RoomOverview = () => {
       </div>
       {/* special amenity */}
       <p>Aberdeen hotel with indoor pool and 24-hour fitness</p>
-      {/* average rating */}
+      {/* todo: dynamically generate rating */}
       <div className="flex items-center gap-4">
         <div className="text-white h-10 w-10 font-bold flex items-center justify-center bg-green-500">
           8.8

@@ -1,17 +1,22 @@
 import Container from "../Shared/Container";
 import hotelImage from "../../assets/hotel-image-demo.jpg";
 import RoomSection from "./RoomSection";
-import { Button } from "@headlessui/react";
 import RoomOverview from "./RoomOverview";
+import TopAmenities from "./TopAmenities";
 const sections = ["Overview", "Amenities", "Calender", "Review"];
 const RoomDetails = () => {
   return (
     <Container>
       {/* todo : dynamically add room infos */}
       {/* hotel image */}
-      <div className="w-3/4 mx-auto">
-        <img src={hotelImage} alt="" className=" rounded-lg object-cover" />
-        <div className="flex justify-between items-center h-12 px-3 border-b border-gray-400">
+      <div>
+        <img
+          src={hotelImage}
+          alt=""
+          className="w-full h-[50vh] bg-green-500 rounded-lg object-cover"
+        />
+        {/* sections */}
+        <div className="w-3/4 flex justify-between items-center h-12 px-3 border-b border-gray-400">
           <div className="flex gap-4">
             {sections.map((section, idx) => (
               <RoomSection key={idx} label={section} />
@@ -23,6 +28,7 @@ const RoomDetails = () => {
         </div>
       </div>
       <RoomOverview />
+      <TopAmenities />
     </Container>
   );
 };
