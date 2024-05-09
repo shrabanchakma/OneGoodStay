@@ -1,9 +1,9 @@
-import RoomDetail from "./RoomDetail";
+import RoomDetails from "./RoomDetails";
 
 const Rooms = () => {
   return (
     <div>
-      <RoomDetail />
+      <RoomDetails />
     </div>
   );
 };

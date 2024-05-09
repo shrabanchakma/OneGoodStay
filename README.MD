@@ -19,3 +19,4 @@
 - [@stripe/stripe-js](https://www.npmjs.com/package/@stripe/stripe-js)
 - [firebase](https://www.npmjs.com/package/firebase)
 - [react-google-charts](https://www.npmjs.com/package/react-google-charts)
+- [react-router-hash-link](https://www.npmjs.com/package/react-router-hash-link#react-router-hash-link)

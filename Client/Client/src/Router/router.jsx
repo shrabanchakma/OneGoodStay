@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../Layout/MainLayout";
 import Home from "../Pages/Home/Home";
-import RoomDetail from "../components/Rooms/RoomDetail";
+import RoomDetails from "../components/Rooms/RoomDetails";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
       },
       {
         path: "room-details",
-        element: <RoomDetail />,
+        element: <RoomDetails />,
       },
     ],
   },
