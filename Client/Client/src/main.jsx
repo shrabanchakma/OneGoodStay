@@ -5,8 +5,11 @@ import { RouterProvider } from "react-router-dom";
 import router from "./Router/router.jsx";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { HelmetProvider } from "react-helmet-async";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <HelmetProvider>
+      <RouterProvider router={router} />
+    </HelmetProvider>
   </React.StrictMode>
 );
