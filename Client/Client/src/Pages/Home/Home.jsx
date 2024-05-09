@@ -3,6 +3,7 @@ import Categories from "../../components/Categories/Categories";
 import RecentSearch from "../../components/RecentSearch.jsx/RecentSearch";
 import RecentViews from "../../components/RecentViews/RecentViews";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import Rooms from "../../components/Rooms/Rooms";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <RecentSearch />
         <RecentViews />
         <Categories />
+        <Rooms />
       </div>
     </>
   );

@@ -1,11 +1,11 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Heading from "../Shared/Heading.jsx";
 import { categories } from "./CategoriesData.js";
 import CategoryBox from "./CategoryBox.jsx";
 import queryString from "query-string";
 import { useEffect } from "react";
 const Categories = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const getCategory = (category) => {
     let currentQuery = {};
@@ -19,8 +19,8 @@ const Categories = () => {
     }
   };
   useEffect(() => {
-    console.log(searchParams.toString());
-  }, [searchParams]);
+    navigate("/");
+  }, []);
   return (
     <div>
       <Heading label="Categories" />
