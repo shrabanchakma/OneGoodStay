@@ -1,4 +1,8 @@
+import { useState } from "react";
+import RoomReviewModal from "./RoomReviewModal";
+
 const RoomReviewBox = () => {
+  const [isOpen, setIsOpen] = useState(false);
   // review box
   return (
     <div className="h-full w-[300px] bg-white rounded-lg border-[1px] border-gray-400 space-y-4">
@@ -10,7 +14,14 @@ const RoomReviewBox = () => {
             The bed was not made, no sheets, coffee maker was half full and not
             clean at all. You cannot get ahold of anyone after 11 pm
           </p>
-          <p className="text-blue-500 ">Read more</p>
+          <p
+            onClick={() => {
+              setIsOpen(true);
+            }}
+            className="text-blue-500 hover:cursor-pointer"
+          >
+            Read more
+          </p>
         </div>
         <div>
           {/* user name and review date */}
@@ -18,6 +29,8 @@ const RoomReviewBox = () => {
           <p className="text-[12px] text-gray-700">January 28, 2024</p>
         </div>
       </div>
+      {/* modal */}
+      <RoomReviewModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
