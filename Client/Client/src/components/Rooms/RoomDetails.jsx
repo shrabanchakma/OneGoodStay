@@ -4,6 +4,7 @@ import RoomSection from "./RoomSection";
 import RoomOverview from "./RoomOverview/RoomOverview";
 import TopAmenities from "./TopAmenities/TopAmenities";
 import RoomReservation from "./RoomReservation/RoomReservation";
+import RoomReview from "./RoomReview/RoomReview";
 const sections = [
   "Overview",
   "Amenities",
@@ -37,6 +38,7 @@ const RoomDetails = () => {
       <RoomOverview />
       <TopAmenities />
       <RoomReservation />
+      <RoomReview />
     </Container>
   );
 };
