@@ -2,7 +2,7 @@ import Heading from "../../Shared/Heading";
 import { topAmenitiesData as amenities } from "./TopAmenitiesData";
 const TopAmenities = () => {
   return (
-    <div className="py-10">
+    <div id="Amenities" className="py-10">
       <Heading label="Popular amenities" />
       <div className="flex items-center justify-around w-1/2 ">
         {amenities.map((amenity, idx) => (

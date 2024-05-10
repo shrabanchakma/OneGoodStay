@@ -5,13 +5,7 @@ import RoomOverview from "./RoomOverview/RoomOverview";
 import TopAmenities from "./TopAmenities/TopAmenities";
 import RoomReservation from "./RoomReservation/RoomReservation";
 import RoomReview from "./RoomReview/RoomReview";
-const sections = [
-  "Overview",
-  "Amenities",
-  "Calender",
-  "accessibility",
-  "Review",
-];
+const sections = ["Overview", "Amenities", "Reservation", "Review"];
 const RoomDetails = () => {
   return (
     <Container>

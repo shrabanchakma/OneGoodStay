@@ -2,7 +2,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import RoomReviewBox from "./RoomReviewBox";
 import ContainerTwo from "../../Shared/ContainerTwo";
 import { useState } from "react";
-import { CiCircleChevRight, CiCircleChevLeft } from "react-icons/ci";
+import {
+  CiCircleChevRight,
+  CiCircleChevLeft,
+  CiCircleInfo,
+} from "react-icons/ci";
+import { FaArrowRight } from "react-icons/fa";
 const RoomReview = () => {
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -14,12 +19,15 @@ const RoomReview = () => {
   };
   return (
     <ContainerTwo>
-      <div className="flex items-center h-56 my-20 ">
+      <div id="Review" className="flex items-center h-56 mt-24 mb-28">
         {/* average review / review stat / total review */}
         <div className="h-full w-1/4 flex flex-col justify-start p-4 ">
           <h1 className="text-4xl font-medium">7/10</h1>
           <h2 className="text-2xl font-medium">Good</h2>
-          <p className="text-sm">431 verified reviews </p>
+          <p className="text-sm flex items-center gap-2 ">
+            431 verified reviews
+            <CiCircleInfo className="text-xl font-bold hover:cursor-pointer" />
+          </p>
         </div>
 
         <div className="w-2/3 h-full  ">
@@ -33,7 +41,7 @@ const RoomReview = () => {
             <button
               className={` ${
                 isVisible ? "opacity-100" : "opacity-0    "
-              } absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150`}
+              } absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150 hover:bg-sky-100`}
               onClick={() => swiperInstance.slidePrev()}
             >
               <CiCircleChevLeft className="text-sky-700 text-4xl" />
@@ -42,7 +50,7 @@ const RoomReview = () => {
             <button
               className={` ${
                 isVisible ? "opacity-100" : "opacity-0    "
-              } absolute right-0 -translate-y-1/2 top-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150`}
+              } absolute right-0 -translate-y-1/2 top-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150 hover:bg-sky-100`}
               onClick={() => swiperInstance.slideNext()}
             >
               <CiCircleChevRight className="text-sky-700 text-4xl" />
@@ -75,6 +83,12 @@ const RoomReview = () => {
                 <RoomReviewBox />
               </SwiperSlide>
             </Swiper>
+          </div>
+          <div className="mt-3">
+            <button className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-26 border border-gray-700 p-2 rounded-xl flex items-center">
+              See All Reviews
+              <FaArrowRight />
+            </button>
           </div>
         </div>
       </div>
