@@ -1,4 +1,4 @@
-import Heading from "../Shared/Heading";
+import Heading from "../../Shared/Heading";
 import { topAmenitiesData as amenities } from "./TopAmenitiesData";
 const TopAmenities = () => {
   return (
