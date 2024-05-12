@@ -7,10 +7,15 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "swiper/css";
 import { HelmetProvider } from "react-helmet-async";
+import AuthProviders from "./Providers/AuthProviders.jsx";
+import { Toaster } from "react-hot-toast";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <HelmetProvider>
-      <RouterProvider router={router} />
+      <AuthProviders>
+        <RouterProvider router={router} />
+        <Toaster />
+      </AuthProviders>
     </HelmetProvider>
   </React.StrictMode>
 );

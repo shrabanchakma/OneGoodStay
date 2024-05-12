@@ -3,8 +3,29 @@ import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import Logo from "../../components/Shared/Logo";
 import { Helmet } from "react-helmet-async";
+import toast from "react-hot-toast";
+import useAuth from "../../Hooks/useAuth";
 
 const Signup = () => {
+  const { createUser } = useAuth();
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
+    if (password !== confirmPassword) {
+      toast.error("Password Does Not Match!Please Try Again");
+      return;
+    }
+
+    try {
+      createUser(email, password);
+      toast.success("Sign Up Successful!");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
   return (
     <>
       <Helmet>
@@ -41,7 +62,12 @@ const Signup = () => {
           </div>
           <p className="my-3 w-full text-center">or</p>
           {/* sign up */}
-          <form noValidate="" action="" className="space-y-6 ">
+          <form
+            onSubmit={handleSignUp}
+            noValidate=""
+            action=""
+            className="space-y-6 "
+          >
             <div className="space-y-4">
               <div>
                 <label
@@ -54,6 +80,7 @@ const Signup = () => {
                   type="email"
                   name="email"
                   id="email"
+                  autoComplete={"on"}
                   required
                   placeholder="Enter Your Email Here"
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
@@ -74,6 +101,25 @@ const Signup = () => {
                   name="password"
                   autoComplete="current-password"
                   id="password"
+                  required
+                  placeholder="*******"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
+                />
+              </div>
+              <div>
+                <div className="flex justify-between">
+                  <label
+                    htmlFor="ConfirmPassword"
+                    className="block mb-2 text-sm font-medium"
+                  >
+                    Confirm Password
+                  </label>
+                </div>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  autoComplete="current-password"
+                  id="ConfirmPassword"
                   required
                   placeholder="*******"
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
