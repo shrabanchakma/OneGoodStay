@@ -25,7 +25,7 @@ const DropdownMenu = () => {
         >
           <MenuItems
             anchor="bottom end"
-            className="w-52 origin-top-center  border rounded-lg bg-white min-h-14"
+            className="w-52 px-3 py-3 origin-top-center  border rounded-lg bg-white min-h-14"
           >
             <MenuItem>
               <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">

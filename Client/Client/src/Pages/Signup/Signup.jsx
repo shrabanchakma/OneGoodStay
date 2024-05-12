@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { FaArrowLeft, FaFacebookSquare } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router-dom";
 import Logo from "../../components/Shared/Logo";
-import { FaFacebookSquare, FaArrowLeft } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
-const Login = () => {
+
+const Signup = () => {
   return (
     <>
       <Helmet>
-        <title>OneGoodStay | Login</title>
+        <title>OneGoodStay | Signup</title>
       </Helmet>
       <Link to="/">
         <FaArrowLeft
@@ -23,23 +24,23 @@ const Login = () => {
               <Logo />
             </div>
             <p className="text-[26px] font-medium text-start">
-              Sign in to access your account
+              Sign up to access your account
             </p>
             <p className="text-sm">
               Unlock a world of travel with one account across Expedia,
               onegoodstay.com
             </p>
           </div>
-          {/* google sign in */}
+          {/* google sign up */}
           <div className="flex items-center justify-center  border my-3 p-2 cursor-pointer bg-[#4285F4] rounded-lg  text-white">
             <div className="bg-white w-10 h-9 flex justify-center items-center rounded-md">
               <FcGoogle size={20} />
             </div>
 
-            <p className="text-center flex-grow">Sign in with Google</p>
+            <p className="text-center flex-grow">sign up with Google</p>
           </div>
           <p className="my-3 w-full text-center">or</p>
-          {/* sign in */}
+          {/* sign up */}
           <form noValidate="" action="" className="space-y-6 ">
             <div className="space-y-4">
               <div>
@@ -97,23 +98,23 @@ const Login = () => {
           <div className="flex items-center pt-4 space-x-1">
             <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
             <p className="px-3 text-sm dark:text-gray-400">
-              Sign in with social accounts
+              sign up with social accounts
             </p>
             <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
           </div>
-          {/* login with socials*/}
+          {/* signin with socials*/}
           <FaFacebookSquare
             color={"#1877F2"}
             size={32}
             className="text-center w-full my-3"
           />
           <p className="px-6 text-sm text-center text-gray-400">
-            Don&apos;t have an account yet?{" "}
+            Already have an account?
             <Link
-              to="/signup"
+              to="/login"
               className="hover:underline hover:text-rose-500 text-gray-600"
             >
-              Sign up
+              Sign in
             </Link>
             .
           </p>
@@ -123,4 +124,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
