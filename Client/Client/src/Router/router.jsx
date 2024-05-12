@@ -3,8 +3,9 @@ import MainLayout from "../Layout/MainLayout";
 import Home from "../Pages/Home/Home";
 import RoomDetails from "../components/Rooms/RoomDetails";
 import ErrorPage from "../Pages/ErrorPage";
-import Login from "../Pages/Login/Login";
 import Signup from "../Pages/Signup/Signup";
+import Profile from "../Pages/Profile/Profile";
+import SignIn from "../Pages/SignIn/SignIn";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,11 +24,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <SignIn />,
   },
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 

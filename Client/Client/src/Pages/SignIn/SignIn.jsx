@@ -3,7 +3,24 @@ import { FcGoogle } from "react-icons/fc";
 import Logo from "../../components/Shared/Logo";
 import { FaFacebookSquare, FaArrowLeft } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
-const Login = () => {
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
+const SignIn = () => {
+  const { signInUser } = useAuth();
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    try {
+      const userData = await signInUser(email, password);
+      console.log(userData);
+      toast.success("Sign In Successful!");
+    } catch (err) {
+      console.log(err.message);
+      toast.error(err.message.slice(10));
+    }
+  };
   return (
     <>
       <Helmet>
@@ -40,7 +57,12 @@ const Login = () => {
           </div>
           <p className="my-3 w-full text-center">or</p>
           {/* sign in */}
-          <form noValidate="" action="" className="space-y-6 ">
+          <form
+            onSubmit={handleSignIn}
+            noValidate=""
+            action=""
+            className="space-y-6 "
+          >
             <div className="space-y-4">
               <div>
                 <label
@@ -123,4 +145,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;

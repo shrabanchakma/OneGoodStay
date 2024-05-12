@@ -6,7 +6,6 @@ import {
 } from "@headlessui/react";
 import PropTypes from "prop-types";
 const RoomReviewModal = ({ isOpen, setIsOpen }) => {
-  console.log(isOpen);
   return (
     <Transition appear show={isOpen}>
       <Dialog
