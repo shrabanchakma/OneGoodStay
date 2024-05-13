@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import Logo from "../../components/Shared/Logo";
 import { FaFacebookSquare, FaArrowLeft } from "react-icons/fa";
@@ -6,7 +6,8 @@ import { Helmet } from "react-helmet-async";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 const SignIn = () => {
-  const { signInUser } = useAuth();
+  const { signInUser, googleSignIn } = useAuth();
+  const navigate = useNavigate();
   const handleSignIn = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -19,6 +20,17 @@ const SignIn = () => {
     } catch (err) {
       console.log(err.message);
       toast.error(err.message.slice(10));
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+      toast.success("Sign In Successful!");
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
     }
   };
   return (
@@ -48,7 +60,10 @@ const SignIn = () => {
             </p>
           </div>
           {/* google sign in */}
-          <div className="flex items-center justify-center  border my-3 p-2 cursor-pointer bg-[#4285F4] rounded-lg  text-white">
+          <div
+            onClick={handleGoogleSignIn}
+            className="flex items-center justify-center  border my-3 p-2 cursor-pointer bg-[#4285F4] rounded-lg  text-white"
+          >
             <div className="bg-white w-10 h-9 flex justify-center items-center rounded-md">
               <FcGoogle size={20} />
             </div>
