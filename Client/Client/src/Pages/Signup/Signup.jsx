@@ -21,12 +21,16 @@ const Signup = () => {
       email: email,
     };
     try {
-      const { data } = await axiosSecure.post("/users", newUser);
+      const { data } = await axiosSecure.put(`/users/${email}`, newUser);
       console.log(data);
-      await createUser(email, password);
-      await setUserName(name);
-      toast.success("Sign In Successful!");
-      navigate("/");
+      if (data.upsertedCount > 0) {
+        await createUser(email, password);
+        await setUserName(name);
+        toast.success("Sign In Successful!");
+        navigate("/");
+      } else {
+        toast("User already exist");
+      }
     } catch (err) {
       console.log(err.message);
       toast.error(err.message);
@@ -35,7 +39,14 @@ const Signup = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await googleSignIn();
+      const {
+        user: { displayName, email },
+      } = await googleSignIn();
+      const data = await axiosSecure.put(`/users/${email}`, {
+        name: displayName,
+        email: email,
+      });
+      console.log(data);
       toast.success("Sign In Successful!");
       navigate("/");
     } catch (err) {

@@ -28,10 +28,23 @@ async function run() {
     const userCollection = await client
       .db("OneGoodStay")
       .createCollection("users");
-    app.post("/users", async (req, res) => {
+    app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
-      console.log(newUser);
-      const result = await userCollection.insertOne(newUser);
+      const email = req.params.email;
+      const isExist = await userCollection.findOne({ email });
+      if (isExist) {
+        return res.send(isExist);
+      }
+      const result = await userCollection.updateOne(
+        { email },
+        {
+          $set: {
+            ...newUser,
+            timestamp: Date.now(),
+          },
+        },
+        { upsert: true }
+      );
       res.send(result);
     });
 
