@@ -5,8 +5,9 @@ import { FaFacebookSquare, FaArrowLeft } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import axiosSecure from "../../Api";
 const SignIn = () => {
-  const { signInUser, googleSignIn } = useAuth();
+  const { signInUser, googleSignIn, facebookSignIn } = useAuth();
   const navigate = useNavigate();
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -25,9 +26,27 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await googleSignIn();
+      const {
+        user: { displayName, email },
+      } = await googleSignIn();
+
+      const data = await axiosSecure.put(`/users/${email}`, {
+        name: displayName,
+        email: email,
+      });
+      console.log(data);
       toast.success("Sign In Successful!");
       navigate("/");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
+  };
+
+  const handleFacebookSignIn = async () => {
+    try {
+      const data = await facebookSignIn();
+      console.log(data);
     } catch (err) {
       console.log(err);
       toast.error(err.message);
@@ -140,9 +159,10 @@ const SignIn = () => {
           </div>
           {/* login with socials*/}
           <FaFacebookSquare
+            onClick={handleFacebookSignIn}
             color={"#1877F2"}
             size={32}
-            className="text-center w-full my-3"
+            className="text-center w-full my-3 cursor-pointer"
           />
           <p className="px-6 text-sm text-center text-gray-400">
             Don&apos;t have an account yet?{" "}
