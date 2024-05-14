@@ -5,6 +5,7 @@ import Logo from "../../components/Shared/Logo";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 import useAuth from "../../Hooks/useAuth";
+import axiosSecure from "../../Api";
 
 const Signup = () => {
   const { createUser, googleSignIn, setUserName } = useAuth();
@@ -15,16 +16,20 @@ const Signup = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-
+    const newUser = {
+      name: name,
+      email: email,
+    };
     try {
-      const userData = await createUser(email, password);
+      const { data } = await axiosSecure.post("/users", newUser);
+      console.log(data);
+      await createUser(email, password);
       await setUserName(name);
-      console.log(userData);
       toast.success("Sign In Successful!");
       navigate("/");
     } catch (err) {
       console.log(err.message);
-      toast.error(err.message.slice(10));
+      toast.error(err.message);
     }
   };
 

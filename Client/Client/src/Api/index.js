@@ -1,5 +1,6 @@
+import axios from "axios";
 const axiosSecure = axios.create({
-  baseURl: "http://localhost:8000/",
-  useCredentials: true,
+  baseURL: "http://localhost:8000",
+  withCredentials: false,
 });
 export default axiosSecure;
