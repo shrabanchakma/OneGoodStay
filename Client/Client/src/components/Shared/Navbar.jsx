@@ -8,10 +8,10 @@ const Navbar = () => {
       <nav className="flex justify-between items-center h-24  max-w-[1280px] mx-auto">
         <Logo />
         <div className="flex items-center gap-3 ">
-          <Link to="/support" className="text-lg font-medium">
+          <Link to="/support" className="text-lg font-medium text-[#e41b43]">
             Support
           </Link>
-          <Link to="/about-us" className="text-lg font-medium">
+          <Link to="/about-us" className="text-lg font-medium text-[#e41b43]">
             About us
           </Link>
           {/* dropdown menu */}

@@ -4,8 +4,11 @@ import Home from "../Pages/Home/Home";
 import RoomDetails from "../components/Rooms/RoomDetails";
 import ErrorPage from "../Pages/ErrorPage";
 import Signup from "../Pages/Signup/Signup";
-import Profile from "../Pages/Profile/Profile";
 import SignIn from "../Pages/SignIn/SignIn";
+import DashboardLayout from "../Layout/DashboardLayout";
+import MyBookings from "../components/Dashboard/Guest/MyBookings";
+import PublicRoute from "../UserRoutes/PublicRoute";
+import Profile from "../components/Dashboard/Common/Profile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -14,7 +17,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <PublicRoute>
+            <Home />
+          </PublicRoute>
+        ),
       },
       {
         path: "room-details",
@@ -30,9 +37,20 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <Signup />,
   },
+  // dashboard
   {
-    path: "/profile",
-    element: <Profile />,
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "my-bookings",
+        element: <MyBookings />,
+      },
+    ],
   },
 ]);
 

@@ -8,8 +8,9 @@ import useAuth from "../../Hooks/useAuth";
 import axiosSecure from "../../Api";
 
 const Signup = () => {
-  const { createUser, googleSignIn, setUserName } = useAuth();
+  const { createUser, googleSignIn, setUserName, facebookSignIn } = useAuth();
   const navigate = useNavigate();
+  // sign up methods
   const handleSignUp = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -49,6 +50,15 @@ const Signup = () => {
       console.log(data);
       toast.success("Sign In Successful!");
       navigate("/");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
+  };
+  const handleFacebookSignIn = async () => {
+    try {
+      const data = await facebookSignIn();
+      console.log(data);
     } catch (err) {
       console.log(err);
       toast.error(err.message);
@@ -199,6 +209,7 @@ const Signup = () => {
           </div>
           {/* signin with socials*/}
           <FaFacebookSquare
+            onClick={handleFacebookSignIn}
             color={"#1877F2"}
             size={32}
             className="text-center w-full my-3"
