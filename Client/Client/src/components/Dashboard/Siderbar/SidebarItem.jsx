@@ -5,7 +5,11 @@ const SidebarItem = ({ label, address, icon: Icon }) => {
   return (
     <NavLink
       to={address}
-      className="flex items-center justify-between h-16 px-4 py-2 border border-black rounded-xl  mx-2 my-1"
+      className={({ isActive }) =>
+        isActive
+          ? "bg-gray-100 flex items-center justify-between h-16 px-4 py-2 border border-black rounded-xl  mx-2 my-1 transition-colors ease-in duration-150"
+          : "flex items-center justify-between h-16 px-4 py-2 border border-black rounded-xl  mx-2 my-1"
+      }
     >
       <div className="flex items-center gap-3">
         <Icon className="text-2xl" />

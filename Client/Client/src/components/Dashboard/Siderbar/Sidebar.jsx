@@ -1,6 +1,7 @@
 import useAuth from "../../../Hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import { TiUser } from "react-icons/ti";
+import { BsFillHouseAddFill } from "react-icons/bs";
 const Sidebar = () => {
   const { user } = useAuth();
   return (
@@ -14,6 +15,11 @@ const Sidebar = () => {
         label="Profile"
         icon={TiUser}
         address={"/dashboard/profile"}
+      />
+      <SidebarItem
+        label="Add Rooms"
+        icon={BsFillHouseAddFill}
+        address={"/dashboard/add-rooms"}
       />
     </div>
   );

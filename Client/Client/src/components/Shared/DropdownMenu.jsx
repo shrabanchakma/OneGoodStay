@@ -53,7 +53,7 @@ const DropdownMenu = () => {
               {user ? (
                 <button className="hover:bg-slate-200  w-full px-2 py-[0.5px] transition ease-in-out ">
                   <Link
-                    to="/dashboard"
+                    to="/dashboard/profile"
                     className="text-xl flex justify-start items-center gap-2 font-medium"
                   >
                     <IoPersonCircle color={"#4c9cf1"} className="text-lg" />
