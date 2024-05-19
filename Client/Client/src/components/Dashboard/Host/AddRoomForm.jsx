@@ -15,10 +15,11 @@ const AddRoomForm = ({
   handleImageChange,
   uploadButtonText,
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const handleShowOptions = () => {
     setIsVisible(!isVisible);
   };
+  console.log(isVisible);
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
       <form>
@@ -38,18 +39,19 @@ const AddRoomForm = ({
               />
             </div>
 
-            <div className="space-y-1 text-sm relative">
-              <label
-                htmlFor="Amenities"
-                className="block text-gray-600"
-                onClick={handleShowOptions}
-              >
+            <div
+              className={`space-y-1 text-sm relative p-2 px-3 bg-white border w-full rounded-md${
+                isVisible ? "border-[#e41b43]" : "border-rose-300 "
+              } `}
+              onClick={handleShowOptions}
+            >
+              <label htmlFor="Amenities" className="block text-gray-600">
                 Amenities
               </label>
               <div
                 className={`${
-                  isVisible && "hidden"
-                } absolute z-10 bg-white w-24`}
+                  isVisible ? "opacity-100" : "opacity-0"
+                } absolute z-10 left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
               >
                 {amenities.map((amenity, idx) => (
                   <Amenity
