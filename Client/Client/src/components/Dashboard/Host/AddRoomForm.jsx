@@ -6,6 +6,7 @@ import Amenity from "./Amenity";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useRef } from "react";
 const AddRoomForm = ({
   handleSubmit,
   amenities,
@@ -20,9 +21,26 @@ const AddRoomForm = ({
   uploadButtonText,
 }) => {
   const [isActive, setIsVisible] = useState(false);
+  const amenityListRef = useRef(null);
   const handleShowOptions = () => {
     setIsVisible(!isActive);
   };
+  const handleClickOutside = (e) => {
+    if (amenityListRef.current && !amenityListRef.current.contains(e.target)) {
+      setIsVisible(false);
+    }
+  };
+  useEffect(() => {
+    if (isActive) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isActive]);
+
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
       <form>
@@ -58,6 +76,7 @@ const AddRoomForm = ({
               {/* selected amenities */}
 
               <div
+                ref={amenityListRef}
                 className={`${
                   isActive ? "opacity-100" : "opacity-0"
                 } absolute z-10 left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
