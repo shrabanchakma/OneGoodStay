@@ -1,25 +1,28 @@
 import { DateRange } from "react-date-range";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { FaChevronDown } from "react-icons/fa";
 import "./AddRoom.css";
 import Amenity from "./Amenity";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { useEffect } from "react";
 const AddRoomForm = ({
   handleSubmit,
   amenities,
   handleAmenitySelect,
   handleAmenityRemove,
+  selectedAmenities,
+  updateSelectedAmenities,
   dates,
   handleDates,
   loading = false,
   handleImageChange,
   uploadButtonText,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isActive, setIsVisible] = useState(false);
   const handleShowOptions = () => {
-    setIsVisible(!isVisible);
+    setIsVisible(!isActive);
   };
-  console.log(isVisible);
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
       <form>
@@ -40,17 +43,23 @@ const AddRoomForm = ({
             </div>
 
             <div
-              className={`space-y-1 text-sm relative p-2 px-3 bg-white border w-full rounded-md${
-                isVisible ? "border-[#e41b43]" : "border-rose-300 "
-              } `}
+              className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
+              border ${isActive ? "border-[#e41b43]" : "border-rose-300"}
+               `}
               onClick={handleShowOptions}
             >
-              <label htmlFor="Amenities" className="block text-gray-600">
+              <label
+                htmlFor="Amenities"
+                className=" text-gray-600 font-medium flex items-center justify-between"
+              >
                 Amenities
+                <FaChevronDown />
               </label>
+              {/* selected amenities */}
+
               <div
                 className={`${
-                  isVisible ? "opacity-100" : "opacity-0"
+                  isActive ? "opacity-100" : "opacity-0"
                 } absolute z-10 left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
               >
                 {amenities.map((amenity, idx) => (
@@ -59,6 +68,9 @@ const AddRoomForm = ({
                     amenity={amenity}
                     handleAmenitySelect={handleAmenitySelect}
                     handleAmenityRemove={handleAmenityRemove}
+                    updateSelectedAmenities={updateSelectedAmenities}
+                    selectedAmenities={selectedAmenities}
+                    isSelected={!!selectedAmenities.includes(amenity?.label)}
                   />
                 ))}
               </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import AddRoomForm from "./AddRoomForm";
 import { topAmenitiesData as amenities } from "../../Rooms/TopAmenities/TopAmenitiesData";
 const AddRoom = () => {
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [dates, setDates] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -23,6 +24,19 @@ const AddRoom = () => {
   const handleAmenityRemove = (options) => {
     console.log("this is amenity remove");
   };
+  // update selected amenities
+  const updateSelectedAmenities = (amenity, setIsSelected) => {
+    let filteredAmenities = [];
+    if (selectedAmenities.includes(amenity)) {
+      filteredAmenities = selectedAmenities.filter(
+        (amenityItem) => amenityItem !== amenity
+      );
+    } else {
+      filteredAmenities = [...selectedAmenities, amenity];
+    }
+    console.log(filteredAmenities);
+    setSelectedAmenities(filteredAmenities);
+  };
   return (
     <div>
       <AddRoomForm
@@ -32,6 +46,8 @@ const AddRoom = () => {
         amenities={amenities}
         handleAmenitySelect={handleAmenitySelect}
         handleAmenityRemove={handleAmenityRemove}
+        selectedAmenities={selectedAmenities}
+        updateSelectedAmenities={updateSelectedAmenities}
       />
     </div>
   );
