@@ -10,8 +10,6 @@ import { useRef } from "react";
 const AddRoomForm = ({
   handleSubmit,
   amenities,
-  handleAmenitySelect,
-  handleAmenityRemove,
   selectedAmenities,
   updateSelectedAmenities,
   dates,
@@ -20,26 +18,27 @@ const AddRoomForm = ({
   handleImageChange,
   uploadButtonText,
 }) => {
-  const [isActive, setIsVisible] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const amenityListRef = useRef(null);
-  const handleShowOptions = () => {
-    setIsVisible(!isActive);
-  };
+
   const handleClickOutside = (e) => {
-    if (amenityListRef.current && !amenityListRef.current.contains(e.target)) {
-      setIsVisible(false);
-    }
+    if (
+      amenityListRef.current &&
+      !amenityListRef.current.contains(e.target) &&
+      !e.target.closest(".amenities-button")
+    )
+      setIsMenuVisible(false);
   };
   useEffect(() => {
-    if (isActive) {
+    if (isMenuVisible) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", () => setIsMenuVisible(false));
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isActive]);
+  }, [isMenuVisible]);
 
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
@@ -61,10 +60,14 @@ const AddRoomForm = ({
             </div>
 
             <div
+              onClick={() => {
+                setIsMenuVisible(!isMenuVisible);
+              }}
               className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
-              border ${isActive ? "border-[#e41b43]" : "border-rose-300"}
+              border ${
+                isMenuVisible ? "border-[#e41b43]" : "border-rose-300"
+              } amenities-button
                `}
-              onClick={handleShowOptions}
             >
               <label
                 htmlFor="Amenities"
@@ -78,15 +81,13 @@ const AddRoomForm = ({
               <div
                 ref={amenityListRef}
                 className={`${
-                  isActive ? "opacity-100" : "opacity-0"
-                } absolute z-10 left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
+                  isMenuVisible ? "opacity-100 z-10" : "opacity-0 -z-20"
+                } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
               >
                 {amenities.map((amenity, idx) => (
                   <Amenity
                     key={idx}
                     amenity={amenity}
-                    handleAmenitySelect={handleAmenitySelect}
-                    handleAmenityRemove={handleAmenityRemove}
                     updateSelectedAmenities={updateSelectedAmenities}
                     selectedAmenities={selectedAmenities}
                     isSelected={!!selectedAmenities.includes(amenity?.label)}
@@ -99,7 +100,12 @@ const AddRoomForm = ({
               <label htmlFor="location" className="block text-gray-600">
                 Select Availability Range
               </label>
-              <DateRange rangeColors={["#F43F5E"]} />
+              <DateRange
+                rangeColors={["green"]}
+                ranges={[dates]}
+                direction="vertical"
+                onChange={(item) => handleDates(item.selection)}
+              />
             </div>
           </div>
           <div className="space-y-6">

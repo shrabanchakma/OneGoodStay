@@ -5,8 +5,6 @@ import {
 } from "react-icons/ri";
 const Amenity = ({
   amenity,
-  handleAmenitySelect,
-  handleAmenityRemove,
   selectedAmenities,
   updateSelectedAmenities,
   isSelected,
