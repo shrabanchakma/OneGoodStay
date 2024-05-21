@@ -4,7 +4,7 @@ const app = express();
 const port = 8000 || process.env.PORT;
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://api.imgbb.com/1/upload"],
   })
 );
 app.use(express.json());

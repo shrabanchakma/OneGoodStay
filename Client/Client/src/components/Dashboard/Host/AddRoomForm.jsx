@@ -42,7 +42,7 @@ const AddRoomForm = ({
 
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="space-y-6">
             <div className="space-y-1 text-sm">
@@ -101,10 +101,11 @@ const AddRoomForm = ({
                 Select Availability Range
               </label>
               <DateRange
+                onChange={(item) => handleDates(item.selection)}
                 rangeColors={["green"]}
                 ranges={[dates]}
                 direction="vertical"
-                onChange={(item) => handleDates(item.selection)}
+                showMonthAndYearPickers={false}
               />
             </div>
           </div>
@@ -228,7 +229,6 @@ const AddRoomForm = ({
         </div>
 
         <button
-          onClick={handleSubmit}
           type="submit"
           className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
         >
