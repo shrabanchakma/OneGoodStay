@@ -19,6 +19,7 @@ const AddRoomForm = ({
   uploadButtonText,
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [previewImg, setPreviewImg] = useState(null);
   const amenityListRef = useRef(null);
 
   const handleClickOutside = (e) => {
@@ -28,6 +29,17 @@ const AddRoomForm = ({
       !e.target.closest(".amenities-button")
     )
       setIsMenuVisible(false);
+  };
+
+  const handleImagePreview = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else setPreviewImg(null);
   };
   useEffect(() => {
     if (isMenuVisible) {
@@ -147,14 +159,20 @@ const AddRoomForm = ({
                       id="image"
                       name="image"
                       accept="image/*"
+                      onChange={handleImagePreview}
                     />
-                    <div className="w-26 p-1 px-3 bg-[#e41b43] rounded-md font-medium text-white cursor-pointer hover:bg-[#a4142c] transition-colors ease-in duration-100">
-                      Input Image
+                    <div className="flex items-center gap-2">
+                      {/* preview of the selected image */}
+                      {previewImg && <img src={previewImg} className="w-10" />}
+                      <div className="w-26 p-1 px-3 bg-[#e41b43] rounded-md font-medium text-white cursor-pointer hover:bg-[#a4142c] transition-colors ease-in duration-100">
+                        Input Image
+                      </div>
                     </div>
                   </label>
                 </div>
               </div>
             </div>
+
             <div className="flex justify-between gap-2">
               <div className="space-y-1 text-sm">
                 <label htmlFor="price" className="block text-gray-600">
