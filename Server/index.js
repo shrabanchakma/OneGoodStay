@@ -28,6 +28,9 @@ async function run() {
     const userCollection = await client
       .db("OneGoodStay")
       .createCollection("users");
+    const roomCollection = await client
+      .db("OneGoodStay")
+      .createCollection("rooms");
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
       const email = req.params.email;
@@ -45,6 +48,12 @@ async function run() {
         },
         { upsert: true }
       );
+      res.send(result);
+    });
+
+    app.post("/rooms", async (req, res) => {
+      const newRoom = req.body;
+      const result = await roomCollection.insertOne(newRoom);
       res.send(result);
     });
 

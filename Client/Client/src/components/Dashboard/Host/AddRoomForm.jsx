@@ -14,7 +14,7 @@ const AddRoomForm = ({
   updateSelectedAmenities,
   dates,
   handleDates,
-  loading = false,
+  loading,
   handleImageChange,
   uploadButtonText,
 }) => {
