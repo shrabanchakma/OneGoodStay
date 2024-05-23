@@ -48,6 +48,7 @@ const AddRoom = () => {
         image: display_url,
         location: location,
         title: title,
+        category: selectedCategory,
         bestFacility: bestFacility,
         price: parseFloat(price),
         guest: guest,
@@ -70,6 +71,7 @@ const AddRoom = () => {
       });
       setPreviewImg(null);
       setSelectedAmenities([]);
+      setSelectedCategory("");
       setLoading(false);
     } catch (err) {
       console.error(err.message);

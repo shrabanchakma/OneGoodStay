@@ -43,6 +43,15 @@ const AddRoomForm = ({
       reader.readAsDataURL(file);
     } else setPreviewImg(null);
   };
+
+  const handleCategoryVisibility = () => {
+    setIsCategoryVisible(!isCategoryVisible);
+  };
+
+  const handleAmenityVisibility = () => {
+    setIsAmenityVisible(!isAmenityVisible);
+    setIsCategoryVisible(false);
+  };
   useEffect(() => {
     console.log("from use effect");
     if (isAmenityVisible) {
@@ -79,9 +88,7 @@ const AddRoomForm = ({
             <div>
               <p className="text-gray-600">You can add multiple amenities</p>
               <div
-                onClick={() => {
-                  setIsAmenityVisible(!isAmenityVisible);
-                }}
+                onClick={handleAmenityVisibility}
                 className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
               border ${
                 isAmenityVisible ? "border-[#e41b43]" : "border-rose-300"
@@ -95,13 +102,13 @@ const AddRoomForm = ({
                   Amenities
                   <FaChevronDown />
                 </label>
-                {/* selected amenities */}
+                {/* select amenities */}
 
                 <div
                   ref={amenityListRef}
                   className={`${
                     isAmenityVisible ? "opacity-100 z-10" : "opacity-0 -z-20"
-                  } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
+                  } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out `}
                 >
                   {amenities.map((amenity, idx) => (
                     <Amenity
@@ -121,26 +128,26 @@ const AddRoomForm = ({
                 Select category
               </label>
               <div
-                onClick={() => setIsCategoryVisible(!isCategoryVisible)}
+                onClick={handleCategoryVisibility}
                 className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
               border ${
                 isCategoryVisible ? "border-[#e41b43]" : "border-rose-300"
-              } amenities-button
+              }
                `}
               >
                 <label
                   htmlFor="Category"
                   className=" text-gray-600 font-medium flex items-center justify-between"
                 >
-                  Category
+                  {selectedCategory ? selectedCategory : "Category"}
                   <FaChevronDown />
                 </label>
-                {/* selected amenities */}
+                {/* select categories */}
 
                 <div
                   className={`${
                     isCategoryVisible ? "opacity-100 z-10" : "opacity-0 -z-20"
-                  } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
+                  } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out `}
                 >
                   {categories.map((category) => (
                     <Category
@@ -319,4 +326,6 @@ AddRoomForm.propTypes = {
   loading: PropTypes.bool,
   previewImg: PropTypes.string,
   setPreviewImg: PropTypes.func,
+  selectedCategory: PropTypes.string,
+  setSelectedCategory: PropTypes.func,
 };

@@ -24,5 +24,5 @@ export default SidebarItem;
 SidebarItem.propTypes = {
   label: PropTypes.string,
   address: PropTypes.string,
-  icon: PropTypes.node,
+  icon: PropTypes.func,
 };

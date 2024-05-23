@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   RiCheckboxBlankCircleLine,
@@ -13,7 +13,6 @@ const Category = ({ categoryLabel, selectedCategory, setSelectedCategory }) => {
   const setOnMouseLeave = () => {
     setIsHovering(false);
   };
-  console.log(selectedCategory);
   return (
     <div
       onClick={() => setSelectedCategory(categoryLabel)}
@@ -33,6 +32,10 @@ const Category = ({ categoryLabel, selectedCategory, setSelectedCategory }) => {
   );
 };
 
-Category.propTypes = {};
+Category.propTypes = {
+  categoryLabel: PropTypes.string,
+  selectedCategory: PropTypes.string,
+  setSelectedCategory: PropTypes.func,
+};
 
 export default Category;

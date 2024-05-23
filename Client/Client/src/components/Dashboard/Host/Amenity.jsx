@@ -23,7 +23,7 @@ const Amenity = ({
       onMouseLeave={setOnMouseLeave}
       className={`h-8 p-1 px-3 flex items-center gap-2 cursor-pointer font-medium  transition-all ease-in-out duration-75 ${
         isHovering ? "bg-neutral-100" : "bg-white"
-      }`}
+      } `}
     >
       {isHovering || isSelected ? (
         <RiCheckboxCircleFill className="text-blue-500 text-xl" />

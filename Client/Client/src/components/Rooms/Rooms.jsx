@@ -2,18 +2,30 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { getRooms } from "../../Api/rooms";
 import SingleRoom from "./SingleRoom";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
+  const location = useLocation();
+  const { category } = queryString.parse(location.search);
   useEffect(() => {
     const getAllRooms = async () => {
-      const data = await getRooms();
-      setRooms(data);
+      const allRooms = await getRooms();
+      if (category) {
+        const filteredRooms = allRooms.filter(
+          (room) => room?.category === category
+        );
+        console.log(filteredRooms);
+        setRooms(filteredRooms);
+      } else {
+        setRooms(allRooms);
+      }
     };
     getAllRooms();
-  }, []);
+  }, [category]);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 my-10">
+    <div className="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 ">
       {rooms.map((room) => (
         <SingleRoom key={room?._id} room={room} />
       ))}
