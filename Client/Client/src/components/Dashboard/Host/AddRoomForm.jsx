@@ -5,6 +5,8 @@ import "./AddRoom.css";
 import Amenity from "./Amenity";
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
+import { categories } from "../../Categories/CategoriesData";
+import Category from "./Category";
 const AddRoomForm = ({
   handleSubmit,
   amenities,
@@ -15,8 +17,11 @@ const AddRoomForm = ({
   loading,
   previewImg,
   setPreviewImg,
+  selectedCategory,
+  setSelectedCategory,
 }) => {
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [isAmenityVisible, setIsAmenityVisible] = useState(false);
+  const [isCategoryVisible, setIsCategoryVisible] = useState(false);
   const amenityListRef = useRef(null);
 
   const handleClickOutside = (e) => {
@@ -25,7 +30,7 @@ const AddRoomForm = ({
       !amenityListRef.current.contains(e.target) &&
       !e.target.closest(".amenities-button")
     )
-      setIsMenuVisible(false);
+      setIsAmenityVisible(false);
   };
 
   const handleImagePreview = (e) => {
@@ -40,15 +45,17 @@ const AddRoomForm = ({
   };
   useEffect(() => {
     console.log("from use effect");
-    if (isMenuVisible) {
+    if (isAmenityVisible) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", () => setIsMenuVisible(false));
+      document.removeEventListener("mousedown", () =>
+        setIsAmenityVisible(false)
+      );
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isMenuVisible]);
+  }, [isAmenityVisible]);
 
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
@@ -69,43 +76,83 @@ const AddRoomForm = ({
               />
             </div>
 
-            <div
-              onClick={() => {
-                setIsMenuVisible(!isMenuVisible);
-              }}
-              className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
+            <div>
+              <p className="text-gray-600">You can add multiple amenities</p>
+              <div
+                onClick={() => {
+                  setIsAmenityVisible(!isAmenityVisible);
+                }}
+                className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
               border ${
-                isMenuVisible ? "border-[#e41b43]" : "border-rose-300"
+                isAmenityVisible ? "border-[#e41b43]" : "border-rose-300"
               } amenities-button
                `}
-            >
-              <label
-                htmlFor="Amenities"
-                className=" text-gray-600 font-medium flex items-center justify-between"
               >
-                Amenities
-                <FaChevronDown />
-              </label>
-              {/* selected amenities */}
+                <label
+                  htmlFor="Amenities"
+                  className=" text-gray-600 font-medium flex items-center justify-between"
+                >
+                  Amenities
+                  <FaChevronDown />
+                </label>
+                {/* selected amenities */}
 
-              <div
-                ref={amenityListRef}
-                className={`${
-                  isMenuVisible ? "opacity-100 z-10" : "opacity-0 -z-20"
-                } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
-              >
-                {amenities.map((amenity, idx) => (
-                  <Amenity
-                    key={idx}
-                    amenity={amenity}
-                    updateSelectedAmenities={updateSelectedAmenities}
-                    selectedAmenities={selectedAmenities}
-                    isSelected={!!selectedAmenities.includes(amenity?.label)}
-                  />
-                ))}
+                <div
+                  ref={amenityListRef}
+                  className={`${
+                    isAmenityVisible ? "opacity-100 z-10" : "opacity-0 -z-20"
+                  } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
+                >
+                  {amenities.map((amenity, idx) => (
+                    <Amenity
+                      key={idx}
+                      amenity={amenity}
+                      updateSelectedAmenities={updateSelectedAmenities}
+                      selectedAmenities={selectedAmenities}
+                      isSelected={!!selectedAmenities.includes(amenity?.label)}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
+            <div className="w-full">
+              <label htmlFor="category" className="block text-gray-600">
+                Select category
+              </label>
+              <div
+                onClick={() => setIsCategoryVisible(!isCategoryVisible)}
+                className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
+              border ${
+                isCategoryVisible ? "border-[#e41b43]" : "border-rose-300"
+              } amenities-button
+               `}
+              >
+                <label
+                  htmlFor="Category"
+                  className=" text-gray-600 font-medium flex items-center justify-between"
+                >
+                  Category
+                  <FaChevronDown />
+                </label>
+                {/* selected amenities */}
+
+                <div
+                  className={`${
+                    isCategoryVisible ? "opacity-100 z-10" : "opacity-0 -z-20"
+                  } absolute  left-0 top-[34px] bg-white w-full  transition-opacity duration-75 ease-out`}
+                >
+                  {categories.map((category) => (
+                    <Category
+                      key={category?.label}
+                      categoryLabel={category?.label}
+                      selectedCategory={selectedCategory}
+                      setSelectedCategory={setSelectedCategory}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="space-y-1">
               <label htmlFor="location" className="block text-gray-600">
                 Select Availability Range

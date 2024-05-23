@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddRoomForm from "./AddRoomForm";
 import { topAmenitiesData as amenities } from "../../Rooms/TopAmenities/TopAmenitiesData";
 import useAuth from "../../../Hooks/useAuth";
@@ -9,12 +9,16 @@ const AddRoom = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [previewImg, setPreviewImg] = useState(null);
   const [dates, setDates] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: "selection",
   });
+  useEffect(() => {
+    console.log(selectedCategory);
+  }, [selectedCategory]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -104,6 +108,8 @@ const AddRoom = () => {
         loading={loading}
         previewImg={previewImg}
         setPreviewImg={setPreviewImg}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
     </div>
   );
