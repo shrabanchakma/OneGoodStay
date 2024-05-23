@@ -4,12 +4,16 @@ import { getRooms } from "../../Api/rooms";
 import SingleRoom from "./SingleRoom";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
+import Loader from "../Shared/Loader";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { category } = queryString.parse(location.search);
+
   useEffect(() => {
+    setLoading(true);
     const getAllRooms = async () => {
       const allRooms = await getRooms();
       if (category) {
@@ -21,14 +25,33 @@ const Rooms = () => {
       } else {
         setRooms(allRooms);
       }
+      setLoading(false);
     };
     getAllRooms();
   }, [category]);
+
+  if (loading) return <Loader />;
+
   return (
-    <div className="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 ">
-      {rooms.map((room) => (
-        <SingleRoom key={room?._id} room={room} />
-      ))}
+    <div>
+      {rooms.length > 0 ? (
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 cursor-pointer">
+          {rooms.map((room) => (
+            <SingleRoom key={room?._id} room={room} />
+          ))}
+        </div>
+      ) : (
+        <div className="min-h-[30vh] mb-36">
+          <img
+            src={"https://i.ibb.co/LS4mfdx/empty-page-image.jpg"}
+            alt=""
+            className="w-2/5 mx-auto"
+          />
+          <p className="text-3xl text-center font-bold text-blue-800">
+            Opp! There is no room available
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,13 +2,13 @@ import Heading from "../../Shared/Heading";
 import ReservationCalender from "./ReservationCalender";
 import demoRoomImg from "../../../assets/hotel-image-demo.jpg";
 import ContainerTwo from "../../Shared/ContainerTwo";
-const RoomReservation = () => {
+const RoomReservation = ({ room }) => {
   return (
     <ContainerTwo>
       <div id="Reservation" className="my-20">
         <Heading label="Room Reservation" />
         <div className="flex items-center  gap-4  h-[40vh]  p-5  border-[#e41b43] rounded-xl">
-          <ReservationCalender />
+          {room && <ReservationCalender room={room} />}
           <div className="w-full h-full">
             <img
               src={demoRoomImg}

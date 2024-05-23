@@ -11,3 +11,9 @@ export const getRooms = async () => {
   const { data } = await axiosSecure("/rooms");
   return data;
 };
+
+// get a single room
+export const getRoomData = async (RoomId) => {
+  const { data } = await axiosSecure(`/rooms/${RoomId}`);
+  return data;
+};

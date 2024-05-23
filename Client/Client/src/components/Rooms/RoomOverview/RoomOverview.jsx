@@ -1,12 +1,12 @@
 import { FaStar } from "react-icons/fa";
 import demoImg from "../../../assets/hotel-image-demo.jpg";
 import ContainerTwo from "../../Shared/ContainerTwo";
-const RoomOverview = () => {
+const RoomOverview = ({ room }) => {
   return (
     <ContainerTwo>
       <div id="Overview" className="space-y-2 mt-10">
         {/* todo: make it dynamic */}
-        <h1 className="text-2xl font-medium">Wingate by Wyndham Kamloops</h1>
+        <h1 className="text-2xl font-medium">{room?.title}</h1>
 
         <div className="flex gap-4 mb-2">
           <FaStar />
@@ -23,7 +23,9 @@ const RoomOverview = () => {
               gap-2
             "
         >
-          <div>Hosted by ShrabanChakma</div>
+          <div>
+            Hosted by <span>{room?.host?.name}</span>
+          </div>
 
           <img
             className="rounded-full"
@@ -34,19 +36,15 @@ const RoomOverview = () => {
           />
         </div>
         <div className="flex items-center gap-5 font-light text-neutral-500">
-          <div>5 guests</div>
-          <div>5 rooms</div>
-          <div>2 bathrooms</div>
+          <div>{room?.guest} guests</div>
+          <div>{room?.bedrooms} rooms</div>
+          <div>{room?.bathrooms} bathrooms</div>
         </div>
         {/* special amenity */}
-        <p>Aberdeen hotel with indoor pool and 24-hour fitness</p>
+        <p>{room?.feature}</p>
         {/* room description */}
         <p className="text-lg font-light text-neutral-500">
-          Indulge in luxurious comfort with our hotel rooms, boasting elegant
-          decor and modern amenities. Relax in plush beds, rejuvenate in
-          spacious bathrooms, and enjoy stunning views. Experience unparalleled
-          hospitality, personalized service, and convenient access to local
-          attractions. Your unforgettable stay awaits at our exquisite hotel.
+          {room?.description}
         </p>
         {/* todo: dynamically generate rating */}
         <div className="flex items-center gap-4">

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { DateRange } from "react-date-range";
 
-const ReservationCalender = () => {
+const ReservationCalender = ({ room: { startDate, endDate } }) => {
   const [value, setValue] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: startDate,
+    endDate: endDate,
     key: "selection",
   });
   const handleDateChange = () => {

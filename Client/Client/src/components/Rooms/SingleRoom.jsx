@@ -1,8 +1,12 @@
 import PropTypes from "prop-types";
 import DefaultButton from "../Shared/DefaultButton";
+import { Link } from "react-router-dom";
 const SingleRoom = ({ room }) => {
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out">
+    <Link
+      to={`room-details/${room?._id}`}
+      className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out"
+    >
       <div className="overflow-hidden">
         <img
           className="w-full h-60 transition-all duration-150 ease-in-out transform group-hover:scale-125"
@@ -32,7 +36,7 @@ const SingleRoom = ({ room }) => {
           <DefaultButton label="read more" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

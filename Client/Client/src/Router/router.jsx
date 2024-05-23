@@ -10,6 +10,7 @@ import MyBookings from "../components/Dashboard/Guest/MyBookings";
 import PublicRoute from "../UserRoutes/PublicRoute";
 import Profile from "../components/Dashboard/Common/Profile";
 import AddRoom from "../components/Dashboard/Host/AddRoom";
+import { getRoomData } from "../Api/rooms";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,8 +26,9 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "room-details",
+        path: "room-details/:id",
         element: <RoomDetails />,
+        loader: async ({ params }) => await getRoomData(params?.id),
       },
     ],
   },

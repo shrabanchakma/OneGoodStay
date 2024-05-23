@@ -5,15 +5,19 @@ import RoomOverview from "./RoomOverview/RoomOverview";
 import TopAmenities from "./TopAmenities/TopAmenities";
 import RoomReservation from "./RoomReservation/RoomReservation";
 import RoomReview from "./RoomReview/RoomReview";
+import { useLoaderData, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getRoomData } from "../../Api/rooms";
 const sections = ["Overview", "Amenities", "Reservation", "Review"];
 const RoomDetails = () => {
+  const room = useLoaderData();
   return (
     <Container>
       {/* todo : dynamically add room infos */}
       {/* hotel image */}
 
       <img
-        src={hotelImage}
+        src={room?.image}
         alt=""
         className="w-full h-[50vh] bg-green-500 rounded-lg object-cover"
       />
@@ -29,9 +33,9 @@ const RoomDetails = () => {
         </button>
       </div>
 
-      <RoomOverview />
-      <TopAmenities />
-      <RoomReservation />
+      <RoomOverview room={room} />
+      <TopAmenities roomAmenities={room?.amenities} />
+      <RoomReservation room={room} />
       <RoomReview />
     </Container>
   );
