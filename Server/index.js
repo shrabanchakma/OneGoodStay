@@ -50,10 +50,15 @@ async function run() {
       );
       res.send(result);
     });
-
+    // save rooms in database
     app.post("/rooms", async (req, res) => {
       const newRoom = req.body;
       const result = await roomCollection.insertOne(newRoom);
+      res.send(result);
+    });
+    // get all rooms from database
+    app.get("/rooms", async (req, res) => {
+      const result = await roomCollection.find().toArray();
       res.send(result);
     });
 

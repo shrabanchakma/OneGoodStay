@@ -4,9 +4,7 @@ import { FaChevronDown } from "react-icons/fa";
 import "./AddRoom.css";
 import Amenity from "./Amenity";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 const AddRoomForm = ({
   handleSubmit,
   amenities,
@@ -15,11 +13,10 @@ const AddRoomForm = ({
   dates,
   handleDates,
   loading,
-  handleImageChange,
-  uploadButtonText,
+  previewImg,
+  setPreviewImg,
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [previewImg, setPreviewImg] = useState(null);
   const amenityListRef = useRef(null);
 
   const handleClickOutside = (e) => {
@@ -42,6 +39,7 @@ const AddRoomForm = ({
     } else setPreviewImg(null);
   };
   useEffect(() => {
+    console.log("from use effect");
     if (isMenuVisible) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -114,10 +112,11 @@ const AddRoomForm = ({
               </label>
               <DateRange
                 onChange={(item) => handleDates(item.selection)}
-                rangeColors={["green"]}
+                rangeColors={["#e41b43"]}
                 ranges={[dates]}
                 direction="vertical"
                 showMonthAndYearPickers={false}
+                minDate={new Date()}
               />
             </div>
           </div>
@@ -265,4 +264,12 @@ export default AddRoomForm;
 
 AddRoomForm.propTypes = {
   amenities: PropTypes.array,
+  handleSubmit: PropTypes.func,
+  selectedAmenities: PropTypes.array,
+  updateSelectedAmenities: PropTypes.func,
+  dates: PropTypes.object,
+  handleDates: PropTypes.func,
+  loading: PropTypes.bool,
+  previewImg: PropTypes.string,
+  setPreviewImg: PropTypes.func,
 };

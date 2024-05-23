@@ -7,8 +7,9 @@ import toast from "react-hot-toast";
 import { saveRoom } from "../../../Api/rooms";
 const AddRoom = () => {
   const { user } = useAuth();
-  const { loading, setLoading } = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [previewImg, setPreviewImg] = useState(null);
   const [dates, setDates] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -20,7 +21,7 @@ const AddRoom = () => {
     const form = e.target;
     const image = form.image.files[0];
     if (!image) {
-      toast.error("Please Upload an Image");
+      toast.error("Please Select an Image");
       setLoading(false);
       return;
     }
@@ -44,7 +45,7 @@ const AddRoom = () => {
         location: location,
         title: title,
         bestFacility: bestFacility,
-        price: price,
+        price: parseFloat(price),
         guest: guest,
         bedrooms: bedrooms,
         bathrooms: bathrooms,
@@ -54,10 +55,18 @@ const AddRoom = () => {
         endDate: dates.endDate,
       };
       // save new room
-      const roomData = await saveRoom(newRoom);
+      await saveRoom(newRoom);
       toast.success("Room added successfully");
+      // reset every input value
+      form.reset();
+      setDates({
+        startDate: new Date(),
+        endDate: new Date(),
+        key: "selection",
+      });
+      setPreviewImg(null);
+      setSelectedAmenities([]);
       setLoading(false);
-      console.log(roomData);
     } catch (err) {
       console.error(err.message);
     }
@@ -70,10 +79,6 @@ const AddRoom = () => {
       endDate: ranges.endDate,
       key: "selection",
     });
-  };
-  const handleImageChange = () => {
-    // to handle image change
-    console.log("to handle image change");
   };
   // update selected amenities
   const updateSelectedAmenities = (amenity) => {
@@ -93,11 +98,12 @@ const AddRoom = () => {
         handleSubmit={handleSubmit}
         dates={dates}
         handleDates={handleDates}
-        handleImageChange={handleImageChange}
         amenities={amenities}
         selectedAmenities={selectedAmenities}
         updateSelectedAmenities={updateSelectedAmenities}
         loading={loading}
+        previewImg={previewImg}
+        setPreviewImg={setPreviewImg}
       />
     </div>
   );
