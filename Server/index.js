@@ -58,7 +58,7 @@ async function run() {
     });
     // get all rooms from database
     app.get("/rooms", async (req, res) => {
-      const email = req.body;
+      const email = req.query.email;
       // get rooms based on user email
       if (email) {
         const result = await roomCollection

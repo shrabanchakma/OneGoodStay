@@ -99,7 +99,7 @@ const AddRoom = () => {
     setSelectedAmenities(filteredAmenities);
   };
   return (
-    <div>
+    <div className="p-7">
       <AddRoomForm
         handleSubmit={handleSubmit}
         dates={dates}

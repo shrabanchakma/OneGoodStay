@@ -1,7 +1,5 @@
-import React from "react";
 import PropTypes from "prop-types";
-
-const HostedRoomsDataRow = (props) => {
+const HostedRoomsDataRow = ({ room, formatDate }) => {
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -28,12 +26,12 @@ const HostedRoomsDataRow = (props) => {
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
-          {format(new Date(room?.from), "P")}
+          {formatDate(room?.startDate)}
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
-          {format(new Date(room?.to), "P")}
+          {formatDate(room?.endDate)}
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -58,6 +56,9 @@ const HostedRoomsDataRow = (props) => {
   );
 };
 
-HostedRoomsDataRow.propTypes = {};
+HostedRoomsDataRow.propTypes = {
+  room: PropTypes.object,
+  formatDate: PropTypes.func,
+};
 
 export default HostedRoomsDataRow;

@@ -2,16 +2,8 @@ import useAuth from "../../../Hooks/useAuth";
 
 const Profile = () => {
   const { signOutUser, user } = useAuth();
-  //   const handleSignOut = async () => {
-  //     try {
-  //       await signOutUser();
-  //     } catch (err) {
-  //       console.error(err.message);
-  //       toast.error(err.message);
-  //     }
-  //   };
   return (
-    <div className="py-20 px-10 w-full">
+    <div className="p-28  w-full">
       <h1 className="font-medium text-2xl mb-10">{user?.displayName}</h1>
       <div className="flex mb-10">
         <div className="w-11/12 ">
