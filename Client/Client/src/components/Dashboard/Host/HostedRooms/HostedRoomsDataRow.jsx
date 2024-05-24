@@ -71,6 +71,7 @@ const HostedRoomsDataRow = ({ room, formatDate, handleDeleteRoom }) => {
 HostedRoomsDataRow.propTypes = {
   room: PropTypes.object,
   formatDate: PropTypes.func,
+  handleDeleteRoom: PropTypes.func,
 };
 
 export default HostedRoomsDataRow;

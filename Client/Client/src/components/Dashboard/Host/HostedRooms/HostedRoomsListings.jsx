@@ -48,8 +48,8 @@ const HostedRoomsListings = () => {
 
       <div className="container mx-auto ">
         <div className="py-8">
-          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto overflow-y-auto">
-            <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto  ">
+            <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
