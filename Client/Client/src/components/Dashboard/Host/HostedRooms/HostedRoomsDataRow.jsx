@@ -1,5 +1,11 @@
 import PropTypes from "prop-types";
+import { FaAngleRight, FaPenToSquare } from "react-icons/fa6";
+import { Tooltip } from "react-tooltip";
+import RoomEditDialogBox from "./RoomEditDialogBox";
+import { useState } from "react";
 const HostedRoomsDataRow = ({ room, formatDate }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleDialogBoxVisibility = () => setIsOpen(true);
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -35,22 +41,23 @@ const HostedRoomsDataRow = ({ room, formatDate }) => {
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-          ></span>
-          <span className="relative">Delete</span>
+        <span className="font-semibold text-green-900 leading-tight">
+          Available
         </span>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-          ></span>
-          <span className="relative">Update</span>
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+        <span
+          onClick={handleDialogBoxVisibility}
+          data-tooltip-id="tooltip"
+          data-tooltip-delay-show={300}
+          className="px-2 cursor-pointer font-semibold text-lg leading-tight flex items-center justify-between active:bg-neutral-200"
+        >
+          <FaPenToSquare />
+          <FaAngleRight />
         </span>
+        <Tooltip id="tooltip" place="bottom" content="Edit" variant="light" />
+        {/* edit room */}
+        <RoomEditDialogBox isOpen={isOpen} setIsOpen={setIsOpen} />
       </td>
     </tr>
   );
