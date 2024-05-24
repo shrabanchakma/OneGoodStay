@@ -3,7 +3,7 @@ import { FaAngleRight, FaPenToSquare } from "react-icons/fa6";
 import { Tooltip } from "react-tooltip";
 import RoomEditDialogBox from "./RoomEditDialogBox";
 import { useState } from "react";
-const HostedRoomsDataRow = ({ room, formatDate }) => {
+const HostedRoomsDataRow = ({ room, formatDate, handleDeleteRoom }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleDialogBoxVisibility = () => setIsOpen(true);
   return (
@@ -57,7 +57,12 @@ const HostedRoomsDataRow = ({ room, formatDate }) => {
         </span>
         <Tooltip id="tooltip" place="bottom" content="Edit" variant="light" />
         {/* edit room */}
-        <RoomEditDialogBox isOpen={isOpen} setIsOpen={setIsOpen} />
+        <RoomEditDialogBox
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          handleDeleteRoom={handleDeleteRoom}
+          roomId={room?._id}
+        />
       </td>
     </tr>
   );

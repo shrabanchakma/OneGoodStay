@@ -23,3 +23,9 @@ export const getHostedRooms = async (email) => {
   const { data } = await axiosSecure(`/rooms?email=${email}`);
   return data;
 };
+
+// delete a room
+export const deleteRoom = async (id) => {
+  const { data } = await axiosSecure.delete(`/room/delete?roomId=${id}`);
+  return data;
+};

@@ -7,7 +7,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 
-const RoomEditDialogBox = ({ isOpen, setIsOpen }) => {
+const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
   const [hoveringButton, setHoverButton] = useState(false);
   const hoveredButton = (button) => {
     if (hoveringButton === button) return true;
@@ -41,16 +41,17 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen }) => {
                   onMouseLeave={() => setHoverButton(null)}
                   className={` w-full h-1/2 font-semibold transition-color duration-150 border-b-[1px] ${
                     hoveredButton("button1") ? "bg-neutral-200" : "bg-gray-300"
-                  }`}
+                  }  text-green-600`}
                 >
                   Update
                 </button>
                 <button
+                  onClick={() => handleDeleteRoom(roomId)}
                   onMouseEnter={() => setHoverButton("button2")}
                   onMouseLeave={() => setHoverButton(null)}
                   className={` w-full h-1/2 font-semibold transition-color duration-150  ${
                     hoveredButton("button2") ? "bg-neutral-200" : "bg-gray-300"
-                  }`}
+                  } text-red-500 hover:text-red-600`}
                 >
                   Delete
                 </button>

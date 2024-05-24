@@ -80,6 +80,14 @@ async function run() {
       // get all rooms for host
       res.send(result);
     });
+    // delete a room
+    app.delete("/room/delete", async (req, res) => {
+      const roomId = req.query.roomId;
+      const result = await roomCollection.deleteOne({
+        _id: new ObjectId(roomId),
+      });
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

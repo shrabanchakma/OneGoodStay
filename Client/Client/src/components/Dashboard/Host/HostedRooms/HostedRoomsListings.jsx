@@ -1,10 +1,11 @@
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../../../Hooks/useAuth";
-import { getHostedRooms } from "../../../../Api/rooms";
+import { deleteRoom, getHostedRooms } from "../../../../Api/rooms";
 import { useQuery } from "@tanstack/react-query";
 import HostedRoomsDataRow from "./HostedRoomsDataRow";
 import { useState } from "react";
 import Loader from "../../../Shared/Loader";
+import toast from "react-hot-toast";
 
 const HostedRoomsListings = () => {
   const { user } = useAuth();
@@ -23,8 +24,22 @@ const HostedRoomsListings = () => {
       return await getHostedRooms(user?.email);
     },
   });
+  const handleDeleteRoom = async (roomId) => {
+    try {
+      const { deletedCount } = await deleteRoom(roomId);
+      if (deletedCount > 0) {
+        toast.success("Room Deleted Successfully");
+        refetch();
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   if (loading) return <Loader />;
   if (rooms.length === 0) return <div>oops! there is no room</div>;
+
   return (
     <>
       <Helmet>
@@ -89,6 +104,7 @@ const HostedRoomsListings = () => {
                       key={room?._id}
                       room={room}
                       formatDate={formatDate}
+                      handleDeleteRoom={handleDeleteRoom}
                     />
                   ))}
                 </tbody>
