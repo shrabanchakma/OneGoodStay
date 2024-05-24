@@ -1,8 +1,9 @@
 import useAuth from "../../../Hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import { TiUser } from "react-icons/ti";
-import { BsFillHouseAddFill } from "react-icons/bs";
+import { BsFillHouseAddFill, BsHousesFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const navigate = useNavigate();
@@ -32,6 +33,11 @@ const Sidebar = () => {
           label="Add Rooms"
           icon={BsFillHouseAddFill}
           address={"/dashboard/add-rooms"}
+        />
+        <SidebarItem
+          label="Hosted Rooms"
+          icon={BsHousesFill}
+          address={"/dashboard/hosted-rooms"}
         />
       </div>
 

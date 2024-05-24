@@ -5,7 +5,7 @@ import "./AddRoom.css";
 import Amenity from "./Amenity";
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
-import { categories } from "../../Categories/CategoriesData";
+import { categories } from "../../../Categories/CategoriesData";
 import Category from "./Category";
 const AddRoomForm = ({
   handleSubmit,

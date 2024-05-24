@@ -17,3 +17,9 @@ export const getRoomData = async (RoomId) => {
   const { data } = await axiosSecure(`/rooms/${RoomId}`);
   return data;
 };
+
+// get all hosted rooms of host
+export const getHostedRooms = async (email) => {
+  const { data } = await axiosSecure("/rooms", { email });
+  return data;
+};

@@ -8,7 +8,7 @@ const RoomReservation = ({ room }) => {
       <div id="Reservation" className="my-20">
         <Heading label="Room Reservation" />
         <div className="flex items-center  gap-4  h-[40vh]  p-5  border-[#e41b43] rounded-xl">
-          {room && <ReservationCalender room={room} />}
+          <ReservationCalender room={room} />
           <div className="w-full h-full">
             <img
               src={demoRoomImg}
@@ -17,7 +17,8 @@ const RoomReservation = ({ room }) => {
             />
             <div className="flex items-center justify-between mb-1">
               <h1 className="font-medium">
-                Price: <span className="font-normal text-sm">$500</span>
+                Price:{" "}
+                <span className="font-normal text-sm">${room?.price}</span>
               </h1>
 
               <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">

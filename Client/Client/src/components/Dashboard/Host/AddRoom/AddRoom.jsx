@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import AddRoomForm from "./AddRoomForm";
-import { topAmenitiesData as amenities } from "../../Rooms/TopAmenities/TopAmenitiesData";
-import useAuth from "../../../Hooks/useAuth";
-import { uploadImage } from "../../../Api/utils";
+import { topAmenitiesData as amenities } from "../../../Rooms/TopAmenities/TopAmenitiesData";
+import useAuth from "../../../../Hooks/useAuth";
+import { uploadImage } from "../../../../Api/utils";
 import toast from "react-hot-toast";
-import { saveRoom } from "../../../Api/rooms";
+import { saveRoom } from "../../../../Api/rooms";
 const AddRoom = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);

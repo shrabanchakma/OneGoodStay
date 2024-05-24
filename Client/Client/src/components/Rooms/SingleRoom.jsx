@@ -5,7 +5,7 @@ const SingleRoom = ({ room }) => {
   return (
     <Link
       to={`room-details/${room?._id}`}
-      className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out"
+      className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out active:bg-neutral-200 active:shadow-[#e41b43] active:shadow-2xl"
     >
       <div className="overflow-hidden">
         <img

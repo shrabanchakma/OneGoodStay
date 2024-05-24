@@ -9,8 +9,9 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import MyBookings from "../components/Dashboard/Guest/MyBookings";
 import PublicRoute from "../UserRoutes/PublicRoute";
 import Profile from "../components/Dashboard/Common/Profile";
-import AddRoom from "../components/Dashboard/Host/AddRoom";
+import AddRoom from "../components/Dashboard/Host/AddRoom/AddRoom";
 import { getRoomData } from "../Api/rooms";
+import HostedRoomsListings from "../components/Dashboard/Host/HostedRooms/HostedRoomsListings";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "add-rooms",
         element: <AddRoom />,
+      },
+      {
+        path: "hosted-rooms",
+        element: <HostedRoomsListings />,
       },
     ],
   },

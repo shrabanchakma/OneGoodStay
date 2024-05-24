@@ -3,8 +3,8 @@ import { DateRange } from "react-date-range";
 
 const ReservationCalender = ({ room: { startDate, endDate } }) => {
   const [value, setValue] = useState({
-    startDate: startDate,
-    endDate: endDate,
+    startDate: new Date(startDate),
+    endDate: new Date(endDate),
     key: "selection",
   });
   const handleDateChange = () => {

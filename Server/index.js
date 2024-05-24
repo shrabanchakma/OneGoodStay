@@ -58,6 +58,14 @@ async function run() {
     });
     // get all rooms from database
     app.get("/rooms", async (req, res) => {
+      const email = req.body;
+      // get rooms based on user email
+      if (email) {
+        const result = await roomCollection
+          .find({ "host.email": email })
+          .toArray();
+        return res.send(result);
+      }
       const result = await roomCollection.find().toArray();
       res.send(result);
     });
@@ -69,7 +77,7 @@ async function run() {
       const result = await roomCollection.findOne({
         _id: new ObjectId(roomId),
       });
-
+      // get all rooms for host
       res.send(result);
     });
 
