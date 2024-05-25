@@ -89,6 +89,21 @@ async function run() {
       res.send(result);
     });
 
+    // update a room
+    app.put("/room/update", async (req, res) => {
+      const roomId = new ObjectId(req.query.roomId);
+      const roomData = req.body;
+      const updateRoom = {
+        $set: {
+          ...roomData,
+        },
+      };
+      const result = roomCollection.updateOne({ _id: roomId }, updateRoom, {
+        upsert: false,
+      });
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
