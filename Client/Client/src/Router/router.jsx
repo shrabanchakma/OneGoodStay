@@ -12,6 +12,8 @@ import Profile from "../components/Dashboard/Common/Profile";
 import AddRoom from "../components/Dashboard/Host/AddRoom/AddRoom";
 import { getRoomData } from "../Api/rooms";
 import HostedRoomsListings from "../components/Dashboard/Host/HostedRooms/HostedRoomsListings";
+import UpdateRoom from "../components/Dashboard/Host/UpdateRoom/UpdateRoom";
+// import UpdateRoom from "../components/Dashboard/Host/UpdateRoom/UpdateRoom";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -61,6 +63,11 @@ const router = createBrowserRouter([
       {
         path: "hosted-rooms",
         element: <HostedRoomsListings />,
+      },
+      {
+        path: "hosted-rooms/update/:id",
+        element: <UpdateRoom />,
+        loader: async ({ params }) => await getRoomData(params?.id),
       },
     ],
   },

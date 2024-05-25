@@ -6,10 +6,12 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
 
 const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
   const [hoveringButton, setHoverButton] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const hoveredButton = (button) => {
     if (hoveringButton === button) return true;
     else return false;
@@ -48,6 +50,7 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
               >
                 <div className="w-full h-1/2">
                   <button
+                    onClick={() => navigate(`update/${roomId}`)}
                     onMouseEnter={() => setHoverButton("button1")}
                     onMouseLeave={() => setHoverButton(null)}
                     className={` w-full h-1/2 font-semibold transition-color duration-150 border-b-[1px] ${

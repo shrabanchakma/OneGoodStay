@@ -1,14 +1,14 @@
-import { DateRange } from "react-date-range";
-import { TbFidgetSpinner } from "react-icons/tb";
-import { FaChevronDown } from "react-icons/fa";
-import "./AddRoom.css";
-import Amenity from "../../Common/Amenity";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { useState, useEffect, useRef } from "react";
+import { FaChevronDown } from "react-icons/fa6";
 import { categories } from "../../../Categories/CategoriesData";
+import { DateRange } from "react-date-range";
+import Amenity from "../../Common/Amenity";
 import Category from "../../Common/Category";
-const AddRoomForm = ({
-  handleSubmit,
+import { TbFidgetSpinner } from "react-icons/tb";
+const UpdateRoomForm = ({
+  roomData,
+  handleUpdate,
   amenities,
   selectedAmenities,
   updateSelectedAmenities,
@@ -68,7 +68,7 @@ const AddRoomForm = ({
 
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUpdate}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="space-y-6">
             <div className="space-y-1 text-sm">
@@ -81,6 +81,7 @@ const AddRoomForm = ({
                 id="location"
                 type="text"
                 placeholder="Location"
+                defaultValue={roomData?.location}
                 required
               />
             </div>
@@ -89,7 +90,7 @@ const AddRoomForm = ({
               <p className="text-gray-600">You can add multiple amenities</p>
               <div
                 onClick={handleAmenityVisibility}
-                className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl
+                className={`space-y-1 text-sm relative p-2 px-3 bg-white  w-full  rounded-xl cursor-pointer
               border ${
                 isAmenityVisible ? "border-[#e41b43]" : "border-rose-300"
               } amenities-button
@@ -185,6 +186,7 @@ const AddRoomForm = ({
                 id="title"
                 type="text"
                 placeholder="Title"
+                defaultValue={roomData?.title}
                 required
               />
             </div>
@@ -198,6 +200,7 @@ const AddRoomForm = ({
                 id="best-facility"
                 type="text"
                 placeholder="Best facility"
+                defaultValue={roomData?.bestFacility}
                 required
               />
             </div>
@@ -216,7 +219,10 @@ const AddRoomForm = ({
                     />
                     <div className="flex items-center gap-2">
                       {/* preview of the selected image */}
-                      {previewImg && <img src={previewImg} className="w-10" />}
+                      <img
+                        src={previewImg ? previewImg : roomData?.image}
+                        className="w-10"
+                      />
                       <div className="w-26 p-1 px-3 bg-[#e41b43] rounded-md font-medium text-white cursor-pointer hover:bg-[#a4142c] transition-colors ease-in duration-100">
                         Input Image
                       </div>
@@ -237,6 +243,7 @@ const AddRoomForm = ({
                   id="price"
                   type="number"
                   placeholder="Price"
+                  defaultValue={roomData?.price}
                   required
                 />
               </div>
@@ -251,6 +258,7 @@ const AddRoomForm = ({
                   id="guest"
                   type="number"
                   placeholder="Total guest"
+                  defaultValue={roomData?.guest}
                   required
                 />
               </div>
@@ -266,6 +274,7 @@ const AddRoomForm = ({
                   id="bedrooms"
                   type="number"
                   placeholder="Bedrooms"
+                  defaultValue={roomData?.bedrooms}
                   required
                 />
               </div>
@@ -280,6 +289,7 @@ const AddRoomForm = ({
                   id="bathrooms"
                   type="number"
                   placeholder="Bathrooms"
+                  defaultValue={roomData?.bathrooms}
                   required
                 />
               </div>
@@ -294,6 +304,7 @@ const AddRoomForm = ({
                 id="description"
                 className="block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 "
                 name="description"
+                defaultValue={roomData?.description}
               ></textarea>
             </div>
           </div>
@@ -314,11 +325,11 @@ const AddRoomForm = ({
   );
 };
 
-export default AddRoomForm;
+export default UpdateRoomForm;
 
-AddRoomForm.propTypes = {
+UpdateRoomForm.propTypes = {
   amenities: PropTypes.array,
-  handleSubmit: PropTypes.func,
+  handleUpdate: PropTypes.func,
   selectedAmenities: PropTypes.array,
   updateSelectedAmenities: PropTypes.func,
   dates: PropTypes.object,
