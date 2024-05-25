@@ -6,9 +6,11 @@ import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 import useAuth from "../../Hooks/useAuth";
 import axiosSecure from "../../Api";
+import { uploadImage } from "../../Api/utils";
 
 const Signup = () => {
-  const { createUser, googleSignIn, setUserName, facebookSignIn } = useAuth();
+  const { createUser, googleSignIn, updateUserProfile, facebookSignIn } =
+    useAuth();
   const navigate = useNavigate();
   // sign up methods
   const handleSignUp = async (e) => {
@@ -17,17 +19,22 @@ const Signup = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
+    const image = form.image.files[0];
     const newUser = {
       name: name,
       email: email,
+      role: "user",
     };
+    if (password.length < 6)
+      return toast.error("Password should be at least 6 characters");
     try {
       const { data } = await axiosSecure.put(`/users/${email}`, newUser);
       console.log(data);
       if (data.upsertedCount > 0) {
         await createUser(email, password);
-        await setUserName(name);
-        toast.success("Sign In Successful!");
+        const { display_url } = await uploadImage(image);
+        await updateUserProfile(name, display_url);
+        toast.success("Sign Up Successful!");
         navigate("/");
       } else {
         toast("User already exist");
@@ -166,23 +173,41 @@ const Signup = () => {
                 />
               </div>
               <div>
-                <div className="flex justify-between">
-                  <label
-                    htmlFor="ConfirmPassword"
-                    className="block mb-2 text-sm font-medium"
-                  >
-                    Confirm Password
-                  </label>
+                <div>
+                  <div className="flex justify-between">
+                    <label
+                      htmlFor="ConfirmPassword"
+                      className="block mb-2 text-sm font-medium"
+                    >
+                      Confirm Password
+                    </label>
+                  </div>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    autoComplete="current-password"
+                    id="ConfirmPassword"
+                    required
+                    placeholder="*******"
+                    className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
+                  />
                 </div>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  autoComplete="current-password"
-                  id="ConfirmPassword"
-                  required
-                  placeholder="*******"
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
-                />
+                <div className=" relative cursor-pointer ">
+                  <label
+                    htmlFor="image"
+                    className="block mb-2 mt-1 text-sm font-medium"
+                  >
+                    Profile Image
+                  </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    accept="image/*"
+                    required
+                    className=""
+                  />
+                </div>
               </div>
             </div>
 

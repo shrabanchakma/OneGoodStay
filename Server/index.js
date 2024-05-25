@@ -31,6 +31,10 @@ async function run() {
     const roomCollection = await client
       .db("OneGoodStay")
       .createCollection("rooms");
+
+
+
+      // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
       const email = req.params.email;
@@ -48,6 +52,12 @@ async function run() {
         },
         { upsert: true }
       );
+      res.send(result);
+    });
+
+    // get all users
+    app.get("/users", async (req, res) => {
+      const result = await userCollection.find().toArray();
       res.send(result);
     });
     // save rooms in database
@@ -103,6 +113,8 @@ async function run() {
       });
       res.send(result);
     });
+
+    
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

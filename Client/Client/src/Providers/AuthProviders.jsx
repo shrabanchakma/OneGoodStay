@@ -24,10 +24,12 @@ const AuthProviders = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
   // set user name
-  const setUserName = (name) => {
+  const updateUserProfile = (name, image) => {
     setLoading(true);
+    console.log("hi");
     return updateProfile(auth.currentUser, {
       displayName: name,
+      photoURL: image,
     });
   };
   // sign in
@@ -51,16 +53,15 @@ const AuthProviders = ({ children }) => {
   useEffect(() => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
+      if (currentUser !== user) {
         setUser(currentUser);
-      } else {
-        setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
+  // sign out user
   const signOutUser = () => {
     setLoading(true);
     return signOut(auth);
@@ -72,8 +73,9 @@ const AuthProviders = ({ children }) => {
     signOutUser,
     loading,
     user,
-    setUserName,
+    updateUserProfile,
     facebookSignIn,
+    updateProfile,
   };
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>

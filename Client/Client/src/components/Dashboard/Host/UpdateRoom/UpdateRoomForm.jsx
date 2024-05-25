@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaAngleLeft, FaChevronDown } from "react-icons/fa6";
 import { categories } from "../../../Categories/CategoriesData";
 import { DateRange } from "react-date-range";
 import Amenity from "../../Common/Amenity";
 import Category from "../../Common/Category";
 import { TbFidgetSpinner } from "react-icons/tb";
+import ConfirmUpdateBox from "./ConfirmUpdateBox";
+import { useNavigate } from "react-router-dom";
 const UpdateRoomForm = ({
   roomData,
   handleUpdate,
@@ -14,7 +16,6 @@ const UpdateRoomForm = ({
   updateSelectedAmenities,
   dates,
   handleDates,
-  loading,
   previewImg,
   setPreviewImg,
   selectedCategory,
@@ -22,8 +23,10 @@ const UpdateRoomForm = ({
 }) => {
   const [isAmenityVisible, setIsAmenityVisible] = useState(false);
   const [isCategoryVisible, setIsCategoryVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({});
   const amenityListRef = useRef(null);
-
+  const navigate = useNavigate();
   const handleClickOutside = (e) => {
     if (
       amenityListRef.current &&
@@ -65,10 +68,21 @@ const UpdateRoomForm = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isAmenityVisible]);
-
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setIsOpen(true);
+    setFormData(e);
+  };
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
-      <form onSubmit={handleUpdate}>
+      <div
+        onClick={() => navigate("../hosted-rooms")}
+        className="flex justify-start items-center font-medium cursor-pointer text-[#e41b43] hover:text-[#a4142c] w-full pl-7"
+      >
+        <FaAngleLeft size={30} />
+        <p>Go Back</p>
+      </div>
+      <form onSubmit={handleFormSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="space-y-6">
             <div className="space-y-1 text-sm">
@@ -314,13 +328,16 @@ const UpdateRoomForm = ({
           type="submit"
           className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
         >
-          {loading ? (
-            <TbFidgetSpinner className="m-auto animate-spin" size={24} />
-          ) : (
-            "Save & Continue"
-          )}
+          Save & Continue
         </button>
       </form>
+      {/* confirmation dialog box */}
+      <ConfirmUpdateBox
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleUpdate={handleUpdate}
+        formData={formData}
+      />
     </div>
   );
 };
@@ -328,6 +345,7 @@ const UpdateRoomForm = ({
 export default UpdateRoomForm;
 
 UpdateRoomForm.propTypes = {
+  roomData: PropTypes.object,
   amenities: PropTypes.array,
   handleUpdate: PropTypes.func,
   selectedAmenities: PropTypes.array,

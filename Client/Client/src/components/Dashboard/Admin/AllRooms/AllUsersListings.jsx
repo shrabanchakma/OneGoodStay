@@ -1,50 +1,19 @@
-import { Helmet } from "react-helmet-async";
-import useAuth from "../../../../Hooks/useAuth";
-import { deleteRoom, getHostedRooms } from "../../../../Api/rooms";
 import { useQuery } from "@tanstack/react-query";
-import HostedRoomsDataRow from "./HostedRoomsDataRow";
 import { useState } from "react";
-import Loader from "../../../Shared/Loader";
-import toast from "react-hot-toast";
-import EmptyRooms from "./EmptyRooms";
+import { getRooms } from "../../../../Api/rooms";
+import { Helmet } from "react-helmet-async";
+import AllRoomsDataRow from "./AllUserDataRow";
+import { getAllUsers } from "../../../../Api/users";
 
-const HostedRoomsListings = () => {
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
-  // format date
-  const formatDate = (date) => {
-    const dateArray = new Date(date).toLocaleDateString().split("/");
-    const newDate = `${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`;
-    return newDate;
-  };
-  const { data: rooms = [], refetch } = useQuery({
-    enabled: !!user?.email,
-    queryKey: ["hostedRoom", user?.email],
-    queryFn: async () => {
-      setLoading(false);
-      return await getHostedRooms(user?.email);
-    },
+const AllUsersListings = () => {
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["admin", "allUsers"],
+    queryFn: async () => await getAllUsers(),
   });
-  const handleDeleteRoom = async (roomId) => {
-    try {
-      const { deletedCount } = await deleteRoom(roomId);
-      if (deletedCount > 0) {
-        toast.success("Room Deleted Successfully");
-        refetch();
-      } else {
-        toast.error("Something went wrong");
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-  if (loading) return <Loader />;
-  else if (rooms.length === 0) return <EmptyRooms />;
-
   return (
     <>
       <Helmet>
-        <title>Dashboard | Hosted Rooms</title>
+        <title>Dashboard | Users</title>
       </Helmet>
 
       <div className="container mx-auto ">
@@ -58,38 +27,27 @@ const HostedRoomsListings = () => {
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Title
+                      -
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Location
+                      Name
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Price
+                      Email
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      From
+                      Role
                     </th>
-                    <th
-                      scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                    >
-                      To
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                    >
-                      Status
-                    </th>
+
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
@@ -100,8 +58,8 @@ const HostedRoomsListings = () => {
                 </thead>
                 <tbody>
                   {/* Hosted Room row data */}
-                  {rooms.map((room) => (
-                    <HostedRoomsDataRow
+                  {users.map((room) => (
+                    <AllRoomsDataRow
                       key={room?._id}
                       room={room}
                       formatDate={formatDate}
@@ -118,4 +76,4 @@ const HostedRoomsListings = () => {
   );
 };
 
-export default HostedRoomsListings;
+export default AllUsersListings;

@@ -45,7 +45,7 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
                 className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl ${
-                  hoveringButton ? "bg-gray-300" : "bg-neutral-200"
+                  hoveringButton ? "bg-gray-600" : "bg-neutral-200"
                 }`}
               >
                 <div className="w-full h-1/2">
@@ -56,8 +56,8 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
                     className={` w-full h-1/2 font-semibold transition-color duration-150 border-b-[1px] ${
                       hoveredButton("button1")
                         ? "bg-neutral-200"
-                        : "bg-gray-300"
-                    }  text-green-600`}
+                        : "bg-gray-600"
+                    } text-white  hover:text-green-600`}
                   >
                     Update
                   </button>
@@ -68,8 +68,8 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
                     className={` w-full h-1/2 font-semibold transition-color duration-150  ${
                       hoveredButton("button2")
                         ? "bg-neutral-200"
-                        : "bg-gray-300"
-                    } text-red-500 hover:text-red-600`}
+                        : "bg-gray-600"
+                    } text-white hover:text-red-600`}
                   >
                     Delete
                   </button>

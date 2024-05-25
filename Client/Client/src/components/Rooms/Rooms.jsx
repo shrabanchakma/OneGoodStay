@@ -5,7 +5,7 @@ import SingleRoom from "./SingleRoom";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import Loader from "../Shared/Loader";
-
+import emptyImage from "../../assets/empty-image.jpg";
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,13 +42,9 @@ const Rooms = () => {
         </div>
       ) : (
         <div className="min-h-[30vh] mb-36">
-          <img
-            src={"https://i.ibb.co/LS4mfdx/empty-page-image.jpg"}
-            alt=""
-            className="w-2/5 mx-auto"
-          />
+          <img src={emptyImage} className="w-2/5 mx-auto" />
           <p className="text-3xl text-center font-bold text-blue-800">
-            Opp! There is no room available
+            Opps! There is no room available
           </p>
         </div>
       )}

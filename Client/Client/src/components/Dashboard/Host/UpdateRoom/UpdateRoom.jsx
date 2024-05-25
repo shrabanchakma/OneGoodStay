@@ -6,9 +6,11 @@ import { topAmenitiesData as amenities } from "../../../Rooms/TopAmenities/TopAm
 import { updateARoom } from "../../../../Api/rooms";
 import UpdateRoomForm from "./UpdateRoomForm";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import Loader from "../../../Shared/Loader";
 const UpdateRoom = () => {
   const roomData = useLoaderData();
   console.log(roomData);
+
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,10 +26,9 @@ const UpdateRoom = () => {
   });
 
   // update room
-  const handleUpdate = async (e) => {
-    e.preventDefault();
+  const handleUpdate = async (formData) => {
     setLoading(true);
-    const form = e.target;
+    const form = formData.target;
     try {
       let image = form.image.files[0];
       if (image) {
@@ -97,6 +98,8 @@ const UpdateRoom = () => {
     }
     setSelectedAmenities(filteredAmenities);
   };
+
+  if (loading) return <Loader />;
   return (
     <div className="p-7">
       <UpdateRoomForm
