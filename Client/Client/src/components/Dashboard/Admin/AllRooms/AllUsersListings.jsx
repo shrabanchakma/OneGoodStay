@@ -11,12 +11,13 @@ const AllUsersListings = () => {
     queryKey: ["admin", "allUsers"],
     queryFn: async () => await getAllUsers(),
   });
+  console.log(userRole);
   useEffect(() => {
-    if (userRole) {
+    if (userRole === "All") {
+      setFilteredUsers(users);
+    } else {
       const filtered = users.filter((user) => user?.role === userRole);
       setFilteredUsers(filtered);
-    } else {
-      setFilteredUsers(users);
     }
   }, [userRole]);
   return (
@@ -32,8 +33,9 @@ const AllUsersListings = () => {
               <select
                 name="userRole"
                 id=""
-                className="bg-green-500 p-2 px-3 mx-4 rounded-xl"
-                value="Filter"
+                className="bg-neutral-200 py-1 px-3 mx-4 rounded-xl border-[1px]"
+                defaultValue="All"
+                onChange={(e) => setUserRole(e.target.value)}
               >
                 {userRoles.map((userRole, idx) => (
                   <option value={userRole} key={idx}>
@@ -73,7 +75,7 @@ const AllUsersListings = () => {
                 </thead>
                 <tbody>
                   {/* Hosted Room row data */}
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <AllUserDataRow key={user?._id} user={user} />
                   ))}
                 </tbody>
