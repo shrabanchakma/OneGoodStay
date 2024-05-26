@@ -4,9 +4,12 @@ import { TiUser } from "react-icons/ti";
 import { BsFillHouseAddFill, BsHousesFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
+import RequestForHostModal from "./RequestForHostModal";
+import { useState } from "react";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleSignOut = async () => {
     try {
       await signOutUser();
@@ -40,7 +43,10 @@ const Sidebar = () => {
 
       {/* sign out button */}
       <div>
-        <p className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold">
+        <p
+          onClick={() => setIsModalOpen(true)}
+          className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
+        >
           Request for Host
         </p>
         <button
@@ -50,6 +56,10 @@ const Sidebar = () => {
           Sing Out
         </button>
       </div>
+      <RequestForHostModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </aside>
   );
 };
