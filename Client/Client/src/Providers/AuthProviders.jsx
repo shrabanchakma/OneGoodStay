@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   FacebookAuthProvider,
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -51,20 +52,23 @@ const AuthProviders = ({ children }) => {
 
   // get the current user
   useEffect(() => {
-    setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser !== user) {
-        setUser(currentUser);
-        setLoading(false);
-      }
+      setUser(currentUser);
+      console.log("user->", user);
+      setLoading(false);
     });
     return () => unsubscribe();
-  }, [user]);
+  }, []);
 
   // sign out user
   const signOutUser = () => {
     setLoading(true);
     return signOut(auth);
+  };
+
+  // delete a user
+  const deleteCurrentUser = () => {
+    return deleteUser(auth.currentUser);
   };
   const authData = {
     createUser,
@@ -76,6 +80,7 @@ const AuthProviders = ({ children }) => {
     updateUserProfile,
     facebookSignIn,
     updateProfile,
+    deleteCurrentUser,
   };
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>

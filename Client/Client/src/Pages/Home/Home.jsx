@@ -5,10 +5,11 @@ import RecentViews from "../../components/RecentViews/RecentViews";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Rooms from "../../components/Rooms/Rooms";
 import useAuth from "../../Hooks/useAuth";
+import Loader from "../../components/Shared/Loader";
 
 const Home = () => {
-  const { user } = useAuth();
-  console.log(user);
+  const { user, loading } = useAuth();
+  console.log(loading);
   return (
     <>
       <Helmet>

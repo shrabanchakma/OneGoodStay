@@ -7,7 +7,6 @@ import Signup from "../Pages/Signup/Signup";
 import SignIn from "../Pages/SignIn/SignIn";
 import DashboardLayout from "../Layout/DashboardLayout";
 import MyBookings from "../components/Dashboard/Guest/MyBookings";
-import PublicRoute from "../UserRoutes/PublicRoute";
 import Profile from "../components/Dashboard/Common/Profile";
 import AddRoom from "../components/Dashboard/Host/AddRoom/AddRoom";
 import { getRoomData } from "../Api/rooms";
@@ -22,11 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <PublicRoute>
-            <Home />
-          </PublicRoute>
-        ),
+        element: <Home />,
       },
       {
         path: "room-details/:id",

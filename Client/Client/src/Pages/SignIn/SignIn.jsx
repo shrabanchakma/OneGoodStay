@@ -7,7 +7,8 @@ import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import axiosSecure from "../../Api";
 const SignIn = () => {
-  const { signInUser, googleSignIn, facebookSignIn } = useAuth();
+  const { signInUser, googleSignIn, facebookSignIn, deleteCurrentUser } =
+    useAuth();
   const navigate = useNavigate();
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -43,10 +44,16 @@ const SignIn = () => {
     }
   };
 
+  // facebook sign up
   const handleFacebookSignIn = async () => {
     try {
       const data = await facebookSignIn();
-      console.log(data);
+      if (!data.email) {
+        toast.error(
+          "Something went wrong! Try another email or sign up option"
+        );
+        await deleteCurrentUser();
+      }
     } catch (err) {
       console.log(err);
       toast.error(err.message);

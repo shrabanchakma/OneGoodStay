@@ -7,11 +7,30 @@ import toast from "react-hot-toast";
 import useAuth from "../../Hooks/useAuth";
 import axiosSecure from "../../Api";
 import { uploadImage } from "../../Api/utils";
+import { useState } from "react";
+import { useDebounce } from "../../Hooks/useDebounce";
 
 const Signup = () => {
-  const { createUser, googleSignIn, updateUserProfile, facebookSignIn } =
-    useAuth();
+  const {
+    createUser,
+    googleSignIn,
+    updateUserProfile,
+    facebookSignIn,
+    deleteCurrentUser,
+  } = useAuth();
   const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const debouncedPassword = useDebounce(password, 1000);
+  const debouncedConfirmPassword = useDebounce(confirmPassword, 1000);
+  const isPasswordMatched = debouncedPassword === debouncedConfirmPassword;
+  console.log(isPasswordMatched, password, confirmPassword);
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value);
+  };
   // sign up methods
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -27,6 +46,7 @@ const Signup = () => {
     };
     if (password.length < 6)
       return toast.error("Password should be at least 6 characters");
+    if (!isPasswordMatched) return toast.error("Password does not match");
     try {
       const { data } = await axiosSecure.put(`/users/${email}`, newUser);
       console.log(data);
@@ -44,7 +64,7 @@ const Signup = () => {
       toast.error(err.message);
     }
   };
-
+  // google sign up
   const handleGoogleSignIn = async () => {
     try {
       const {
@@ -62,15 +82,22 @@ const Signup = () => {
       toast.error(err.message);
     }
   };
+  // facebook sign up
   const handleFacebookSignIn = async () => {
     try {
       const data = await facebookSignIn();
-      console.log(data);
+      if (!data.email) {
+        toast.error(
+          "Something went wrong! Try another email or sign up option"
+        );
+        await deleteCurrentUser();
+      }
     } catch (err) {
       console.log(err);
       toast.error(err.message);
     }
   };
+
   return (
     <>
       <Helmet>
@@ -169,6 +196,7 @@ const Signup = () => {
                   id="password"
                   required
                   placeholder="*******"
+                  onChange={handlePassword}
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
                 />
               </div>
@@ -189,9 +217,14 @@ const Signup = () => {
                     id="ConfirmPassword"
                     required
                     placeholder="*******"
+                    onChange={handleConfirmPassword}
                     className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
                   />
                 </div>
+                {/* error message */}
+                {!isPasswordMatched && (
+                  <span className="text-red-600">Password does not match</span>
+                )}
                 <div className=" relative cursor-pointer ">
                   <label
                     htmlFor="image"
@@ -237,7 +270,7 @@ const Signup = () => {
             onClick={handleFacebookSignIn}
             color={"#1877F2"}
             size={32}
-            className="text-center w-full my-3"
+            className="text-center w-full my-3 cursor-pointer"
           />
           <p className="px-6 text-sm text-center text-gray-400">
             Already have an account?
