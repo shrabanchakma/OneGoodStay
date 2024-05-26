@@ -6,11 +6,15 @@ import { Helmet } from "react-helmet-async";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import axiosSecure from "../../Api";
+import { useState } from "react";
+import { ImSpinner } from "react-icons/im";
 const SignIn = () => {
   const { signInUser, googleSignIn, facebookSignIn, deleteCurrentUser } =
     useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const handleSignIn = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
@@ -22,10 +26,13 @@ const SignIn = () => {
     } catch (err) {
       console.log(err.message);
       toast.error(err.message.slice(10));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setIsLoading(true);
     try {
       const {
         user: { displayName, email },
@@ -41,11 +48,14 @@ const SignIn = () => {
     } catch (err) {
       console.log(err);
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // facebook sign up
   const handleFacebookSignIn = async () => {
+    setIsLoading(true);
     try {
       const data = await facebookSignIn();
       if (!data.email) {
@@ -57,6 +67,8 @@ const SignIn = () => {
     } catch (err) {
       console.log(err);
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -148,7 +160,11 @@ const SignIn = () => {
                 type="submit"
                 className="bg-[#4285F4] w-full rounded-md py-3 text-white"
               >
-                Continue
+                {isLoading ? (
+                  <ImSpinner size={24} className="m-auto animate-spin" />
+                ) : (
+                  "Continue"
+                )}
               </button>
             </div>
           </form>

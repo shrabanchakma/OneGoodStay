@@ -12,6 +12,7 @@ import AddRoom from "../components/Dashboard/Host/AddRoom/AddRoom";
 import { getRoomData } from "../Api/rooms";
 import HostedRoomsListings from "../components/Dashboard/Host/HostedRooms/HostedRoomsListings";
 import UpdateRoom from "../components/Dashboard/Host/UpdateRoom/UpdateRoom";
+import AllUsersListings from "../components/Dashboard/Admin/AllRooms/AllUsersListings";
 // import UpdateRoom from "../components/Dashboard/Host/UpdateRoom/UpdateRoom";
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
         path: "hosted-rooms/update/:id",
         element: <UpdateRoom />,
         loader: async ({ params }) => await getRoomData(params?.id),
+      },
+      {
+        path: "all-users",
+        element: <AllUsersListings />,
       },
     ],
   },

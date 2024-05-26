@@ -16,7 +16,7 @@ const Sidebar = () => {
     }
   };
   return (
-    <div className="h-full flex flex-col justify-between">
+    <aside className="h-full flex flex-col justify-between">
       <div>
         <div className="min-h-20 flex flex-col items-center justify-center ">
           <h1 className="font-medium ">{user?.displayName}</h1>
@@ -24,20 +24,21 @@ const Sidebar = () => {
         </div>
         <hr />
 
-        <SidebarItem
-          label="Profile"
-          icon={TiUser}
-          address={"/dashboard/profile"}
-        />
+        <SidebarItem label="Profile" icon={TiUser} address={"./profile"} />
         <SidebarItem
           label="Add Rooms"
           icon={BsFillHouseAddFill}
-          address={"/dashboard/add-rooms"}
+          address={"./add-rooms"}
         />
         <SidebarItem
           label="Hosted Rooms"
           icon={BsHousesFill}
-          address={"/dashboard/hosted-rooms"}
+          address={"./hosted-rooms"}
+        />
+        <SidebarItem
+          label="All Users"
+          icon={BsHousesFill}
+          address={"./all-users"}
         />
       </div>
 
@@ -48,7 +49,7 @@ const Sidebar = () => {
       >
         Sing Out
       </button>
-    </div>
+    </aside>
   );
 };
 

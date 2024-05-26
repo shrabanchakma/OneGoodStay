@@ -1,15 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { getRooms } from "../../../../Api/rooms";
 import { Helmet } from "react-helmet-async";
-import AllRoomsDataRow from "./AllUserDataRow";
 import { getAllUsers } from "../../../../Api/users";
-
+import AllUserDataRow from "./AllUserDataRow";
+import { useEffect, useState } from "react";
+const userRoles = ["All", "admin", "guest", "host"];
 const AllUsersListings = () => {
+  const [userRole, setUserRole] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const { data: users = [], refetch } = useQuery({
     queryKey: ["admin", "allUsers"],
     queryFn: async () => await getAllUsers(),
   });
+  useEffect(() => {
+    if (userRole) {
+      const filtered = users.filter((user) => user?.role === userRole);
+      setFilteredUsers(filtered);
+    } else {
+      setFilteredUsers(users);
+    }
+  }, [userRole]);
   return (
     <>
       <Helmet>
@@ -20,15 +29,21 @@ const AllUsersListings = () => {
         <div className="py-8">
           <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto  ">
             <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
+              <select
+                name="userRole"
+                id=""
+                className="bg-green-500 p-2 px-3 mx-4 rounded-xl"
+                value="Filter"
+              >
+                {userRoles.map((userRole, idx) => (
+                  <option value={userRole} key={idx}>
+                    {userRole}
+                  </option>
+                ))}
+              </select>
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
-                    <th
-                      scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                    >
-                      -
-                    </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
@@ -58,13 +73,8 @@ const AllUsersListings = () => {
                 </thead>
                 <tbody>
                   {/* Hosted Room row data */}
-                  {users.map((room) => (
-                    <AllRoomsDataRow
-                      key={room?._id}
-                      room={room}
-                      formatDate={formatDate}
-                      handleDeleteRoom={handleDeleteRoom}
-                    />
+                  {users.map((user) => (
+                    <AllUserDataRow key={user?._id} user={user} />
                   ))}
                 </tbody>
               </table>

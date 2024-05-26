@@ -9,7 +9,7 @@ import axiosSecure from "../../Api";
 import { uploadImage } from "../../Api/utils";
 import { useState } from "react";
 import { useDebounce } from "../../Hooks/useDebounce";
-
+import { ImSpinner } from "react-icons/im";
 const Signup = () => {
   const {
     createUser,
@@ -19,12 +19,12 @@ const Signup = () => {
     deleteCurrentUser,
   } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const debouncedPassword = useDebounce(password, 1000);
   const debouncedConfirmPassword = useDebounce(confirmPassword, 1000);
   const isPasswordMatched = debouncedPassword === debouncedConfirmPassword;
-  console.log(isPasswordMatched, password, confirmPassword);
   const handlePassword = (e) => {
     setPassword(e.target.value);
   };
@@ -33,6 +33,7 @@ const Signup = () => {
   };
   // sign up methods
   const handleSignUp = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
@@ -42,7 +43,7 @@ const Signup = () => {
     const newUser = {
       name: name,
       email: email,
-      role: "user",
+      role: "guest",
     };
     if (password.length < 6)
       return toast.error("Password should be at least 6 characters");
@@ -62,10 +63,13 @@ const Signup = () => {
     } catch (err) {
       console.log(err.message);
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   // google sign up
   const handleGoogleSignIn = async () => {
+    setIsLoading(true);
     try {
       const {
         user: { displayName, email },
@@ -80,10 +84,13 @@ const Signup = () => {
     } catch (err) {
       console.log(err);
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   // facebook sign up
   const handleFacebookSignIn = async () => {
+    setIsLoading(true);
     try {
       const data = await facebookSignIn();
       if (!data.email) {
@@ -95,6 +102,8 @@ const Signup = () => {
     } catch (err) {
       console.log(err);
       toast.error(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -249,7 +258,11 @@ const Signup = () => {
                 type="submit"
                 className="bg-[#4285F4] w-full rounded-md py-3 text-white"
               >
-                Continue
+                {isLoading ? (
+                  <ImSpinner size={24} className="m-auto animate-spin" />
+                ) : (
+                  "Continue"
+                )}
               </button>
             </div>
           </form>
