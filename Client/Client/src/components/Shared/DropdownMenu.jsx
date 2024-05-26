@@ -11,7 +11,6 @@ import { IoPersonCircle } from "react-icons/io5";
 import useAuth from "../../Hooks/useAuth";
 const DropdownMenu = () => {
   const { user } = useAuth();
-  console.log(user);
   return (
     <div className="">
       <Menu>

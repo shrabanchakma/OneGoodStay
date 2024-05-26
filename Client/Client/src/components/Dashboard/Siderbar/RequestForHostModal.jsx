@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FaChevronUp } from "react-icons/fa";
+import { GoDotFill } from "react-icons/go";
 import {
   Dialog,
   DialogPanel,
@@ -32,11 +33,13 @@ const RequestForHostModal = ({ isModalOpen, setIsModalOpen }) => {
             <DialogPanel
               className={`min-h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl bg-neutral-100`}
             >
-              <div className="flex flex-col items-center justify-center gap-4 w-full">
-                <p className="font-semibold text-lg">Are you sure?</p>
+              <div className="flex flex-col items-center justify-center gap-4 w-full my-10">
+                <p className="font-semibold text-lg">Request to become host?</p>
                 <Disclosure>
                   <DisclosureButton
-                    className={"group flex items-center justify-between w-full"}
+                    className={
+                      "group flex items-center justify-between w-full px-4"
+                    }
                   >
                     <p className="font-semibold">Why become a Host?</p>
                     <FaChevronUp
@@ -45,25 +48,34 @@ const RequestForHostModal = ({ isModalOpen, setIsModalOpen }) => {
                     />
                   </DisclosureButton>
                   <Transition
-                    enter="duration-200 ease-out"
+                    enter="duration-300 ease-out"
                     enterFrom="opacity-0 -translate-y-1"
                     enterTo="opacity-100 translate-y-1"
-                    leave="duration-300 ease-out"
+                    leave="duration-100 ease-out"
                     leaveFrom="opacity-100 translate-y-1"
                     leaveTo="opacity-0 -translate-y-1"
                   >
-                    <DisclosurePanel className={"block"}>
-                      <ol>
-                        <li>Can host room</li>
-                        <li>Highly featured analytics page</li>
-                        <li>Earn money with referral</li>
+                    <DisclosurePanel className={"w-full"}>
+                      <ol className="text-start pl-4 space-y-1">
+                        <li className="flex items-center">
+                          <GoDotFill />
+                          Can host room.
+                        </li>
+                        <li className="flex items-center">
+                          <GoDotFill />
+                          Highly featured analytics page.
+                        </li>
+                        <li className="flex items-center">
+                          <GoDotFill />
+                          Earn money with referral.
+                        </li>
                       </ol>
                     </DisclosurePanel>
                   </Transition>
                 </Disclosure>
-                <div className="flex items-center justify-evenly w-full">
+                <div className="flex items-center justify-evenly w-full ">
                   <button
-                    // onClick={handleCancelButton}
+                    onClick={() => setIsModalOpen(false)}
                     className="font-semibold py-2 px-3 bg-red-500 text-white hover:bg-red-600 active:bg-red-700 rounded-xl"
                   >
                     Cancel

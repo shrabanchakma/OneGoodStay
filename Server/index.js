@@ -32,9 +32,7 @@ async function run() {
       .db("OneGoodStay")
       .createCollection("rooms");
 
-
-
-      // add users
+    // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
       const email = req.params.email;
@@ -60,6 +58,44 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
+    // get the users
+    app.get("/user", async (req, res) => {
+      const userEmail = req.query.email;
+      const result = await userCollection.findOne({ email: userEmail });
+      res.send(result);
+    });
+
+    // update user role
+    app.patch("/user/role/:id", async (req, res) => {
+      const userId = new ObjectId(req.params.id);
+      const newUserRole = req.body;
+      // make user host
+      if (newUserRole) {
+        const result = await userCollection.updateOne(
+          { _id: userId },
+          {
+            $set: {
+              role: newUserRole,
+              timestamp: Date.now(),
+            },
+          }
+        );
+
+        return res.send(result);
+      }
+
+      // request user to become host
+      const result = await userCollection.updateOne(
+        { _id: userId },
+        {
+          $set: {
+            role: "requested",
+          },
+        }
+      );
+      res.send(result);
+    });
+
     // save rooms in database
     app.post("/rooms", async (req, res) => {
       const newRoom = req.body;
@@ -113,8 +149,6 @@ async function run() {
       });
       res.send(result);
     });
-
-    
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

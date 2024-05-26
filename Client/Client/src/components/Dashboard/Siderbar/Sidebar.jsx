@@ -5,11 +5,19 @@ import { BsFillHouseAddFill, BsHousesFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
 import RequestForHostModal from "./RequestForHostModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getUser } from "../../../Api/users";
+import HostOptions from "../Host/HostOptions";
+import GuestOptions from "../Guest/GuestOptions";
+import AdminOptions from "../Admin/AdminOptions";
 const Sidebar = () => {
-  const { user, signOutUser } = useAuth();
-  const navigate = useNavigate();
+  const {
+    user: { email },
+    signOutUser,
+  } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
       await signOutUser();
@@ -18,27 +26,32 @@ const Sidebar = () => {
       console.error(error.message);
     }
   };
+  const getTheUser = async (email) => {
+    try {
+      const userData = await getUser(email);
+      console.log(userData);
+      setUser(userData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  useEffect(() => {
+    getTheUser(email);
+    console.log("hi");
+  }, [email]);
   return (
     <aside className="h-full flex flex-col justify-between">
       <div>
         <div className="min-h-20 flex flex-col items-center justify-center ">
-          <h1 className="font-medium ">{user?.displayName}</h1>
-          <p className="font-light text-neutral-500">{user?.email}</p>
+          <h1 className="font-medium ">{user && user?.name}</h1>
+          <p className="font-light text-neutral-500">{user && user?.email}</p>
         </div>
         <hr />
 
         <SidebarItem label="Profile" icon={TiUser} address={"./profile"} />
-        <SidebarItem
-          label="Add Rooms"
-          icon={BsFillHouseAddFill}
-          address={"./add-rooms"}
-        />
-        <SidebarItem
-          label="Hosted Rooms"
-          icon={BsHousesFill}
-          address={"./hosted-rooms"}
-        />
-        <SidebarItem label="All Users" icon={FaUsers} address={"./all-users"} />
+        {/* routes based on users */}
+        {user && user?.role === "host" ? <HostOptions /> : <GuestOptions />}
+        {user && user?.role === "admin" && <AdminOptions />}
       </div>
 
       {/* sign out button */}
