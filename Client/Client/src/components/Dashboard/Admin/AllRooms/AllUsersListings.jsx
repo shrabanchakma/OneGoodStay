@@ -9,17 +9,22 @@ const AllUsersListings = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const { data: users = [], refetch } = useQuery({
     queryKey: ["admin", "allUsers"],
-    queryFn: async () => await getAllUsers(),
+    queryFn: async () => {
+      const data = await getAllUsers();
+      setFilteredUsers(data);
+      return data;
+    },
   });
-  console.log(userRole);
   useEffect(() => {
-    if (userRole === "All") {
+    if (userRole === "All" || userRole === "") {
       setFilteredUsers(users);
     } else {
       const filtered = users.filter((user) => user?.role === userRole);
       setFilteredUsers(filtered);
     }
   }, [userRole]);
+
+  // todo: add filter
   return (
     <>
       <Helmet>
@@ -57,6 +62,12 @@ const AllUsersListings = () => {
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       Email
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                    >
+                      Status
                     </th>
                     <th
                       scope="col"

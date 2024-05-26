@@ -3,7 +3,7 @@ import SidebarItem from "./SidebarItem";
 import { TiUser } from "react-icons/ti";
 import { BsFillHouseAddFill, BsHousesFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-
+import { FaUsers } from "react-icons/fa";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const navigate = useNavigate();
@@ -35,20 +35,21 @@ const Sidebar = () => {
           icon={BsHousesFill}
           address={"./hosted-rooms"}
         />
-        <SidebarItem
-          label="All Users"
-          icon={BsHousesFill}
-          address={"./all-users"}
-        />
+        <SidebarItem label="All Users" icon={FaUsers} address={"./all-users"} />
       </div>
 
       {/* sign out button */}
-      <button
-        onClick={handleSignOut}
-        className="text-sky-600 font-bold w-full h-12 rounded-3xl hover:text-sky-700 hover:bg-sky-100 active:bg-sky-200 transition-all duration-100 ease-in-out"
-      >
-        Sing Out
-      </button>
+      <div>
+        <p className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold">
+          Request for Host
+        </p>
+        <button
+          onClick={handleSignOut}
+          className="text-sky-600 font-bold w-full h-12 rounded-3xl hover:text-sky-700 hover:bg-sky-100 active:bg-sky-200 transition-all duration-100 ease-in-out"
+        >
+          Sing Out
+        </button>
+      </div>
     </aside>
   );
 };
