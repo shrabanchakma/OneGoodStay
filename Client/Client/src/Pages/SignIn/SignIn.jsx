@@ -20,9 +20,9 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
     try {
-      const userData = await signInUser(email, password);
-      console.log(userData);
+      await signInUser(email, password);
       toast.success("Sign In Successful!");
+      navigate("/");
     } catch (err) {
       console.log(err.message);
       toast.error(err.message.slice(10));
