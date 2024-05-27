@@ -1,20 +1,18 @@
 import useAuth from "../../../Hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import { TiUser } from "react-icons/ti";
-import { BsFillHouseAddFill, BsHousesFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { FaUsers } from "react-icons/fa";
 import RequestForHostModal from "./RequestForHostModal";
-import { useEffect, useState } from "react";
-import { getUser } from "../../../Api/users";
+import { useState } from "react";
 import HostOptions from "../Host/HostOptions";
 import GuestOptions from "../Guest/GuestOptions";
 import AdminOptions from "../Admin/AdminOptions";
 import useUserRole from "../../../Hooks/useUserRole";
+import toast from "react-hot-toast";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [role] = useUserRole();
+  const [role, refetch] = useUserRole();
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
@@ -23,6 +21,11 @@ const Sidebar = () => {
     } catch (error) {
       console.error(error.message);
     }
+  };
+  const handleRequestHost = () => {
+    if (role === "requested")
+      toast.error("Your request is pending please wait!");
+    else setIsModalOpen(true);
   };
   return (
     <aside className="h-full flex flex-col justify-between">
@@ -41,12 +44,14 @@ const Sidebar = () => {
 
       {/* sign out button */}
       <div>
-        <p
-          onClick={() => setIsModalOpen(true)}
-          className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
-        >
-          Request for Host
-        </p>
+        {(role === "guest" || role === "requested") && (
+          <p
+            onClick={handleRequestHost}
+            className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
+          >
+            Request for Host
+          </p>
+        )}
         <button
           onClick={handleSignOut}
           className="text-sky-600 font-bold w-full h-12 rounded-3xl hover:text-sky-700 hover:bg-sky-100 active:bg-sky-200 transition-all duration-100 ease-in-out"
@@ -58,6 +63,7 @@ const Sidebar = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         email={user?.email}
+        refetch={refetch}
       />
     </aside>
   );

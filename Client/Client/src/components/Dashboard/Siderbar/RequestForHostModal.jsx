@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { FaChevronUp } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
@@ -13,16 +13,34 @@ import {
 } from "@headlessui/react";
 import { requestForHost } from "../../../Api/users";
 import toast from "react-hot-toast";
-
-const RequestForHostModal = ({ isModalOpen, setIsModalOpen, email }) => {
+const RequestForHostModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  email,
+  refetch,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleConfirm = async () => {
     setIsModalOpen(false);
     try {
-      const data = await requestForHost(email);
-      setIsOpen(true);
+      const data = await toast.promise(
+        requestForHost(email),
+        {
+          loading: "it's loading",
+          success: "Request Successful",
+          error: "Something went wrong! Please try again later",
+        },
+        {
+          style: {
+            height: "80px",
+            minWidth: "300px",
+            marginTop: "100px",
+          },
+        }
+      );
       console.log(data);
-      toast.success("Request successful");
+      if (data.modifiedCount > 0) setIsOpen(true);
+      refetch();
     } catch (error) {
       console.error(error.message);
     }
@@ -153,6 +171,11 @@ const RequestForHostModal = ({ isModalOpen, setIsModalOpen, email }) => {
   );
 };
 
-RequestForHostModal.propTypes = {};
+RequestForHostModal.propTypes = {
+  isModalOpen: PropTypes.bool,
+  setIsModalOpen: PropTypes.func,
+  email: PropTypes.string,
+  refetch: PropTypes.func,
+};
 
 export default RequestForHostModal;
