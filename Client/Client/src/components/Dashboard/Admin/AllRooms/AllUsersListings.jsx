@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
-import { getAllUsers } from "../../../../Api/users";
+import { changeUserRole, getAllUsers } from "../../../../Api/users";
 import AllUserDataRow from "./AllUserDataRow";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import UserRoleDropdown from "./UserRoleDropdown";
+import UpdateUserRoleModal from "./UpdateUserRoleModal";
 const userRoles = ["All", "admin", "guest", "host"];
 const AllUsersListings = () => {
+  const [userFilterRole, setUserFilterRole] = useState("");
+  // set state to change user role
   const [userRole, setUserRole] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const { data: users = [], refetch } = useQuery({
     queryKey: ["admin", "allUsers"],
@@ -16,15 +23,35 @@ const AllUsersListings = () => {
     },
   });
   useEffect(() => {
-    if (userRole === "All" || userRole === "") {
+    if (userFilterRole === "All" || userFilterRole === "") {
       setFilteredUsers(users);
     } else {
-      const filtered = users.filter((user) => user?.role === userRole);
+      const filtered = users.filter((user) => user?.role === userFilterRole);
       setFilteredUsers(filtered);
     }
-  }, [userRole]);
+  }, [userFilterRole]);
 
-  // todo: add filter
+  // change user role
+  const handleChangeUserRole = async () => {
+    try {
+      const data = await toast.promise(changeUserRole(userEmail, userRole), {
+        loading: "Saving changes...",
+        success: "User role changed successfully",
+        error: <p className="text-red-500">An error occurred</p>,
+      });
+      console.log(data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  // handle user role change confirm button
+  const handleConfirmButton = (email, role) => {
+    setUserEmail(email);
+    setUserRole(role);
+    setIsOpen(true);
+  };
+
+  // todo: add filter based on user name;
   return (
     <>
       <Helmet>
@@ -40,7 +67,7 @@ const AllUsersListings = () => {
                 id=""
                 className="bg-neutral-200 py-1 px-3 mx-4 rounded-xl border-[1px]"
                 defaultValue="All"
-                onChange={(e) => setUserRole(e.target.value)}
+                onChange={(e) => setUserFilterRole(e.target.value)}
               >
                 {userRoles.map((userRole, idx) => (
                   <option value={userRole} key={idx}>
@@ -87,13 +114,18 @@ const AllUsersListings = () => {
                 <tbody>
                   {/* Hosted Room row data */}
                   {filteredUsers.map((user) => (
-                    <AllUserDataRow key={user?._id} user={user} />
+                    <AllUserDataRow
+                      key={user?._id}
+                      user={user}
+                      handleChangeUserRole={handleChangeUserRole}
+                    />
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        <UpdateUserRoleModal handleChangeUserRole={handleChangeUserRole} />
       </div>
     </>
   );
