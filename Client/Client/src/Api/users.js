@@ -14,7 +14,7 @@ export const getUser = async (email) => {
 
 // request to become host
 // update user role
-export const requestForHost = async (guestId) => {
-  const { data } = await axiosSecure.patch(`/user/role/${guestId}`);
+export const requestForHost = async (email) => {
+  const { data } = await axiosSecure.patch(`/user/role/${email}`);
   return data;
 };

@@ -9,7 +9,6 @@ import Loader from "../../components/Shared/Loader";
 
 const Home = () => {
   const { user, loading } = useAuth();
-  console.log(loading);
   return (
     <>
       <Helmet>

@@ -10,10 +10,11 @@ import { getUser } from "../../../Api/users";
 import HostOptions from "../Host/HostOptions";
 import GuestOptions from "../Guest/GuestOptions";
 import AdminOptions from "../Admin/AdminOptions";
+import useUserRole from "../../../Hooks/useUserRole";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  const [role] = useUserRole();
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
@@ -23,37 +24,19 @@ const Sidebar = () => {
       console.error(error.message);
     }
   };
-  const getTheUser = async (email) => {
-    try {
-      const userData = await getUser(email);
-      setCurrentUser(userData);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-  useEffect(() => {
-    getTheUser(user?.email);
-    console.log("hi");
-  }, [user]);
   return (
     <aside className="h-full flex flex-col justify-between">
       <div>
         <div className="min-h-20 flex flex-col items-center justify-center ">
-          <h1 className="font-medium ">{currentUser && currentUser?.name}</h1>
-          <p className="font-light text-neutral-500">
-            {currentUser && currentUser?.email}
-          </p>
+          <h1 className="font-medium ">{user?.name}</h1>
+          <p className="font-light text-neutral-500">{user?.email}</p>
         </div>
         <hr />
 
         <SidebarItem label="Profile" icon={TiUser} address={"./profile"} />
         {/* routes based on users */}
-        {currentUser && currentUser?.role === "host" ? (
-          <HostOptions />
-        ) : (
-          <GuestOptions />
-        )}
-        {currentUser && currentUser?.role === "admin" && <AdminOptions />}
+        {role === "host" ? <HostOptions /> : <GuestOptions />}
+        {role === "admin" && <AdminOptions />}
       </div>
 
       {/* sign out button */}
@@ -74,6 +57,7 @@ const Sidebar = () => {
       <RequestForHostModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        email={user?.email}
       />
     </aside>
   );

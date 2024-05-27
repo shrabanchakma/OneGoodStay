@@ -66,32 +66,35 @@ async function run() {
     });
 
     // update user role
-    app.patch("/user/role/:id", async (req, res) => {
-      const userId = new ObjectId(req.params.id);
+    app.patch("/user/role/:email", async (req, res) => {
+      const email = req.params.email;
       const newUserRole = req.body;
-      // make user host
-      if (newUserRole) {
+      const options = { upsert: true };
+
+      if (Object.keys(newUserRole).length !== 0) {
         const result = await userCollection.updateOne(
-          { _id: userId },
+          { email },
           {
             $set: {
               role: newUserRole,
               timestamp: Date.now(),
             },
-          }
+          },
+          options
         );
 
         return res.send(result);
       }
 
-      // request user to become host
+      // set user role to "requested"
       const result = await userCollection.updateOne(
-        { _id: userId },
+        { email },
         {
           $set: {
             role: "requested",
           },
-        }
+        },
+        options
       );
       res.send(result);
     });
