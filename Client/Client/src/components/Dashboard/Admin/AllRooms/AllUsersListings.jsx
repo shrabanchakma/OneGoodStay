@@ -4,7 +4,6 @@ import { changeUserRole, getAllUsers } from "../../../../Api/users";
 import AllUserDataRow from "./AllUserDataRow";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import UserRoleDropdown from "./UserRoleDropdown";
 import UpdateUserRoleModal from "./UpdateUserRoleModal";
 const userRoles = ["All", "admin", "guest", "host"];
 const AllUsersListings = () => {
@@ -12,6 +11,7 @@ const AllUsersListings = () => {
   // set state to change user role
   const [userRole, setUserRole] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const { data: users = [], refetch } = useQuery({
@@ -45,9 +45,10 @@ const AllUsersListings = () => {
     }
   };
   // handle user role change confirm button
-  const handleConfirmButton = (email, role) => {
+  const handleConfirmButton = (name, email, role) => {
     setUserEmail(email);
     setUserRole(role);
+    setUserName(name);
     setIsOpen(true);
   };
 
@@ -117,7 +118,7 @@ const AllUsersListings = () => {
                     <AllUserDataRow
                       key={user?._id}
                       user={user}
-                      handleChangeUserRole={handleChangeUserRole}
+                      handleConfirmButton={handleConfirmButton}
                     />
                   ))}
                 </tbody>
@@ -125,7 +126,13 @@ const AllUsersListings = () => {
             </div>
           </div>
         </div>
-        <UpdateUserRoleModal handleChangeUserRole={handleChangeUserRole} />
+        <UpdateUserRoleModal
+          handleChangeUserRole={handleChangeUserRole}
+          userName={userName}
+          userRole={userRole}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
     </>
   );

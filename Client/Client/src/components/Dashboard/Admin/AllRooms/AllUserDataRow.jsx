@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import UserRoleDropdown from "./UserRoleDropdown";
-const AllUserDataRow = ({ user, handleChangeUserRole }) => {
+const AllUserDataRow = ({ user, handleConfirmButton }) => {
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -14,7 +14,12 @@ const AllUserDataRow = ({ user, handleChangeUserRole }) => {
         <p className="text-gray-900 whitespace-no-wrap ">{"verified"}</p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <UserRoleDropdown handleChangeUserRole={handleChangeUserRole} />
+        <UserRoleDropdown
+          handleConfirmButton={handleConfirmButton}
+          email={user?.email}
+          name={user?.name}
+          role={user?.role}
+        />
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
         <div className="w-20 p-1 px-3  bg-[#ffa726] text-white rounded-xl font-medium  cursor-pointer hover:bg-[#de9120] active:bg-[#be7b19]  text-center">

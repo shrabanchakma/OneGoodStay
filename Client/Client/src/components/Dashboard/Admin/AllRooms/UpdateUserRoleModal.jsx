@@ -6,7 +6,13 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 
-const UpdateUserRoleModal = ({ isOpen, setIsOpen, userName, userRole }) => {
+const UpdateUserRoleModal = ({
+  isOpen,
+  setIsOpen,
+  userName,
+  userRole,
+  handleChangeUserRole,
+}) => {
   return (
     <Transition show={isOpen}>
       <Dialog
@@ -40,7 +46,10 @@ const UpdateUserRoleModal = ({ isOpen, setIsOpen, userName, userRole }) => {
                     Cancel
                   </button>
                   <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      handleChangeUserRole();
+                    }}
                     className="font-semibold py-2 px-3 bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 rounded-xl"
                   >
                     Okay
