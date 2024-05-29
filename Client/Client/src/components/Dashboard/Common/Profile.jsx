@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../../Hooks/useAuth";
 
 const Profile = () => {
   const { signOutUser, user } = useAuth();
+  const navigate = useNavigate();
   return (
     <div className="p-28  w-full">
       <h1 className="font-medium text-2xl mb-10">{user?.displayName}</h1>
@@ -36,9 +38,14 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {/* button */}
+        {/* Edit basic info button */}
         <div className="w-1/12">
-          <button className="text-blue-600 font-bold px-2 ">Edit</button>
+          <button
+            onClick={() => navigate("/profile/update/basic-information")}
+            className="text-blue-600 font-bold px-2 "
+          >
+            Edit
+          </button>
         </div>
       </div>
       <div className="w-full">
