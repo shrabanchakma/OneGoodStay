@@ -31,7 +31,7 @@ const Sidebar = () => {
     <aside className="h-full flex flex-col justify-between">
       <div>
         <div className="min-h-20 flex flex-col items-center justify-center ">
-          <h1 className="font-medium ">{user?.name}</h1>
+          <h1 className="font-medium ">{user?.displayName}</h1>
           <p className="font-light text-neutral-500">{user?.email}</p>
         </div>
         <hr />
