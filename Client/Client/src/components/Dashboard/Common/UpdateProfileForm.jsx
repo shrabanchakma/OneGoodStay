@@ -1,4 +1,4 @@
-import "./UpdateProfile.css";
+import "./Common.css";
 import {
   RiCheckboxBlankCircleLine,
   RiCheckboxCircleFill,

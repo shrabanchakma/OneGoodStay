@@ -23,7 +23,7 @@ const RequestForHostModal = ({
   const handleConfirm = async () => {
     setIsModalOpen(false);
     try {
-      const data = await toast.promise(
+      await toast.promise(
         requestForHost(email),
         {
           loading: "it's loading",
@@ -38,7 +38,6 @@ const RequestForHostModal = ({
           },
         }
       );
-      console.log(data);
       if (data.modifiedCount > 0) setIsOpen(true);
       refetch();
     } catch (error) {

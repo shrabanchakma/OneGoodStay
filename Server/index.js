@@ -115,6 +115,21 @@ async function run() {
       res.send(result);
     });
 
+    // update user contact information
+    app.patch("/user/update", async (req, res) => {
+      const email = req.query.email;
+      const contactInfo = req.body;
+      const result = await userCollection.updateOne(
+        { email },
+        {
+          $set: {
+            contactInfo,
+          },
+        }
+      );
+      res.send(result);
+    });
+
     // save rooms in database
     app.post("/rooms", async (req, res) => {
       const newRoom = req.body;

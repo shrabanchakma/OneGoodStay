@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { useState } from "react";
 import { Tooltip } from "react-tooltip";
-import { FaAngleRight } from "react-icons/fa";
 import { FaPenToSquare } from "react-icons/fa6";
-
-const UpdateContactInfoForm = ({ handleSubmit }) => {
+import useUserData from "../../../Hooks/useUserData";
+import "./Common.css";
+const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { userData } = useUserData();
   return (
     <div className="w-[480px] h-full my-32 ">
       <div className="text-gray-700 mb-3">
@@ -18,19 +18,24 @@ const UpdateContactInfoForm = ({ handleSubmit }) => {
       <form onSubmit={handleSubmit} className="text-gray-700">
         <div className="mb-2">
           <label
-            htmlFor="userNumber"
+            htmlFor="number"
             className="block mb-2 text-sm font-medium text-gray-700"
           >
             Mobile Number
           </label>
           <input
-            type="text"
-            name="userNumber"
-            id="userNumber"
+            type="number"
+            name="number"
+            id="number"
             placeholder="Phone number"
+            onChange={handleOnChange}
+            defaultValue={userData?.number}
             className="w-full px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
+          {errorMsg?.number && (
+            <span className="text-rose-700">{errorMsg?.number}</span>
+          )}
         </div>
         <div>
           <label
@@ -45,17 +50,26 @@ const UpdateContactInfoForm = ({ handleSubmit }) => {
             name="emergencyContactName"
             id="emergencyContactName"
             placeholder="Contact name"
+            onChange={handleOnChange}
+            defaultValue={userData?.emergencyContactName}
             className="w-full mb-2 px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
           <input
-            type="text"
-            name="emergencyPhoneNumber"
-            id="emergencyPhoneNumber"
+            type="number"
+            name="emergencyContactNumber"
+            id="emergencyContactNumber"
             placeholder="Phone number"
+            onChange={handleOnChange}
+            defaultValue={userData?.emergencyContactNumber}
             className="w-full mb-2 px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
+          {errorMsg?.emergencyContactNumber && (
+            <span className="text-rose-700">
+              {errorMsg?.emergencyContactNumber}
+            </span>
+          )}
         </div>
         <div className="">
           <label
@@ -66,12 +80,14 @@ const UpdateContactInfoForm = ({ handleSubmit }) => {
           </label>
           <div className="flex items-center mb-2">
             {isEditing ? (
-              <div className="flex flex-col items-end w-1/2">
+              <div className="flex flex-col items-end w-2/3">
                 <input
                   type="email"
                   name="email"
                   id="email"
                   placeholder="Email"
+                  onChange={handleOnChange}
+                  defaultValue={userData?.email}
                   className="w-full mb-2 p-1 px-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                   data-temp-mail-org="0"
                 />
@@ -83,7 +99,7 @@ const UpdateContactInfoForm = ({ handleSubmit }) => {
                 </button>
               </div>
             ) : (
-              <p>shrabanchakma328@gmail.com</p>
+              <p>{userData?.email}</p>
             )}
 
             <span
@@ -117,6 +133,8 @@ const UpdateContactInfoForm = ({ handleSubmit }) => {
             name="address"
             id="address"
             placeholder="Address"
+            defaultValue={userData?.address}
+            onChange={handleOnChange}
             className="w-full px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
