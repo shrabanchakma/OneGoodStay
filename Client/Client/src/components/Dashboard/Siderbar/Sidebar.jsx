@@ -7,12 +7,12 @@ import { useState } from "react";
 import HostOptions from "../Host/HostOptions";
 import GuestOptions from "../Guest/GuestOptions";
 import AdminOptions from "../Admin/AdminOptions";
-import useUserRole from "../../../Hooks/useUserRole";
+import useUserData from "../../../Hooks/useUserData";
 import toast from "react-hot-toast";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [role, refetch] = useUserRole();
+  const { role, refetch } = useUserData();
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {

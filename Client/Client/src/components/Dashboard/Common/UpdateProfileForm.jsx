@@ -12,11 +12,13 @@ const accessibilityOptions = [
   "Yes I have accessibility needs",
   "Rather not say",
 ];
-const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
-  const [birthday, setBirthDay] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthYear, setBirthYear] = useState("");
-
+const UpdateProfileForm = ({
+  handleSubmit,
+  errorMsg,
+  selectedGender,
+  setSelectedGender,
+}) => {
+  const [hoveredGender, setHoveredGender] = useState("");
   return (
     <div className="w-[480px] h-full my-32 ">
       <div className="text-gray-700 mb-3">
@@ -40,7 +42,6 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
               type="text"
               name="firstName"
               id="firstName"
-              required
               placeholder="First name"
               className="w-full px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
               data-temp-mail-org="0"
@@ -73,7 +74,6 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
               type="text"
               name="lastName"
               id="lastName"
-              required
               placeholder="Last name"
               className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
               data-temp-mail-org="0"
@@ -110,11 +110,9 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
                 Month
               </label>
               <input
-                onChange={(e) => setBirthMonth(e.target.value)}
                 type="number"
                 name="birthMonth"
                 id="month"
-                required
                 placeholder="MM"
                 className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                 data-temp-mail-org="0"
@@ -128,11 +126,9 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
                 Day
               </label>
               <input
-                onChange={(e) => setBirthDay(e.target.value)}
                 type="number"
                 name="birthDay"
                 id="day"
-                required
                 placeholder="DD"
                 className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                 data-temp-mail-org="0"
@@ -146,11 +142,9 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
                 Year
               </label>
               <input
-                onChange={(e) => setBirthYear(e.target.value)}
                 type="number"
                 name="birthYear"
                 id="year"
-                required
                 placeholder="YYYY"
                 className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                 data-temp-mail-org="0"
@@ -171,12 +165,24 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
             {genders.map((gender) => (
               <li
                 key={gender}
-                className="flex items-center gap-2 cursor-pointer text-gray-700"
+                className={
+                  "flex items-center gap-2 cursor-pointer text-gray-700"
+                }
+                onMouseEnter={() => setHoveredGender(gender)}
+                onMouseLeave={() => setHoveredGender("")}
+                onClick={() => setSelectedGender(gender)}
               >
-                <RiCheckboxBlankCircleLine
-                  className="text-blue-500"
-                  size={20}
-                />
+                {hoveredGender === gender || gender === selectedGender ? (
+                  <RiCheckboxBlankCircleLine
+                    className="bg-blue-500 rounded-full text-white  "
+                    size={20}
+                  />
+                ) : (
+                  <RiCheckboxBlankCircleLine
+                    className="text-blue-500"
+                    size={20}
+                  />
+                )}
                 {gender}
               </li>
             ))}
@@ -196,6 +202,7 @@ const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
           <select
             defaultValue={"Not Provided"}
             className="w-full h-10 rounded-md border border-gray-700 "
+            name="accessibilityNeeds"
           >
             {accessibilityOptions.map((option) => (
               <option key={option}>{option}</option>

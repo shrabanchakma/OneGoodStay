@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
-import useUserRole from "../Hooks/useUserRole";
 import PropTypes from "prop-types";
+import useUserData from "../Hooks/useUserData";
 const AdminRoute = ({ children }) => {
-  const [role] = useUserRole();
+  const { role } = useUserData();
   if (role === "admin") return children;
   return <Navigate to={"/dashboard/profile"} />;
 };

@@ -1,9 +1,8 @@
 import { Navigate } from "react-router-dom";
-import useUserRole from "../Hooks/useUserRole";
 import PropTypes from "prop-types";
+import useUserData from "../Hooks/useUserData";
 const HostRoute = ({ children }) => {
-  // todo: update navigate , send user from where he came from
-  const [role] = useUserRole();
+  const { role } = useUserData();
   if (role === "host") return children;
   return <Navigate to={"/dashboard/profile"} />;
 };

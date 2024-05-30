@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 import { getUser } from "../Api/users";
 
-const useUserRole = () => {
+const useUserData = () => {
   const { user } = useAuth();
   const { data: userData = {}, refetch } = useQuery({
     enabled: !!user && !!user?.email,
@@ -10,7 +10,8 @@ const useUserRole = () => {
     queryFn: async () => await getUser(user?.email),
   });
   const role = userData?.role;
-  return [role, refetch];
+  const timeStamp = userData?.timeStamp;
+  return { role, timeStamp, refetch };
 };
 
-export default useUserRole;
+export default useUserData;

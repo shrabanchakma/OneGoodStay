@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UpdateProfileForm from "./UpdateProfileForm";
 import { Helmet } from "react-helmet-async";
+import useAuth from "../../../Hooks/useAuth";
 
 const UpdateProfile = () => {
   const [errorMsg, setErrorMsg] = useState("");
-
-  // error state, date, run validate date function, return "" if no error or return "error" if error
+  const [selectedGender, setSelectedGender] = useState("");
+  const { user } = useAuth();
+  useEffect(() => {
+    user;
+  }, [user]);
   const validateBirthInfo = (day, month, year) => {
-    // year cannot be this year or more and he has to be at least 18
     if (month < 1 || month > 12 || day < 1 || day > 31) {
       setErrorMsg("Please input valid date");
       console.log("from first");
@@ -35,15 +38,13 @@ const UpdateProfile = () => {
     // check validity
     if (birthYear !== year || birthMonth !== month - 1 || birthDay !== day) {
       setErrorMsg("Please input valid date");
-      console.log("from second");
       return false;
     }
     if (age < 18) {
       setErrorMsg("Please input valid date");
-      console.log("from third");
       return false;
     }
-    console.log("here");
+
     setErrorMsg("");
     return true;
   };
@@ -54,8 +55,12 @@ const UpdateProfile = () => {
     const birthDay = parseInt(form.birthDay.value);
     const birthMonth = parseInt(form.birthMonth.value);
     const birthYear = parseInt(form.birthYear.value);
-    const result = validateBirthInfo(birthDay, birthMonth, birthYear);
-    if (!result) return;
+    if (birthDay || birthMonth || birthDay) {
+      const result = validateBirthInfo(birthDay, birthMonth, birthYear);
+      if (!result) return;
+    } else {
+      setErrorMsg("");
+    }
 
     const firstName = form.firstName.value;
     const middleName = form.middleName.value;
@@ -64,6 +69,8 @@ const UpdateProfile = () => {
       ? `${firstName} ${middleName} ${lastName}`
       : `${firstName} ${lastName}`;
     const userBio = form.bio.value;
+    const accessibilityNeeds = form.accessibilityNeeds.value;
+    const updatedUser = {};
   };
   return (
     <>
@@ -71,7 +78,12 @@ const UpdateProfile = () => {
         <title>Account personal information</title>
       </Helmet>
       <section className="min-h-screen flex justify-center">
-        <UpdateProfileForm handleSubmit={handleSubmit} errorMsg={errorMsg} />
+        <UpdateProfileForm
+          handleSubmit={handleSubmit}
+          errorMsg={errorMsg}
+          selectedGender={selectedGender}
+          setSelectedGender={setSelectedGender}
+        />
       </section>
     </>
   );
