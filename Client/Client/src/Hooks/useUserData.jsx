@@ -9,9 +9,7 @@ const useUserData = () => {
     queryKey: [user?.email],
     queryFn: async () => await getUser(user?.email),
   });
-  const role = userData?.role;
-  const timeStamp = userData?.timeStamp;
-  return { role, timeStamp, refetch };
+  return { userData, refetch };
 };
 
 export default useUserData;

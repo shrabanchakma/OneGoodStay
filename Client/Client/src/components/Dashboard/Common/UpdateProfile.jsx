@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import UpdateProfileForm from "./UpdateProfileForm";
 import { Helmet } from "react-helmet-async";
 import useAuth from "../../../Hooks/useAuth";
+import useUserData from "../../../Hooks/useUserData";
+import toast from "react-hot-toast";
+import { updateUserInfo } from "../../../Api/users";
 
 const UpdateProfile = () => {
   const [errorMsg, setErrorMsg] = useState("");
-  const [selectedGender, setSelectedGender] = useState("");
-  const { user } = useAuth();
-  useEffect(() => {
-    user;
-  }, [user]);
+  const { userData } = useUserData();
+  const [selectedGender, setSelectedGender] = useState(userData?.gender);
   const validateBirthInfo = (day, month, year) => {
     if (month < 1 || month > 12 || day < 1 || day > 31) {
       setErrorMsg("Please input valid date");
@@ -46,18 +46,19 @@ const UpdateProfile = () => {
     }
 
     setErrorMsg("");
-    return true;
+    return birthDate;
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
     const birthDay = parseInt(form.birthDay.value);
     const birthMonth = parseInt(form.birthMonth.value);
     const birthYear = parseInt(form.birthYear.value);
+    let birthDate = "";
     if (birthDay || birthMonth || birthDay) {
-      const result = validateBirthInfo(birthDay, birthMonth, birthYear);
-      if (!result) return;
+      birthDate = validateBirthInfo(birthDay, birthMonth, birthYear);
+      if (!birthDate) return;
     } else {
       setErrorMsg("");
     }
@@ -70,7 +71,26 @@ const UpdateProfile = () => {
       : `${firstName} ${lastName}`;
     const userBio = form.bio.value;
     const accessibilityNeeds = form.accessibilityNeeds.value;
-    const updatedUser = {};
+    const updatedUser = {
+      name: fullName,
+      email: userData?.email,
+      timestamp: userData?.timestamp,
+      role: userData?.role,
+      bio: userBio,
+      birthDate: birthDate,
+      gender: selectedGender,
+      accessibilityNeeds: accessibilityNeeds,
+    };
+
+    try {
+      await toast.promise(updateUserInfo(userData?.email, updatedUser), {
+        loading: "Updating",
+        success: "User info updated",
+        error: "Something went wrong",
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
   };
   return (
     <>
@@ -83,6 +103,7 @@ const UpdateProfile = () => {
           errorMsg={errorMsg}
           selectedGender={selectedGender}
           setSelectedGender={setSelectedGender}
+          userData={userData}
         />
       </section>
     </>

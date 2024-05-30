@@ -99,6 +99,22 @@ async function run() {
       res.send(result);
     });
 
+    // update user data
+    app.put("/user/update", async (req, res) => {
+      const email = req.query.email;
+      const updatedUserData = req.body;
+      const result = await userCollection.updateOne(
+        { email },
+        {
+          $set: {
+            ...updatedUserData,
+          },
+        },
+        { upsert: true }
+      );
+      res.send(result);
+    });
+
     // save rooms in database
     app.post("/rooms", async (req, res) => {
       const newRoom = req.body;

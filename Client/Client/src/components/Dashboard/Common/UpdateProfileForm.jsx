@@ -4,7 +4,7 @@ import {
   RiCheckboxCircleFill,
 } from "react-icons/ri";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const genders = ["Male", "Female", "Prefer not to tell"];
 const accessibilityOptions = [
   "Not provided",
@@ -17,8 +17,28 @@ const UpdateProfileForm = ({
   errorMsg,
   selectedGender,
   setSelectedGender,
+  userData,
 }) => {
   const [hoveredGender, setHoveredGender] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [lastName, setLastName] = useState("");
+  useEffect(() => {
+    if (userData?.name) {
+      const fullName = userData?.name.split(" ");
+      if (fullName.length > 2) {
+        setFirstName(fullName[0]);
+        setMiddleName(fullName[1]);
+        setLastName(fullName[2]);
+      } else {
+        setFirstName(fullName[0]);
+        setLastName(fullName[1]);
+      }
+    }
+
+    // todo: set the value of dates
+  }, [userData]);
+
   return (
     <div className="w-[480px] h-full my-32 ">
       <div className="text-gray-700 mb-3">
@@ -43,6 +63,7 @@ const UpdateProfileForm = ({
               name="firstName"
               id="firstName"
               placeholder="First name"
+              defaultValue={firstName}
               className="w-full px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
               data-temp-mail-org="0"
             />
@@ -59,6 +80,7 @@ const UpdateProfileForm = ({
               name="middleName"
               id="middleName"
               placeholder="Middle name"
+              defaultValue={middleName}
               className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
               data-temp-mail-org="0"
             />
@@ -75,6 +97,7 @@ const UpdateProfileForm = ({
               name="lastName"
               id="lastName"
               placeholder="Last name"
+              defaultValue={lastName}
               className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
               data-temp-mail-org="0"
             />
@@ -91,6 +114,7 @@ const UpdateProfileForm = ({
             placeholder=" Help future host get to know you better. You can share your travel style, hobbies, interests, and more"
             id="bio"
             name="bio"
+            value={userData?.bio}
             className="min-h-32 w-full border border-gray-700 rounded-md p-2 focus:outline-blue-500"
           />
         </div>
@@ -200,7 +224,7 @@ const UpdateProfileForm = ({
             </span>
           </div>
           <select
-            defaultValue={"Not Provided"}
+            defaultValue={userData?.accessibilityNeeds}
             className="w-full h-10 rounded-md border border-gray-700 "
             name="accessibilityNeeds"
           >

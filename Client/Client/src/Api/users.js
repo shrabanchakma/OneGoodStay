@@ -23,3 +23,12 @@ export const changeUserRole = async (email, role) => {
   const { data } = await axiosSecure.patch(`/user/role/${email}`, { role });
   return data;
 };
+
+// update user information
+export const updateUserInfo = async (email, updatedUserInfo) => {
+  const { data } = await axiosSecure.put(
+    `/user/update?email=${email}`,
+    updatedUserInfo
+  );
+  return data;
+};

@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { role, refetch } = useUserData();
+  const { userData, refetch } = useUserData();
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
@@ -23,7 +23,7 @@ const Sidebar = () => {
     }
   };
   const handleRequestHost = () => {
-    if (role === "requested")
+    if (userData?.role === "requested")
       toast.error("Your request is pending please wait!");
     else setIsModalOpen(true);
   };
@@ -38,13 +38,13 @@ const Sidebar = () => {
 
         <SidebarItem label="Profile" icon={TiUser} address={"./profile"} />
         {/* routes based on users */}
-        {role === "host" ? <HostOptions /> : <GuestOptions />}
-        {role === "admin" && <AdminOptions />}
+        {userData?.role === "host" ? <HostOptions /> : <GuestOptions />}
+        {userData?.role === "admin" && <AdminOptions />}
       </div>
 
       {/* sign out button */}
       <div>
-        {(role === "guest" || role === "requested") && (
+        {(userData?.role === "guest" || userData?.role === "requested") && (
           <p
             onClick={handleRequestHost}
             className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
