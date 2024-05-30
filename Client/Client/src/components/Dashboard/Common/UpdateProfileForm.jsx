@@ -1,9 +1,10 @@
-import React from "react";
+import "./UpdateProfile.css";
 import {
   RiCheckboxBlankCircleLine,
   RiCheckboxCircleFill,
 } from "react-icons/ri";
 import PropTypes from "prop-types";
+import { useState } from "react";
 const genders = ["Male", "Female", "Prefer not to tell"];
 const accessibilityOptions = [
   "Not provided",
@@ -11,7 +12,11 @@ const accessibilityOptions = [
   "Yes I have accessibility needs",
   "Rather not say",
 ];
-const UpdateProfileForm = (props) => {
+const UpdateProfileForm = ({ handleSubmit, errorMsg }) => {
+  const [birthday, setBirthDay] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+
   return (
     <div className="w-[480px] h-full my-32 ">
       <div className="text-gray-700 mb-3">
@@ -21,7 +26,7 @@ const UpdateProfileForm = (props) => {
           or licence.
         </p>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="space-y-4 mb-5">
           <h1 className="font-semibold">Full name</h1>
           <div>
@@ -52,7 +57,6 @@ const UpdateProfileForm = (props) => {
               type="text"
               name="middleName"
               id="middleName"
-              required
               placeholder="Middle name"
               className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
               data-temp-mail-org="0"
@@ -98,7 +102,6 @@ const UpdateProfileForm = (props) => {
             Date of birth
           </label>
           <div className="flex items-center justify-center gap-5">
-            {" "}
             <div>
               <label
                 htmlFor="middleName"
@@ -107,8 +110,9 @@ const UpdateProfileForm = (props) => {
                 Month
               </label>
               <input
-                type="text"
-                name="month"
+                onChange={(e) => setBirthMonth(e.target.value)}
+                type="number"
+                name="birthMonth"
                 id="month"
                 required
                 placeholder="MM"
@@ -124,8 +128,9 @@ const UpdateProfileForm = (props) => {
                 Day
               </label>
               <input
-                type="text"
-                name="day"
+                onChange={(e) => setBirthDay(e.target.value)}
+                type="number"
+                name="birthDay"
                 id="day"
                 required
                 placeholder="DD"
@@ -141,8 +146,9 @@ const UpdateProfileForm = (props) => {
                 Year
               </label>
               <input
-                type="text"
-                name="year"
+                onChange={(e) => setBirthYear(e.target.value)}
+                type="number"
+                name="birthYear"
                 id="year"
                 required
                 placeholder="YYYY"
@@ -151,6 +157,8 @@ const UpdateProfileForm = (props) => {
               />
             </div>
           </div>
+          {/* date error message */}
+          {errorMsg && <p className="text-rose-700">{errorMsg}</p>}
         </div>
         <div className="mb-5">
           <label
