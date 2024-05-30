@@ -23,6 +23,9 @@ const UpdateProfileForm = ({
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
   useEffect(() => {
     if (userData?.name) {
       const fullName = userData?.name.split(" ");
@@ -34,9 +37,13 @@ const UpdateProfileForm = ({
         setFirstName(fullName[0]);
         setLastName(fullName[1]);
       }
-    }
+      // todo: set the value of dates
 
-    // todo: set the value of dates
+      const birthDate = new Date(userData?.dateOfBirth);
+      setBirthYear(birthDate.getFullYear());
+      setBirthMonth(birthDate.getMonth() + 1);
+      setBirthDay(birthDate.getDate());
+    }
   }, [userData]);
 
   return (
@@ -114,7 +121,7 @@ const UpdateProfileForm = ({
             placeholder=" Help future host get to know you better. You can share your travel style, hobbies, interests, and more"
             id="bio"
             name="bio"
-            value={userData?.bio}
+            defaultValue={userData?.bio}
             className="min-h-32 w-full border border-gray-700 rounded-md p-2 focus:outline-blue-500"
           />
         </div>
@@ -138,6 +145,7 @@ const UpdateProfileForm = ({
                 name="birthMonth"
                 id="month"
                 placeholder="MM"
+                defaultValue={birthMonth}
                 className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                 data-temp-mail-org="0"
               />
@@ -152,8 +160,9 @@ const UpdateProfileForm = ({
               <input
                 type="number"
                 name="birthDay"
-                id="day"
+                id="birthDay"
                 placeholder="DD"
+                defaultValue={birthDay}
                 className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                 data-temp-mail-org="0"
               />
@@ -170,6 +179,7 @@ const UpdateProfileForm = ({
                 name="birthYear"
                 id="year"
                 placeholder="YYYY"
+                defaultValue={birthYear}
                 className="w-full px-3 py-2 border rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
                 data-temp-mail-org="0"
               />
@@ -235,8 +245,8 @@ const UpdateProfileForm = ({
         </div>
         {/* submit button */}
         <div className="flex justify-center mt-10">
-          <button className="bg-sky-500 hover:bg-sky-600 active:bg-sky-700 p-2 py-3  text-white font-bold rounded-3xl w-1/3">
-            Search
+          <button className="text-lg bg-sky-500 hover:bg-sky-600 active:bg-sky-700 p-2 py-3  text-white font-bold rounded-3xl w-1/3">
+            save
           </button>
         </div>
       </form>

@@ -1,12 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../Hooks/useAuth";
+import useUserData from "../../../Hooks/useUserData";
+import Loader from "../../Shared/Loader";
 
 const Profile = () => {
-  const { signOutUser, user } = useAuth();
+  const { userData, isLoading } = useUserData();
   const navigate = useNavigate();
+  let date = new Date(userData?.dateOfBirth);
+  const padValue = (value) => value.toString().padStart(2, "0");
+  date = `${padValue(date.getDate())}/${padValue(
+    date.getMonth() + 1
+  )}/${date.getFullYear()}`;
+  console.log(date);
+  if (isLoading) return <Loader />;
   return (
     <div className="p-28  w-full">
-      <h1 className="font-medium text-2xl mb-10">{user?.displayName}</h1>
+      <h1 className="font-medium text-2xl mb-10">{userData?.name}</h1>
       <div className="flex mb-10">
         <div className="w-11/12 ">
           <h1 className="font-medium text-2xl mb-2">Basic information</h1>
@@ -15,25 +23,29 @@ const Profile = () => {
             <div className="">
               <div>
                 <h1 className="font-medium">Name</h1>
-                <p>{user?.displayName}</p>
+                <p>{userData?.name}</p>
               </div>
               <div>
                 <h1 className="font-medium">Date of birth</h1>
-                <p>Not provided</p>
+                <p>{userData?.dateOfBirth ? date : "Not provided"}</p>
               </div>
               <div>
                 <h1 className="font-medium">Accessibility needs</h1>
-                <p>Not provided</p>
+                <p>
+                  {userData?.accessibilityNeeds
+                    ? userData?.accessibilityNeeds
+                    : "Not provided"}
+                </p>
               </div>
             </div>
             <div>
               <div>
                 <h1 className="font-medium">Bio</h1>
-                <p>Not provided</p>
+                <p>{userData?.bio ? userData?.bio : "Not provided"}</p>
               </div>
               <div>
                 <h1 className="font-medium">Gender</h1>
-                <p>Not provided</p>
+                <p> {userData?.gender ? userData?.gender : "Not provided"}</p>
               </div>
             </div>
           </div>
@@ -66,7 +78,7 @@ const Profile = () => {
             <div>
               <div>
                 <h1 className="font-medium">Email</h1>
-                <p>{user?.email}</p>
+                <p>{userData?.email}</p>
               </div>
               <div>
                 <h1 className="font-medium">Address</h1>

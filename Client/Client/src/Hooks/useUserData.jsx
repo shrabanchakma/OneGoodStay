@@ -4,12 +4,16 @@ import { getUser } from "../Api/users";
 
 const useUserData = () => {
   const { user } = useAuth();
-  const { data: userData = {}, refetch } = useQuery({
+  const {
+    data: userData = {},
+    isLoading,
+    refetch,
+  } = useQuery({
     enabled: !!user && !!user?.email,
     queryKey: [user?.email],
     queryFn: async () => await getUser(user?.email),
   });
-  return { userData, refetch };
+  return { userData, isLoading, refetch };
 };
 
 export default useUserData;

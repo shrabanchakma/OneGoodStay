@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UpdateProfileForm from "./UpdateProfileForm";
 import { Helmet } from "react-helmet-async";
-import useAuth from "../../../Hooks/useAuth";
 import useUserData from "../../../Hooks/useUserData";
 import toast from "react-hot-toast";
 import { updateUserInfo } from "../../../Api/users";
-
+import { RxCross2 } from "react-icons/rx";
+import { Link, useNavigate } from "react-router-dom";
 const UpdateProfile = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const { userData } = useUserData();
+  const navigate = useNavigate();
   const [selectedGender, setSelectedGender] = useState(userData?.gender);
   const validateBirthInfo = (day, month, year) => {
     if (month < 1 || month > 12 || day < 1 || day > 31) {
@@ -77,7 +78,7 @@ const UpdateProfile = () => {
       timestamp: userData?.timestamp,
       role: userData?.role,
       bio: userBio,
-      birthDate: birthDate,
+      dateOfBirth: birthDate,
       gender: selectedGender,
       accessibilityNeeds: accessibilityNeeds,
     };
@@ -88,6 +89,7 @@ const UpdateProfile = () => {
         success: "User info updated",
         error: "Something went wrong",
       });
+      navigate("/dashboard/profile");
     } catch (error) {
       console.error(error.message);
     }
@@ -97,7 +99,13 @@ const UpdateProfile = () => {
       <Helmet>
         <title>Account personal information</title>
       </Helmet>
-      <section className="min-h-screen flex justify-center">
+      <section className="min-h-screen flex justify-center bg-green">
+        <Link
+          to={"/dashboard/profile"}
+          className="flex items-center justify-center bg-white hover:bg-blue-200  h-8 w-8 rounded-full absolute left-3 top-3"
+        >
+          <RxCross2 size={25} className="text-blue-500  " />
+        </Link>
         <UpdateProfileForm
           handleSubmit={handleSubmit}
           errorMsg={errorMsg}
