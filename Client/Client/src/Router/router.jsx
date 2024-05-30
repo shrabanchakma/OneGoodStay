@@ -15,6 +15,7 @@ import UpdateRoom from "../components/Dashboard/Host/UpdateRoom/UpdateRoom";
 import AllUsersListings from "../components/Dashboard/Admin/AllRooms/AllUsersListings";
 import HostRoute from "../UserRoutes/HostRoute";
 import AdminRoute from "../UserRoutes/AdminRoute";
+import UpdateContactInfo from "../components/Dashboard/Common/UpdateContactInfo";
 import UpdateProfile from "../components/Dashboard/Common/UpdateProfile";
 
 const router = createBrowserRouter([
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "profile/update/basic-information",
     element: <UpdateProfile />,
+  },
+  {
+    path: "profile/update/contact-information",
+    element: <UpdateContactInfo />,
   },
   // dashboard
   {
