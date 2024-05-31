@@ -44,6 +44,7 @@ const Signup = () => {
       name: name,
       email: email,
       role: "guest",
+      status: "none",
     };
     if (password.length < 6)
       return toast.error("Password should be at least 6 characters");
@@ -77,6 +78,8 @@ const Signup = () => {
       const data = await axiosSecure.put(`/users/${email}`, {
         name: displayName,
         email: email,
+        role: "guest",
+        status: "none",
       });
       console.log(data);
       toast.success("Sign In Successful!");

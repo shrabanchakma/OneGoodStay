@@ -1,9 +1,8 @@
-import PropTypes from "prop-types";
 import { Tooltip } from "react-tooltip";
-const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
+
+export const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
   const handleOpenProfile = () => {
     handleConfirmButton(user);
-    setIsOpen(true);
   };
   return (
     <tr>
@@ -19,20 +18,16 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white w-28 text-sm ">
         <p
-          onClick={handleOpenProfile}
+          onClick={() => handleOpenProfile}
           data-tooltip-id="tooltip"
-          data-tooltip-delay-show={100}
+          data-tooltip-delay-show={300}
           className="text-gray-900 whitespace-no-wrap cursor-pointer hover:font-semibold"
         >
-          {user?.status === "none" ? (
-            user?.role
-          ) : (
-            <span className="text-orange-500">{user?.status}</span>
-          )}
+          {user?.role}
         </p>
         <Tooltip
           id="tooltip"
-          place="top"
+          place="bottom"
           content="Open profile info"
           variant="light"
           style={{
@@ -48,9 +43,3 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
     </tr>
   );
 };
-
-AllUserDataRow.propTypes = {
-  user: PropTypes.object,
-};
-
-export default AllUserDataRow;

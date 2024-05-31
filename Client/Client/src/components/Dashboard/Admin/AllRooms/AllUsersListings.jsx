@@ -9,9 +9,7 @@ const userRoles = ["All", "admin", "guest", "host"];
 const AllUsersListings = () => {
   const [userFilterRole, setUserFilterRole] = useState("");
   // set state to change user role
-  const [userRole, setUserRole] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
+  const [modalUser, setModalUser] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const { data: users = [], refetch } = useQuery({
@@ -32,23 +30,28 @@ const AllUsersListings = () => {
   }, [userFilterRole]);
 
   // change user role
-  const handleChangeUserRole = async () => {
+  const handleChangeUserRole = async (email, newRole) => {
+    console.log(email, newRole);
     try {
-      const data = await toast.promise(changeUserRole(userEmail, userRole), {
+      const data = await toast.promise(changeUserRole(email, newRole), {
         loading: "Saving changes...",
-        success: "User role changed successfully",
+        success: (
+          <p>
+            User role changed to{" "}
+            <span className="text-yellow-500">{newRole}</span> successfully
+          </p>
+        ),
         error: <p className="text-red-500">An error occurred</p>,
       });
+      refetch();
       console.log(data);
     } catch (error) {
       console.error(error.message);
     }
   };
   // handle user role change confirm button
-  const handleConfirmButton = (name, email, role) => {
-    setUserEmail(email);
-    setUserRole(role);
-    setUserName(name);
+  const handleConfirmButton = (user) => {
+    setModalUser(user);
     setIsOpen(true);
   };
 
@@ -119,6 +122,7 @@ const AllUsersListings = () => {
                       key={user?._id}
                       user={user}
                       handleConfirmButton={handleConfirmButton}
+                      setIsOpen={setIsOpen}
                     />
                   ))}
                 </tbody>
@@ -128,8 +132,7 @@ const AllUsersListings = () => {
         </div>
         <UpdateUserRoleModal
           handleChangeUserRole={handleChangeUserRole}
-          userName={userName}
-          userRole={userRole}
+          user={modalUser}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
         />

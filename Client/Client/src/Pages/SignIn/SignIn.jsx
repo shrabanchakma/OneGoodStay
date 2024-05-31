@@ -41,6 +41,8 @@ const SignIn = () => {
       const data = await axiosSecure.put(`/users/${email}`, {
         name: displayName,
         email: email,
+        role: "guest",
+        status: "none",
       });
       console.log(data);
       toast.success("Sign In Successful!");

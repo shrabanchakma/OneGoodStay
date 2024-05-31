@@ -31,7 +31,8 @@ const UpdateContactInfo = () => {
   };
 
   const validateNumber = (name, number) => {
-    const isNumberValid = number.length === 11 && number.startsWith("01");
+    const isNumberValid =
+      (number.length === 11 && number.startsWith("01")) || number.length === 0;
     console.log(isNumberValid, number.length, number.startsWith("01"));
     setErrorMsg((prevErrorMsg) => ({
       ...prevErrorMsg,

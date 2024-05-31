@@ -23,7 +23,7 @@ const Sidebar = () => {
     }
   };
   const handleRequestHost = () => {
-    if (userData?.role === "requested")
+    if (userData?.status === "requested")
       toast.error("Your request is pending please wait!");
     else setIsModalOpen(true);
   };
@@ -31,8 +31,8 @@ const Sidebar = () => {
     <aside className="h-full flex flex-col justify-between">
       <div>
         <div className="min-h-20 flex flex-col items-center justify-center ">
-          <h1 className="font-medium ">{user?.displayName}</h1>
-          <p className="font-light text-neutral-500">{user?.email}</p>
+          <h1 className="font-medium ">{userData?.name}</h1>
+          <p className="font-light text-neutral-500">{userData?.email}</p>
         </div>
         <hr />
 
@@ -42,9 +42,9 @@ const Sidebar = () => {
         {userData?.role === "admin" && <AdminOptions />}
       </div>
 
-      {/* sign out button */}
+      {/* request for host */}
       <div>
-        {(userData?.role === "guest" || userData?.role === "requested") && (
+        {userData?.role === "guest" && (
           <p
             onClick={handleRequestHost}
             className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
