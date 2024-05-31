@@ -3,7 +3,12 @@ import { Tooltip } from "react-tooltip";
 import { FaPenToSquare } from "react-icons/fa6";
 import useUserData from "../../../Hooks/useUserData";
 import "./Common.css";
-const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
+const UpdateContactInfoForm = ({
+  handleSubmit,
+  handleOnChange,
+  errorMsg,
+  contactInfo,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { userData } = useUserData();
   return (
@@ -29,7 +34,7 @@ const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
             id="number"
             placeholder="Phone number"
             onChange={handleOnChange}
-            defaultValue={userData?.number}
+            defaultValue={userData?.contactInfo?.number}
             className="w-full px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
@@ -51,7 +56,7 @@ const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
             id="emergencyContactName"
             placeholder="Contact name"
             onChange={handleOnChange}
-            defaultValue={userData?.emergencyContactName}
+            defaultValue={userData?.contactInfo?.emergencyContactName}
             className="w-full mb-2 px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
@@ -61,7 +66,7 @@ const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
             id="emergencyContactNumber"
             placeholder="Phone number"
             onChange={handleOnChange}
-            defaultValue={userData?.emergencyContactNumber}
+            defaultValue={userData?.contactInfo?.emergencyContactNumber}
             className="w-full mb-2 px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"
           />
@@ -79,29 +84,7 @@ const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
             Email
           </label>
           <div className="flex items-center mb-2">
-            {isEditing ? (
-              <div className="flex flex-col items-end w-2/3">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Email"
-                  onChange={handleOnChange}
-                  defaultValue={userData?.email}
-                  className="w-full mb-2 p-1 px-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
-                  data-temp-mail-org="0"
-                />
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="p-1 px-3 bg-neutral-200 border-[1px] rounded-md"
-                >
-                  cancel
-                </button>
-              </div>
-            ) : (
-              <p>{userData?.email}</p>
-            )}
-
+            {userData?.email}
             <span
               data-tooltip-id="tooltip"
               data-tooltip-delay-show={300}
@@ -113,7 +96,7 @@ const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
             <Tooltip
               id="tooltip"
               place="right"
-              content="Edit"
+              content="You can change email in settings"
               variant="light"
               style={{
                 backgroundColor: "rgb(229 229 229)",
@@ -133,7 +116,7 @@ const UpdateContactInfoForm = ({ handleSubmit, handleOnChange, errorMsg }) => {
             name="address"
             id="address"
             placeholder="Address"
-            defaultValue={userData?.address}
+            defaultValue={userData?.contactInfo?.address}
             onChange={handleOnChange}
             className="w-full px-3 py-2 border  rounded-md border-gray-700 focus:outline-blue-500  text-gray-900"
             data-temp-mail-org="0"

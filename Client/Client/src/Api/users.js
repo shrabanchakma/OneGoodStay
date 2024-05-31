@@ -34,10 +34,10 @@ export const updateUserInfo = async (email, updatedUserInfo) => {
 };
 
 // update contact info
-export const updateContactInfo = async (email, contactInfo) => {
+export const updateContactInfo = async (email, contactData) => {
   const { data } = await axiosSecure.patch(
     `/user/update?email=${email}`,
-    contactInfo
+    contactData
   );
   return data;
 };

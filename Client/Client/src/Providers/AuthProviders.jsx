@@ -4,9 +4,11 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   onAuthStateChanged,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail,
   updateProfile,
 } from "firebase/auth";
 import auth from "../firebaseConfig";
@@ -27,12 +29,21 @@ const AuthProviders = ({ children }) => {
   // set user name
   const updateUserProfile = (name, image) => {
     setLoading(true);
-    console.log("hi");
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: image,
     });
   };
+  // // set new email
+  // const updateUserEmail = (newEmail) => {
+  //   setLoading(true);
+  //   return updateEmail(auth.currentUser, newEmail);
+  // };
+  // // verify new email
+  // const verifyEmail = () => {
+  //   setLoading(true);
+  //   return sendEmailVerification(auth.currentUser);
+  // };
   // sign in
   const signInUser = (email, password) => {
     setLoading(true);
@@ -81,6 +92,8 @@ const AuthProviders = ({ children }) => {
     facebookSignIn,
     updateProfile,
     deleteCurrentUser,
+    // updateUserEmail,
+    // verifyEmail,
   };
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>

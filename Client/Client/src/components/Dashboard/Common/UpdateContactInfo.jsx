@@ -3,15 +3,18 @@ import UpdateContactInfoForm from "./UpdateContactInfoForm";
 import { updateContactInfo } from "../../../Api/users";
 import useUserData from "../../../Hooks/useUserData";
 import { useState } from "react";
+import useAuth from "../../../Hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const UpdateContactInfo = () => {
   const { userData } = useUserData();
+  const navigate = useNavigate();
   const [contactInfo, setContactInfo] = useState({
-    number: "",
-    emergencyContactName: "",
-    emergencyContactNumber: "",
-    email: "",
-    address: "",
+    number: userData?.contactInfo?.number || "",
+    emergencyContactName: userData?.contactInfo?.emergencyContactName || "",
+    emergencyContactNumber: userData?.contactInfo?.emergencyContactNumber || "",
+    email: userData?.email || "",
+    address: userData?.contactInfo?.address || "",
   });
   const [errorMsg, setErrorMsg] = useState({
     number: "",
@@ -34,49 +37,46 @@ const UpdateContactInfo = () => {
       ...prevErrorMsg,
       [name]: isNumberValid ? "" : "Please input valid number",
     }));
+    return isNumberValid ? true : false;
   };
-
+  console.log(errorMsg);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    validateNumber("number", contactInfo?.number);
-    console.log("hi");
-    validateNumber(
-      "emergencyContactNumber",
-      contactInfo?.emergencyContactNumber
-    );
-    if (errorMsg?.number || errorMsg?.emergencyNumber) return;
-    const contactData = {
-      number: parseInt(contactInfo?.number),
-      emergencyContactName: contactInfo?.emergencyContactName,
-      emergencyContactNumber: parseInt(contactInfo?.emergencyContactNumber),
-      address: contactInfo?.address,
-    };
-    console.table(contactData);
-    // try {
-    //   await toast.promise(
-    //     updateContactInfo(userData?.email, contactInfo),
-    //     {
-    //       loading: "Updating...",
-    //       success: "Contact info updated",
-    //       error: "Something went wrong!",
-    //     },
-    //     {
-    //       style: {
-    //         height: "80px",
-    //         minWidth: "300px",
-    //         marginTop: "100px",
-    //       },
-    //     }
-    //   );
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
+    // validate number
+    if (
+      !validateNumber("number", contactInfo?.number) ||
+      !validateNumber(
+        "emergencyContactNumber",
+        contactInfo?.emergencyContactNumber
+      )
+    ) {
+      return;
+    }
+    try {
+      const contactData = {
+        number: contactInfo?.number,
+        emergencyContactName: contactInfo?.emergencyContactName,
+        emergencyContactNumber: contactInfo?.emergencyContactNumber,
+        address: contactInfo?.address,
+      };
+      console.table(contactData);
+
+      await toast.promise(updateContactInfo(userData?.email, contactData), {
+        loading: "Updating...",
+        success: "Contact info updated",
+        error: "Something went wrong!",
+      });
+      navigate("/dashboard/profile");
+    } catch (error) {
+      console.error(error.message);
+    }
   };
   return (
     <div className="h-screen flex justify-center">
       <UpdateContactInfoForm
         handleSubmit={handleSubmit}
         handleOnChange={handleOnChange}
+        contactInfo={contactInfo}
         errorMsg={errorMsg}
       />
     </div>

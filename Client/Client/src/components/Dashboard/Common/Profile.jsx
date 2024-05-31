@@ -67,11 +67,14 @@ const Profile = () => {
               <div>
                 <div>
                   <h1 className="font-medium">Mobile number</h1>
-                  <p>Not provided</p>
+                  <p>{userData?.contactInfo?.number || "Not provided"}</p>
                 </div>
                 <div>
                   <h1 className="font-medium">Emergency contact</h1>
-                  <p>Not provided</p>
+                  <p>
+                    {userData?.contactInfo?.emergencyContactNumber ||
+                      "Not provided"}
+                  </p>
                 </div>
               </div>
               <div>
@@ -81,7 +84,7 @@ const Profile = () => {
                 </div>
                 <div>
                   <h1 className="font-medium">Address</h1>
-                  <p>Not provided</p>
+                  <p>{userData?.contactInfo?.address || "Not provided"}</p>
                 </div>
               </div>
             </div>
