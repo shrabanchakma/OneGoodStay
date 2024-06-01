@@ -7,9 +7,23 @@ import toast from "react-hot-toast";
 import useAuth from "../../Hooks/useAuth";
 import axiosSecure from "../../Api";
 import { uploadImage } from "../../Api/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "../../Hooks/useDebounce";
 import { ImSpinner } from "react-icons/im";
+import { db, storage } from "../../firebaseConfig";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 const Signup = () => {
   const {
     createUser,
@@ -20,6 +34,10 @@ const Signup = () => {
   } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState({ role: "guest", status: "none" });
+  const [file, setFile] = useState("");
+  const [isSubmit, setIsSubmit] = useState(false);
+  // jo
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const debouncedPassword = useDebounce(password, 1000);
@@ -31,41 +49,91 @@ const Signup = () => {
   const handleConfirmPassword = (e) => {
     setConfirmPassword(e.target.value);
   };
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  // upload new image
+  useEffect(() => {
+    const uploadFile = () => {
+      const metadata = {
+        contentType: "image/*",
+      };
+      const fileName = new Date().getTime() + file.name;
+      const storageRef = ref(storage, fileName, metadata);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        (error) => {
+          switch (error.code) {
+            case "storage/unauthorized":
+              break;
+            case "storage/canceled":
+              break;
+            case "storage/unknown":
+              break;
+            default:
+              break;
+          }
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setData((prev) => ({ ...prev, image: downloadURL }));
+          });
+        }
+      );
+    };
+    // upload image when isSubmit is true
+    isSubmit && uploadFile();
+  }, [file, isSubmit]);
   // sign up methods
   const handleSignUp = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const image = form.image.files[0];
-    const newUser = {
-      name: name,
-      email: email,
-      role: "guest",
-      status: "none",
-    };
+    console.log(data);
     if (password.length < 6)
       return toast.error("Password should be at least 6 characters");
     if (!isPasswordMatched) return toast.error("Password does not match");
     try {
-      const { data } = await axiosSecure.put(`/users/${email}`, newUser);
-      console.log(data);
-      if (data.upsertedCount > 0) {
-        await createUser(email, password);
-        const { display_url } = await uploadImage(image);
-        await updateUserProfile(name, display_url);
-        toast.success("Sign Up Successful!");
-        navigate("/");
-      } else {
-        toast("User already exist");
-      }
+      // const { data } = await axiosSecure.put(`/users/${email}`, newUser);
+      // if (data.upsertedCount > 0) {
+      const res = await createUser(data.email, password);
+      setIsSubmit(true);
+      await updateUserProfile(data.name, data.image);
+      await setDoc(doc(db, "users", res.user.uid), {
+        ...data,
+        timestamp: serverTimestamp(),
+      });
+      toast.success("Sign Up Successful!");
+      // navigate("/");
+      // } else {
+      //   toast("User already exist");
+      // }
     } catch (err) {
       console.log(err.message);
       toast.error(err.message);
     } finally {
       setIsLoading(false);
+      setIsSubmit(false);
     }
   };
   // google sign up
@@ -170,6 +238,7 @@ const Signup = () => {
                   autoComplete={"on"}
                   required
                   placeholder="Enter Your name Here"
+                  onChange={handleOnChange}
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
                   data-temp-mail-org="0"
                 />
@@ -188,6 +257,7 @@ const Signup = () => {
                   autoComplete={"on"}
                   required
                   placeholder="Enter Your Email Here"
+                  onChange={handleOnChange}
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-rose-500 bg-gray-200 text-gray-900"
                   data-temp-mail-org="0"
                 />
@@ -246,11 +316,10 @@ const Signup = () => {
                   </label>
                   <input
                     type="file"
-                    name="image"
                     id="image"
                     accept="image/*"
                     required
-                    className=""
+                    onChange={(e) => setFile(e.target.files[0])}
                   />
                 </div>
               </div>

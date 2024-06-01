@@ -11,7 +11,7 @@ import {
   updateEmail,
   updateProfile,
 } from "firebase/auth";
-import auth from "../firebaseConfig";
+import { auth } from "../firebaseConfig";
 import { GoogleAuthProvider } from "firebase/auth";
 import PropTypes from "prop-types";
 export const AuthContext = createContext({});
@@ -88,6 +88,10 @@ const AuthProviders = ({ children }) => {
   const deleteCurrentUser = () => {
     return deleteUser(auth.currentUser);
   };
+
+  // set new user in firebase db
+  // use setDoc() method
+
   const authData = {
     createUser,
     signInUser,
