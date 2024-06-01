@@ -5,8 +5,9 @@ import {
   ListboxOptions,
   Transition,
 } from "@headlessui/react";
-import { useState } from "react";
+import PropTypes from "prop-types";
 const userRoles = ["guest", "host", "admin"];
+
 const UserRoleDropdown = ({ handleConfirmButton, email, name, role }) => {
   return (
     <Listbox>
@@ -53,6 +54,13 @@ const UserRoleDropdown = ({ handleConfirmButton, email, name, role }) => {
       </Transition>
     </Listbox>
   );
+};
+
+UserRoleDropdown.propTypes = {
+  handleConfirmButton: PropTypes.func,
+  email: PropTypes.string,
+  name: PropTypes.string,
+  role: PropTypes.string,
 };
 
 export default UserRoleDropdown;

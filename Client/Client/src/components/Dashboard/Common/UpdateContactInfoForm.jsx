@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { FaPenToSquare } from "react-icons/fa6";
 import useUserData from "../../../Hooks/useUserData";
+import PropTypes from "prop-types";
 import "./Common.css";
 const UpdateContactInfoForm = ({
   handleSubmit,
@@ -133,6 +134,11 @@ const UpdateContactInfoForm = ({
   );
 };
 
-UpdateContactInfoForm.propTypes = {};
+UpdateContactInfoForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  handleOnChange: PropTypes.func,
+  errorMsg: PropTypes.string,
+  contactInfo: PropTypes.string,
+};
 
 export default UpdateContactInfoForm;

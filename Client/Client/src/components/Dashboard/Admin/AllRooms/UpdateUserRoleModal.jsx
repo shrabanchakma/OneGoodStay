@@ -15,7 +15,6 @@ const UpdateUserRoleModal = ({
 }) => {
   const [selectedUserRole, setSelectedUserRole] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleRoleSelection = (e) => {
     if (user?.role !== e.target.value.toLowerCase()) {
       setSelectedUserRole(e.target.value.toLowerCase());
@@ -23,16 +22,20 @@ const UpdateUserRoleModal = ({
       setIsOpen(false);
     }
   };
+  const handleUserRoleCase = (role) => {
+    const newRole = user?.role[0].toUpperCase() + role.slice(1);
+    return newRole;
+  };
   return (
     <>
-      <Transition show={isOpen}>
+      <Transition show={+isOpen}>
         <Dialog
           open={isOpen}
           onClose={() => setIsOpen(false)}
           className="relative z-50"
         >
           <TransitionChild
-            show={isOpen}
+            show={+isOpen}
             enter="transition-all transform duration-200"
             enterFrom="scale-0 opacity-0"
             enterTo="scale-100 opacity-100"
@@ -79,10 +82,7 @@ const UpdateUserRoleModal = ({
                         id="userRole"
                         className="bg-neutral-200 py-1 px-3  rounded-xl border-[1px] w-full "
                         defaultValue={
-                          user?.role &&
-                          `${user?.role[0].toUpperCase()}${(user?.role).slice(
-                            1
-                          )}`
+                          user?.role && handleUserRoleCase(user?.role)
                         }
                         onClick={handleRoleSelection}
                       >
@@ -101,14 +101,14 @@ const UpdateUserRoleModal = ({
         </Dialog>
       </Transition>
       {/* confirmation modal */}
-      <Transition show={isModalOpen}>
+      <Transition show={+isModalOpen}>
         <Dialog
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           className="relative z-50"
         >
           <TransitionChild
-            show={isModalOpen}
+            show={+isModalOpen}
             enter="transition-all transform duration-200"
             enterFrom="scale-0 opacity-0"
             enterTo="scale-100 opacity-100"
@@ -124,7 +124,7 @@ const UpdateUserRoleModal = ({
                   <h1 className="font-semibold">
                     Change role from{" "}
                     <span className="text-orange-500">
-                      {user?.role && (user?.role).toUpperCase()}
+                      {user?.role && user?.role.toUpperCase()}
                     </span>{" "}
                     to{" "}
                     <span className="text-red-500">
@@ -161,6 +161,8 @@ const UpdateUserRoleModal = ({
 UpdateUserRoleModal.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
+  user: PropTypes.object,
+  handleChangeUserRole: PropTypes.func,
 };
 
 export default UpdateUserRoleModal;

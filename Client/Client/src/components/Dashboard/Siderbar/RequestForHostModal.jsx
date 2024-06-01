@@ -23,7 +23,7 @@ const RequestForHostModal = ({
   const handleConfirm = async () => {
     setIsModalOpen(false);
     try {
-      await toast.promise(
+      const data = await toast.promise(
         requestForHost(email),
         {
           loading: "it's loading",
@@ -46,14 +46,14 @@ const RequestForHostModal = ({
   };
   return (
     <>
-      <Transition show={isModalOpen}>
+      <Transition show={+isModalOpen}>
         <Dialog
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           className="relative z-50"
         >
           <TransitionChild
-            show={isModalOpen}
+            show={+isModalOpen}
             enter="transition-all transform duration-200"
             enterFrom="scale-0 opacity-0"
             enterTo="scale-100 opacity-100"

@@ -51,6 +51,8 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
 
 AllUserDataRow.propTypes = {
   user: PropTypes.object,
+  handleConfirmButton: PropTypes.func,
+  setIsOpen: PropTypes.func,
 };
 
 export default AllUserDataRow;

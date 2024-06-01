@@ -44,6 +44,13 @@ const AuthProviders = ({ children }) => {
   //   setLoading(true);
   //   return sendEmailVerification(auth.currentUser);
   // };
+
+  // DELETE a user
+  const deleteAUser = () => {
+    setLoading(true);
+    return deleteUser(auth.currentUser);
+  };
+
   // sign in
   const signInUser = (email, password) => {
     setLoading(true);
@@ -92,6 +99,7 @@ const AuthProviders = ({ children }) => {
     facebookSignIn,
     updateProfile,
     deleteCurrentUser,
+    deleteAUser,
     // updateUserEmail,
     // verifyEmail,
   };
