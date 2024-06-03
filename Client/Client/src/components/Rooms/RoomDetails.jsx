@@ -5,7 +5,7 @@ import RoomOverview from "./RoomOverview/RoomOverview";
 import TopAmenities from "./TopAmenities/TopAmenities";
 import RoomReservation from "./RoomReservation/RoomReservation";
 import RoomReview from "./RoomReview/RoomReview";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getRoomData } from "../../Api/rooms";
 const sections = ["Overview", "Amenities", "Reservation", "Review"];

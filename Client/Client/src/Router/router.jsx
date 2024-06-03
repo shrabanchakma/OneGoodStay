@@ -17,6 +17,7 @@ import HostRoute from "../UserRoutes/HostRoute";
 import AdminRoute from "../UserRoutes/AdminRoute";
 import UpdateContactInfo from "../components/Dashboard/Common/UpdateContactInfo";
 import UpdateProfile from "../components/Dashboard/Common/UpdateProfile";
+import PrivateRoute from "../UserRoutes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,11 @@ const router = createBrowserRouter([
       },
       {
         path: "room-details/:id",
-        element: <RoomDetails />,
+        element: (
+          <PrivateRoute>
+            <RoomDetails />
+          </PrivateRoute>
+        ),
         loader: async ({ params }) => await getRoomData(params?.id),
       },
     ],

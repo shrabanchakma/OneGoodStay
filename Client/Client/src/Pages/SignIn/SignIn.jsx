@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import Logo from "../../components/Shared/Logo";
 import { FaFacebookSquare, FaArrowLeft } from "react-icons/fa";
@@ -9,6 +9,11 @@ import axiosSecure from "../../Api";
 import { useState } from "react";
 import { ImSpinner } from "react-icons/im";
 const SignIn = () => {
+  const location = useLocation();
+  const {
+    from: { pathname },
+  } = location.state;
+  const redirectURL = pathname || "/";
   const { signInUser, googleSignIn, facebookSignIn, deleteCurrentUser } =
     useAuth();
   const navigate = useNavigate();
@@ -22,7 +27,7 @@ const SignIn = () => {
     try {
       await signInUser(email, password);
       toast.success("Sign In Successful!");
-      navigate("/");
+      navigate(redirectURL);
     } catch (err) {
       console.log(err.message);
       toast.error(err.message.slice(10));
@@ -46,7 +51,7 @@ const SignIn = () => {
       });
       console.log(data);
       toast.success("Sign In Successful!");
-      navigate("/");
+      navigate(redirectURL);
     } catch (err) {
       console.log(err);
       toast.error(err.message);
