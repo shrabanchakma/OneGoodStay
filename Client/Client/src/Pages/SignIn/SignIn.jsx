@@ -10,10 +10,8 @@ import { useState } from "react";
 import { ImSpinner } from "react-icons/im";
 const SignIn = () => {
   const location = useLocation();
-  const {
-    from: { pathname },
-  } = location.state;
-  const redirectURL = pathname || "/";
+  const { from } = location.state || { from: { pathname: "/" } };
+  const redirectURL = from.pathname;
   const { signInUser, googleSignIn, facebookSignIn, deleteCurrentUser } =
     useAuth();
   const navigate = useNavigate();
