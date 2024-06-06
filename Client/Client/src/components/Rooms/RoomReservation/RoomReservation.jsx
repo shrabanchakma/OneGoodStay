@@ -2,8 +2,13 @@ import Heading from "../../Shared/Heading";
 import ReservationCalender from "./ReservationCalender";
 import demoRoomImg from "../../../assets/hotel-image-demo.jpg";
 import ContainerTwo from "../../Shared/ContainerTwo";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import CheckoutModal from "./CheckoutModal";
 const RoomReservation = ({ room }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
   return (
     <ContainerTwo>
       <div id="Reservation" className="my-20">
@@ -21,17 +26,18 @@ const RoomReservation = ({ room }) => {
                 Price:{" "}
                 <span className="font-normal text-sm">${room?.price}</span>
               </h1>
-
-              <Link to={"/checkout"}>
-                <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">
-                  Reserve
-                </button>
-              </Link>
+              <button
+                onClick={handleModalOpen}
+                className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700"
+              >
+                Reserve
+              </button>
             </div>
             <hr />
           </div>
         </div>
       </div>
+      <CheckoutModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </ContainerTwo>
   );
 };

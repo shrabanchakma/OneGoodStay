@@ -18,7 +18,6 @@ import AdminRoute from "../UserRoutes/AdminRoute";
 import UpdateContactInfo from "../components/Dashboard/Common/UpdateContactInfo";
 import UpdateProfile from "../components/Dashboard/Common/UpdateProfile";
 import PrivateRoute from "../UserRoutes/PrivateRoute";
-import CheckoutForm from "../components/CheckoutForm/CheckoutForm";
 
 const router = createBrowserRouter([
   {
@@ -48,10 +47,6 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
-  },
-  {
-    path: "/checkout",
-    element: <CheckoutForm />,
   },
   {
     path: "profile/update/basic-information",
