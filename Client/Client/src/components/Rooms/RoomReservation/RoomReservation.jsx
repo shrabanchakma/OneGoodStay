@@ -2,6 +2,7 @@ import Heading from "../../Shared/Heading";
 import ReservationCalender from "./ReservationCalender";
 import demoRoomImg from "../../../assets/hotel-image-demo.jpg";
 import ContainerTwo from "../../Shared/ContainerTwo";
+import { Link } from "react-router-dom";
 const RoomReservation = ({ room }) => {
   return (
     <ContainerTwo>
@@ -21,9 +22,11 @@ const RoomReservation = ({ room }) => {
                 <span className="font-normal text-sm">${room?.price}</span>
               </h1>
 
-              <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">
-                Reserve
-              </button>
+              <Link to={"/checkout"}>
+                <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">
+                  Reserve
+                </button>
+              </Link>
             </div>
             <hr />
           </div>
