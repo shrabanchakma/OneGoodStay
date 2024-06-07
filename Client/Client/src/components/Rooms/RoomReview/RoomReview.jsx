@@ -10,7 +10,6 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 const RoomReview = () => {
   const [swiperInstance, setSwiperInstance] = useState(null);
-  const [isRightVisible, setIsRightVisible] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const handleMouseEnter = () => {
     setIsVisible(true);
@@ -27,12 +26,9 @@ const RoomReview = () => {
   };
   return (
     <ContainerTwo>
-      <div
-        id="Review"
-        className="flex flex-col items-start mt-24 mb-28 bg-green-500 "
-      >
+      <div id="Review" className="flex flex-col items-start mt-24 mb-28 ">
         {/* average review / review stat / total review */}
-        <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 bg-pink-500">
+        <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 ">
           <h1 className="text-5xl md:text-4xl font-medium">7/10</h1>
           <h2 className="text-3xl md:text-2xl font-medium">Good</h2>
           <p className="text-sm flex items-center gap-2 ">
@@ -66,14 +62,7 @@ const RoomReview = () => {
             >
               <CiCircleChevRight className="text-sky-700 text-4xl" />
             </button>
-            {/* small screen right button */}
 
-            <button
-              className={` bg-pink-500 rounded-full`}
-              onClick={() => swiperInstance.slideNext()}
-            >
-              <CiCircleChevRight className="text-sky-700 text-4xl  " />
-            </button>
             <Swiper
               spaceBetween={5}
               slidesPerView={1}

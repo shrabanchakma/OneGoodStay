@@ -1,16 +1,11 @@
 import Heading from "../../Shared/Heading";
 import ReservationCalender from "./ReservationCalender";
 import ContainerTwo from "../../Shared/ContainerTwo";
-import { useState } from "react";
-import CheckoutModal from "./CheckoutModal";
+import { Link } from "react-router-dom";
 const RoomReservation = ({ room }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleModalOpen = () => {
-    setIsOpen(true);
-  };
   return (
     <ContainerTwo>
-      <div id="Reservation" className="my-5 md:my-10 lg:my-20 ">
+      <div id="Reservation" className="my-5 md:my-10 lg:my-20 -z-10">
         <Heading label="Room Reservation" />
         <div className="grid grid-cols-1 md:grid-cols-2  gap-4  p-5  border-[#e41b43] rounded-xl">
           <ReservationCalender room={room} />
@@ -25,18 +20,16 @@ const RoomReservation = ({ room }) => {
                 Price:{" "}
                 <span className="font-normal text-sm">${room?.price}</span>
               </h1>
-              <button
-                onClick={handleModalOpen}
-                className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700"
-              >
-                Reserve
-              </button>
+              <Link to={`/checkout/room/${room?._id}`}>
+                <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">
+                  Reserve
+                </button>
+              </Link>
             </div>
             <hr />
           </div>
         </div>
       </div>
-      <CheckoutModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </ContainerTwo>
   );
 };

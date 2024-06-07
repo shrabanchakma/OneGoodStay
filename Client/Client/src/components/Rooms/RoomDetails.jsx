@@ -15,16 +15,16 @@ const RoomDetails = () => {
       <img
         src={room?.image}
         alt=""
-        className="w-full h-[50vh] bg-green-500 rounded-lg object-cover"
+        className="w-full w-[10vh h-[50vh] bg-green-500 lg:rounded-lg object-cover"
       />
       {/* sections */}
-      <div className="sticky top-0 bg-white w-3/4 flex justify-between items-center h-12 px-3 border-b border-gray-400">
+      <div className="sticky top-0 bg-white md:w-3/4 flex justify-between items-center h-12 lg:px-3 border-b border-gray-400 z-40">
         <div className="flex gap-4">
           {sections.map((section, idx) => (
             <RoomSection key={idx} label={section} />
           ))}
         </div>
-        <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">
+        <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 hidden md:block">
           Reserve a Room
         </button>
       </div>

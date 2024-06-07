@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import { dropdownOptionsData } from "./DropdownData";
 import { FaChevronDown } from "react-icons/fa";
-const DropdownMenu = () => {
+const DropdownMenuSmall = () => {
   const { user, signOutUser } = useAuth();
   const handleSignOut = async () => {
     try {
@@ -38,8 +38,8 @@ const DropdownMenu = () => {
           >
             {/* for large screen */}
             <MenuItems
-              anchor="bottom end"
-              className=" z-10 min-w-80 px-3 py-3 origin-top-center  border rounded-lg bg-white min-h-14"
+              anchor="right start"
+              className=" lg:hidden z-10 min-w-80 px-3 py-3 origin-top-center  border rounded-lg bg-white min-h-14"
             >
               {/* user menu items */}
               {user && (
@@ -93,4 +93,4 @@ const DropdownMenu = () => {
   );
 };
 
-export default DropdownMenu;
+export default DropdownMenuSmall;

@@ -11,6 +11,7 @@ import {
 } from "@headlessui/react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useRef } from "react";
+import DropdownMenuSmall from "./DropdownMenuSmall";
 const Navbar = () => {
   return (
     <>
@@ -50,9 +51,8 @@ const Navbar = () => {
                       About us
                     </Link>
                   </MenuItem>
-                  {/* dropdown menu */}
-
-                  <DropdownMenu />
+                  {/* dropdown menu for smaller screen */}
+                  <DropdownMenuSmall />
                 </MenuItems>
               </Transition>
             </Menu>
@@ -78,7 +78,7 @@ const Navbar = () => {
                     About us
                   </NavLink>
                 </li>
-                {/* dropdown menu */}
+                {/* dropdown menu of bigger screen */}
                 <DropdownMenu />
               </ol>
             </div>

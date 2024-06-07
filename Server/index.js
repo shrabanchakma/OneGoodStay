@@ -1,14 +1,21 @@
 const express = require("express");
 const cors = require("cors");
+
 const app = express();
 const port = 8000 || process.env.PORT;
+
+// middlewares
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://api.imgbb.com/1/upload"],
   })
 );
+
 app.use(express.json());
 require("dotenv").config();
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+console.log(process.env.STRIPE_SECRET_KEY);
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hrheaqm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -153,7 +160,6 @@ async function run() {
     // get single room
     app.get("/rooms/:id", async (req, res) => {
       const roomId = req.params.id;
-      console.log(roomId);
       const result = await roomCollection.findOne({
         _id: new ObjectId(roomId),
       });
@@ -184,6 +190,35 @@ async function run() {
       res.send(result);
     });
 
+    // stripe payment setup
+    // send the publishable key
+    app.get("/stripe-publishable-key", (req, res) => {
+      res.send({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });
+    });
+
+    // create payment intent
+    app.post("/create-payment-intent", async (req, res) => {
+      try {
+        if (stripe) {
+          const paymentIntent = await stripe.paymentIntents.create({
+            currency: "EUR",
+            amount: 1999,
+            automatic_payment_methods: { enabled: true },
+          });
+
+          // Send publishable key and PaymentIntent details to client
+          res.send({
+            clientSecret: paymentIntent.client_secret,
+          });
+        }
+      } catch (e) {
+        return res.status(400).send({
+          error: {
+            message: e.message,
+          },
+        });
+      }
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
