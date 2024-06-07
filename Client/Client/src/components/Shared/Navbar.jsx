@@ -31,8 +31,8 @@ const Navbar = () => {
                 leaveTo="opacity-0 scale-75"
               >
                 <MenuItems
-                  anchor="button end"
-                  className="z-10 min-w-80 px-3 py-3 origin-top-center flex flex-col justify-center gap-1  border rounded-lg bg-white min-h-14 "
+                  anchor="bottom end"
+                  className="z-10 w-2/5 px-3 py-3 origin-top-center flex flex-col justify-center gap-1  border rounded-lg bg-white min-h-14 "
                 >
                   <MenuItem>
                     <Link

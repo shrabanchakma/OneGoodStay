@@ -12,9 +12,6 @@ const RoomDetails = () => {
   const room = useLoaderData();
   return (
     <Container>
-      {/* todo : dynamically add room infos */}
-      {/* hotel image */}
-
       <img
         src={room?.image}
         alt=""

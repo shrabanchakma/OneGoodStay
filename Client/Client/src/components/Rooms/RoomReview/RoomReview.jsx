@@ -10,6 +10,7 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 const RoomReview = () => {
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const [isRightVisible, setIsRightVisible] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const handleMouseEnter = () => {
     setIsVisible(true);
@@ -17,25 +18,35 @@ const RoomReview = () => {
   const handleMouseLeave = () => {
     setIsVisible(false);
   };
+  const swiperBreakpoints = {
+    320: { slidesPerView: 1 },
+    425: { slidesPerView: 1.1 },
+    768: { slidesPerView: 1.7 },
+    1024: { slidesPerView: 2.1 },
+    1538: { slidesPerView: 2.1 },
+  };
   return (
     <ContainerTwo>
-      <div id="Review" className="flex items-center h-56 mt-24 mb-28">
+      <div
+        id="Review"
+        className="flex flex-col items-start mt-24 mb-28 bg-green-500 "
+      >
         {/* average review / review stat / total review */}
-        <div className="h-full w-1/4 flex flex-col justify-start p-4 ">
-          <h1 className="text-4xl font-medium">7/10</h1>
-          <h2 className="text-2xl font-medium">Good</h2>
+        <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 bg-pink-500">
+          <h1 className="text-5xl md:text-4xl font-medium">7/10</h1>
+          <h2 className="text-3xl md:text-2xl font-medium">Good</h2>
           <p className="text-sm flex items-center gap-2 ">
             431 verified reviews
             <CiCircleInfo className="text-xl font-bold hover:cursor-pointer" />
           </p>
         </div>
 
-        <div className="w-2/3 h-full  ">
+        <div className="w-full lg:w-11/12 h-full p-4 ">
           <h1 className="font-medium text-gray-700 ">RecentReviews</h1>
           <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="h-full w-full relative "
+            className=" relative "
           >
             {/* left button */}
             <button
@@ -55,9 +66,18 @@ const RoomReview = () => {
             >
               <CiCircleChevRight className="text-sky-700 text-4xl" />
             </button>
+            {/* small screen right button */}
+
+            <button
+              className={` bg-pink-500 rounded-full`}
+              onClick={() => swiperInstance.slideNext()}
+            >
+              <CiCircleChevRight className="text-sky-700 text-4xl  " />
+            </button>
             <Swiper
-              spaceBetween={0}
-              slidesPerView={2}
+              spaceBetween={5}
+              slidesPerView={1}
+              breakpoints={swiperBreakpoints}
               onSwiper={(swiper) => setSwiperInstance(swiper)}
               className="h-full"
             >
@@ -85,7 +105,7 @@ const RoomReview = () => {
             </Swiper>
           </div>
           <div className="mt-3">
-            <button className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-26 border border-gray-700 p-2 rounded-xl flex items-center">
+            <button className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-full border border-gray-700 p-2 rounded-xl flex justify-center items-center ">
               See All Reviews
               <FaArrowRight />
             </button>

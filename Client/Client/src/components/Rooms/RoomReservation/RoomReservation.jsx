@@ -10,11 +10,11 @@ const RoomReservation = ({ room }) => {
   };
   return (
     <ContainerTwo>
-      <div id="Reservation" className="my-20">
+      <div id="Reservation" className="my-5 md:my-10 lg:my-20 ">
         <Heading label="Room Reservation" />
-        <div className="flex items-center  gap-4  h-[40vh]  p-5  border-[#e41b43] rounded-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-4  p-5  border-[#e41b43] rounded-xl">
           <ReservationCalender room={room} />
-          <div className="w-full h-full">
+          <div className="">
             <img
               src={room?.image}
               alt=""

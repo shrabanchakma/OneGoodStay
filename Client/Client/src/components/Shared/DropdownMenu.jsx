@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import { dropdownOptionsData } from "./DropdownData";
+import { FaChevronDown } from "react-icons/fa";
 const DropdownMenu = () => {
   const { user, signOutUser } = useAuth();
   const handleSignOut = async () => {
@@ -21,10 +22,11 @@ const DropdownMenu = () => {
     <div className="w-full">
       {user ? (
         <Menu>
-          <MenuButton className="w-full">
-            <div className="text-lg font-medium text-[#e41b43]  w-full text-start  ">
+          <MenuButton className="group w-full flex items-center justify-between">
+            <div className="text-lg font-medium text-[#e41b43]  w-full text-start   ">
               {user && user.displayName.split(" ")[0]}
             </div>
+            <FaChevronDown className="group-data-[active]:-rotate-90 transition-all duration-100 ease-in-out text-[#e41b43]" />
           </MenuButton>
           <Transition
             enter="transition ease-out duration-75"
@@ -35,7 +37,7 @@ const DropdownMenu = () => {
             leaveTo="opacity-0 scale-75"
           >
             <MenuItems
-              anchor="bottom end"
+              anchor="right start"
               className="z-10 min-w-80 px-3 py-3 origin-top-center  border rounded-lg bg-white min-h-14"
             >
               {/* user menu items */}
