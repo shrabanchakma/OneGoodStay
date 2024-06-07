@@ -1,5 +1,4 @@
 import Container from "../Shared/Container";
-import hotelImage from "../../assets/hotel-image-demo.jpg";
 import RoomSection from "./RoomSection";
 import RoomOverview from "./RoomOverview/RoomOverview";
 import TopAmenities from "./TopAmenities/TopAmenities";

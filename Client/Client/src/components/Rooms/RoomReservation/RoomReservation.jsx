@@ -1,6 +1,5 @@
 import Heading from "../../Shared/Heading";
 import ReservationCalender from "./ReservationCalender";
-import demoRoomImg from "../../../assets/hotel-image-demo.jpg";
 import ContainerTwo from "../../Shared/ContainerTwo";
 import { useState } from "react";
 import CheckoutModal from "./CheckoutModal";
@@ -17,7 +16,7 @@ const RoomReservation = ({ room }) => {
           <ReservationCalender room={room} />
           <div className="w-full h-full">
             <img
-              src={demoRoomImg}
+              src={room?.image}
               alt=""
               className="w-full h-4/5 mb-4 rounded-t-xl"
             />

@@ -5,14 +5,12 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { Link, useNavigate } from "react-router-dom";
-import { IoPersonCircle } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import { dropdownOptionsData } from "./DropdownData";
 const DropdownMenu = () => {
   const { user, signOutUser } = useAuth();
   const handleSignOut = async () => {
-    console.log("hi");
     try {
       await signOutUser();
     } catch (error) {
@@ -20,11 +18,11 @@ const DropdownMenu = () => {
     }
   };
   return (
-    <div className="">
+    <div className="w-full">
       {user ? (
         <Menu>
-          <MenuButton className="p-3">
-            <div className="text-lg font-medium text-[#e41b43]">
+          <MenuButton className="w-full">
+            <div className="text-lg font-medium text-[#e41b43]  w-full text-start  ">
               {user && user.displayName.split(" ")[0]}
             </div>
           </MenuButton>
@@ -38,7 +36,7 @@ const DropdownMenu = () => {
           >
             <MenuItems
               anchor="bottom end"
-              className="min-w-80 px-3 py-3 origin-top-center  border rounded-lg bg-white min-h-14"
+              className="z-10 min-w-80 px-3 py-3 origin-top-center  border rounded-lg bg-white min-h-14"
             >
               {/* user menu items */}
               {user && (
@@ -53,7 +51,7 @@ const DropdownMenu = () => {
               {user && (
                 <>
                   {dropdownOptionsData.map((option) => (
-                    <MenuItem as={"div"} key={option?.id}>
+                    <MenuItem key={option?.id}>
                       <button
                         key={option?.id}
                         className="hover:bg-[#FBF8F1]  w-full px-2 py-[0.5px] transition ease-in-out "

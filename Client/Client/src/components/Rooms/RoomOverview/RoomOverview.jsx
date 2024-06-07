@@ -1,5 +1,4 @@
 import { FaStar } from "react-icons/fa";
-import demoImg from "../../../assets/hotel-image-demo.jpg";
 import ContainerTwo from "../../Shared/ContainerTwo";
 const RoomOverview = ({ room }) => {
   return (
@@ -32,7 +31,7 @@ const RoomOverview = ({ room }) => {
             height="30"
             width="30"
             alt="Avatar"
-            src={demoImg}
+            src={room?.image}
           />
         </div>
         <div className="flex items-center gap-5 font-light text-neutral-500">
