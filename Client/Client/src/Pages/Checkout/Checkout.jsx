@@ -2,13 +2,25 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axiosSecure from "../../Api";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import CheckoutForm from "./CheckoutFrom";
+import useUserData from "../../Hooks/useUserData";
+import { useMemo } from "react";
 
 const Checkout = () => {
-  const { id:roomID } = useParams();
+  const roomData = useLoaderData();
+  const { userData } = useUserData();
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
+  const roomInfo = useMemo(() => {
+    return {
+      guestName: userData?.name,
+      guestEmail: userData?.email,
+      roomID: roomData?._id,
+      price: roomData?.price,
+    };
+  }, [userData, roomData]);
+  console.log(roomInfo);
   useEffect(() => {
     axiosSecure
       .get("/stripe-publishable-key")
@@ -19,18 +31,24 @@ const Checkout = () => {
 
   useEffect(() => {
     axiosSecure
-      .post("/create-payment-intent")
+      .post("/create-payment-intent", roomInfo)
       .then(({ data: { clientSecret } }) => setClientSecret(clientSecret));
-  }, []);
+  }, [roomInfo]);
+  const appearance = {
+    theme: "stripe",
+    variables: {
+      colorPrimary: "#e41b43",
+    },
+  };
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center min-h-screen">
       {stripePromise && clientSecret && (
         <Elements
           stripe={stripePromise}
-          options={{ clientSecret }}
-          className="w-full"
+          options={{ clientSecret, appearance }}
+          className=" h-full"
         >
-          <CheckoutForm roomID={roomID}/>
+          <CheckoutForm roomID={roomData?._id} />
         </Elements>
       )}
     </div>

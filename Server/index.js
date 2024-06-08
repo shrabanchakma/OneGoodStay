@@ -198,12 +198,35 @@ async function run() {
 
     // create payment intent
     app.post("/create-payment-intent", async (req, res) => {
+      const roomInfo = req.body;
+      const roomID = roomInfo?.roomID;
+      const price = roomInfo?.price;
+      const roomDB = await roomCollection.findOne({
+        _id: ObjectId.createFromHexString(roomID),
+      });
+      if (price !== roomDB.price) {
+        return res.status(400).send({
+          error: {
+            message: "Something went wrong",
+          },
+        });
+      }
+      const metadata = {
+        userEmail: roomInfo?.guestEmail,
+        roomID,
+      };
       try {
         if (stripe) {
           const paymentIntent = await stripe.paymentIntents.create({
-            currency: "EUR",
-            amount: 1999,
-            automatic_payment_methods: { enabled: true },
+            currency: "usd",
+            amount: price * 100,
+            metadata,
+            payment_method_options: {
+              card: {
+                request_three_d_secure: "automatic",
+              },
+            },
+            payment_method_types: ["card"],
           });
 
           // Send publishable key and PaymentIntent details to client
