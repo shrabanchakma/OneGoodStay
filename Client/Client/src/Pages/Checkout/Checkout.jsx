@@ -20,7 +20,7 @@ const Checkout = () => {
       price: roomData?.price,
     };
   }, [userData, roomData]);
-  console.log(roomInfo);
+
   useEffect(() => {
     axiosSecure
       .get("/stripe-publishable-key")
@@ -48,7 +48,7 @@ const Checkout = () => {
           options={{ clientSecret, appearance }}
           className=" h-full"
         >
-          <CheckoutForm roomID={roomData?._id} />
+          <CheckoutForm roomID={roomData?._id} roomData={roomData} />
         </Elements>
       )}
     </div>

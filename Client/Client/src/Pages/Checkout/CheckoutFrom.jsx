@@ -3,9 +3,12 @@ import { useElements, useStripe } from "@stripe/react-stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import useUserData from "../../Hooks/useUserData";
-const CheckoutForm = ({ roomID }) => {
+import { bookARoom } from "../../Api/rooms";
+import { useNavigate } from "react-router-dom";
+const CheckoutForm = ({ roomID, roomData }) => {
   const { userData } = useUserData();
   const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
   const handleSubmit = async (e) => {
@@ -15,19 +18,43 @@ const CheckoutForm = ({ roomID }) => {
       return;
     }
     setIsProcessing(true);
+    console.log("hit 0");
+    try {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
+        confirmParams: {
+          // return_url: `${window.location.origin}/room-details/${roomID}`,
+        },
+      });
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/room-details/${roomID}`,
-      },
-    });
+      console.log("error-->", error);
+      console.log("hit 1");
+      if (error) {
+        console.log("hit 2");
+        console.log("error->", error);
+      } else if (paymentIntent.status === "succeeded") {
+        // set room details in database
 
-    if (error) {
-      console.log("error->", error);
+        console.log("hit 3");
+        const bookedRoom = {
+          guest: {
+            name: userData?.name,
+            email: userData?.email,
+          },
+          roomDetails: {
+            ...roomData,
+          },
+        };
+        const data = await bookARoom(roomID, bookedRoom);
+        console.log(data);
+        navigate(`/room-details/${roomID}`);
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsProcessing(false);
     }
-    // todo:send booked-room details in database
-    setIsProcessing(false);
   };
   return (
     <form

@@ -38,3 +38,9 @@ export const updateARoom = async (updatedRoom, id) => {
   );
   return data;
 };
+
+// book a room
+export const bookARoom = async (id, roomDetails) => {
+  const { data } = await axiosSecure.put(`/book/room/${id}`, roomDetails);
+  return data;
+};

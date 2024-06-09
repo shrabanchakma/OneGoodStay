@@ -15,7 +15,6 @@ app.use(express.json());
 require("dotenv").config();
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-console.log(process.env.STRIPE_SECRET_KEY);
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hrheaqm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -38,6 +37,9 @@ async function run() {
     const roomCollection = await client
       .db("OneGoodStay")
       .createCollection("rooms");
+    const bookedRoomsCollection = await client
+      .db("OneGoodStay")
+      .createCollection("booked");
 
     // add users
     app.put("/users/:email", async (req, res) => {
@@ -140,8 +142,9 @@ async function run() {
     // save rooms in database
     app.post("/rooms", async (req, res) => {
       const newRoom = req.body;
-      const result = await roomCollection.insertOne(newRoom);
+      const result = await bookedRoomsCollection.insertOne(newRoom);
       res.send(result);
+      booked;
     });
     // get all rooms from database
     app.get("/rooms", async (req, res) => {
@@ -201,10 +204,11 @@ async function run() {
       const roomInfo = req.body;
       const roomID = roomInfo?.roomID;
       const price = roomInfo?.price;
+      console.log("id --->", ObjectId.createFromHexString(roomID));
       const roomDB = await roomCollection.findOne({
         _id: ObjectId.createFromHexString(roomID),
       });
-      if (price !== roomDB.price) {
+      if (price !== roomDB?.price) {
         return res.status(400).send({
           error: {
             message: "Something went wrong",
@@ -240,6 +244,30 @@ async function run() {
             message: e.message,
           },
         });
+      }
+    });
+
+    // book a room
+    app.put("/book/room/:id", async (req, res) => {
+      const id = req.params.id;
+      const roomDetails = req.body;
+      const options = { upsert: true };
+      // set isBooked true for that room
+      try {
+        await roomCollection.updateOne(
+          { _id: new ObjectId(id) },
+          {
+            $set: {
+              isBooked: true,
+            },
+          },
+          options
+        );
+
+        const result = await bookedRoomsCollection.insertOne(roomDetails);
+        res.send(result);
+      } catch (error) {
+        return res.status(400).send({ error: { message: error.message } });
       }
     });
     // Send a ping to confirm a successful connection

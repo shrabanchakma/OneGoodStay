@@ -58,6 +58,7 @@ const AddRoom = () => {
         amenities: amenities,
         startDate: dates.startDate,
         endDate: dates.endDate,
+        isBooked: false,
       };
       // save new room
       await saveRoom(newRoom);
