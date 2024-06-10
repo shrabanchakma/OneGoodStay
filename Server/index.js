@@ -164,7 +164,7 @@ async function run() {
     app.get("/rooms/:id", async (req, res) => {
       const roomId = req.params.id;
       const result = await roomCollection.findOne({
-        _id: new ObjectId(roomId),
+        _id: ObjectId.createFromHexString(roomId),
       });
       // get all rooms for host
       res.send(result);
@@ -173,14 +173,14 @@ async function run() {
     app.delete("/room/delete", async (req, res) => {
       const roomId = req.query.roomId;
       const result = await roomCollection.deleteOne({
-        _id: new ObjectId(roomId),
+        _id: ObjectId.createFromHexString(roomId),
       });
       res.send(result);
     });
 
     // update a room
     app.put("/room/update", async (req, res) => {
-      const roomId = new ObjectId(req.query.roomId);
+      const roomId = ObjectId.createFromHexString(req.query.roomId);
       const roomData = req.body;
       const updateRoom = {
         $set: {
@@ -255,7 +255,7 @@ async function run() {
       // set isBooked true for that room
       try {
         await roomCollection.updateOne(
-          { _id: new ObjectId(id) },
+          { _id: ObjectId.createFromHexString(id) },
           {
             $set: {
               isBooked: true,
@@ -268,6 +268,19 @@ async function run() {
         res.send(result);
       } catch (error) {
         return res.status(400).send({ error: { message: error.message } });
+      }
+    });
+
+    // get all booked rooms
+    app.get("/booked-rooms/:email", async (req, res) => {
+      const email = req.params.email;
+      try {
+        const result = await bookedRoomsCollection
+          .find({ "guest.email": email })
+          .toArray();
+        res.send(result);
+      } catch (error) {
+        return res.status(400).send({ error: error.message });
       }
     });
     // Send a ping to confirm a successful connection

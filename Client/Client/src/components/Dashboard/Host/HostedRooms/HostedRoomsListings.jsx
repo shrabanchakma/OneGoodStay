@@ -11,12 +11,6 @@ import EmptyRooms from "./EmptyRooms";
 const HostedRoomsListings = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  // format date
-  const formatDate = (date) => {
-    const dateArray = new Date(date).toLocaleDateString().split("/");
-    const newDate = `${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`;
-    return newDate;
-  };
   const { data: rooms = [], refetch } = useQuery({
     enabled: !!user?.email,
     queryKey: ["hostedRoom", user?.email],
@@ -104,7 +98,6 @@ const HostedRoomsListings = () => {
                     <HostedRoomsDataRow
                       key={room?._id}
                       room={room}
-                      formatDate={formatDate}
                       handleDeleteRoom={handleDeleteRoom}
                     />
                   ))}

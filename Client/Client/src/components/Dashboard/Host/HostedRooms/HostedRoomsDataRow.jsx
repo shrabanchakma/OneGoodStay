@@ -3,7 +3,8 @@ import { FaAngleRight, FaPenToSquare } from "react-icons/fa6";
 import { Tooltip } from "react-tooltip";
 import RoomEditDialogBox from "./RoomEditDialogBox";
 import { useState } from "react";
-const HostedRoomsDataRow = ({ room, formatDate, handleDeleteRoom }) => {
+import { formatDate } from "../../../../Api/utils";
+const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleDialogBoxVisibility = () => setIsOpen(true);
   return (
@@ -70,7 +71,6 @@ const HostedRoomsDataRow = ({ room, formatDate, handleDeleteRoom }) => {
 
 HostedRoomsDataRow.propTypes = {
   room: PropTypes.object,
-  formatDate: PropTypes.func,
   handleDeleteRoom: PropTypes.func,
 };
 

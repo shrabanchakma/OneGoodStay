@@ -8,19 +8,6 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
     handleConfirmButton(user);
     setIsOpen(true);
   };
-  const handleDemoButton = async (email) => {
-    // await initAdmin();
-    // try {
-    //   // Fetch user by email
-    //   const user = await getAuth();
-    //   const uid = user.uid;
-    //   console.log(uid);
-    //   // Delete user by UID
-    //   // await admin.auth().deleteUser(uid);
-    // } catch (error) {
-    //   console.error("Error deleting user:", error);
-    // }
-  };
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

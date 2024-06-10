@@ -44,3 +44,9 @@ export const bookARoom = async (id, roomDetails) => {
   const { data } = await axiosSecure.put(`/book/room/${id}`, roomDetails);
   return data;
 };
+
+// get all booked rooms
+export const getBookedRooms = async (email) => {
+  const { data } = await axiosSecure.get(`/booked-rooms/${email}`);
+  return data;
+};

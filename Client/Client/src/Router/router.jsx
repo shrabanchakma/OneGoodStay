@@ -51,7 +51,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/checkout/room/:id",
-    element: <Checkout />,
+    element: (
+      <PrivateRoute>
+        <Checkout />
+      </PrivateRoute>
+    ),
     loader: async ({ params }) => await getRoomData(params?.id),
   },
   {

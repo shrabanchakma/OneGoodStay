@@ -18,7 +18,6 @@ const CheckoutForm = ({ roomID, roomData }) => {
       return;
     }
     setIsProcessing(true);
-    console.log("hit 0");
     try {
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
@@ -28,15 +27,12 @@ const CheckoutForm = ({ roomID, roomData }) => {
         },
       });
 
-      console.log("error-->", error);
-      console.log("hit 1");
+      // console.log("error-->", error);
       if (error) {
-        console.log("hit 2");
         console.log("error->", error);
       } else if (paymentIntent.status === "succeeded") {
         // set room details in database
 
-        console.log("hit 3");
         const bookedRoom = {
           guest: {
             name: userData?.name,
@@ -59,9 +55,13 @@ const CheckoutForm = ({ roomID, roomData }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col items-center justify-center checkoutForm min-h-screen  p-10  bg-slate-50 z-50"
+      className="flex flex-col items-center justify-center checkoutForm   p-10  bg-slate-100 z-50"
     >
+      <label className="text-3xl text-center font-semibold my-10">
+        Almost Done!
+      </label>
       <fieldset className="w-full">
+        <legend className="font-semibold text-xl my-2">Guest Details:</legend>
         {/* user info */}
         <div className="w-full mb-2">
           <label htmlFor="name" className="text-base">
@@ -87,8 +87,21 @@ const CheckoutForm = ({ roomID, roomData }) => {
             disabled
           />
         </div>
+        <div className="w-full mb-2">
+          <label htmlFor="email" className="text-base">
+            Phone number
+          </label>
+          <input
+            id="email"
+            type="text"
+            value={userData?.contactInfo?.number || "Not provided"}
+            className="block w-full px-4 py-2 border border-gray-400 rounded-md text-gray-400"
+            disabled
+          />
+        </div>
       </fieldset>
       <fieldset className="mt-5">
+        <legend className="font-semibold text-xl my-2">Payment Details:</legend>
         <PaymentElement />
       </fieldset>
       <button

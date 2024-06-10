@@ -18,3 +18,10 @@ export const uploadImage = async (image) => {
     console.error(error.message);
   }
 };
+
+// format date
+export const formatDate = (date) => {
+  const dateArray = new Date(date).toLocaleDateString().split("/");
+  const newDate = `${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`;
+  return newDate;
+};

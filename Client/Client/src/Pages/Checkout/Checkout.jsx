@@ -6,6 +6,8 @@ import { useLoaderData, useParams } from "react-router-dom";
 import CheckoutForm from "./CheckoutFrom";
 import useUserData from "../../Hooks/useUserData";
 import { useMemo } from "react";
+import { Helmet } from "react-helmet-async";
+import Loader from "../../components/Shared/Loader";
 
 const Checkout = () => {
   const roomData = useLoaderData();
@@ -41,17 +43,24 @@ const Checkout = () => {
     },
   };
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      {stripePromise && clientSecret && (
-        <Elements
-          stripe={stripePromise}
-          options={{ clientSecret, appearance }}
-          className=" h-full"
-        >
-          <CheckoutForm roomID={roomData?._id} roomData={roomData} />
-        </Elements>
-      )}
-    </div>
+    <>
+      <Helmet>
+        <title>{`Checkout | ${roomData?.title}`}</title>
+      </Helmet>
+      <div className="flex items-center justify-center min-h-screen w-screen bg-slate-50">
+        {stripePromise && clientSecret ? (
+          <Elements
+            stripe={stripePromise}
+            options={{ clientSecret, appearance }}
+            className=" h-full"
+          >
+            <CheckoutForm roomID={roomData?._id} roomData={roomData} />
+          </Elements>
+        ) : (
+          <Loader />
+        )}
+      </div>
+    </>
   );
 };
 

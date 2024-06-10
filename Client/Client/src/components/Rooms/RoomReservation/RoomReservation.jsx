@@ -2,7 +2,10 @@ import Heading from "../../Shared/Heading";
 import ReservationCalender from "./ReservationCalender";
 import ContainerTwo from "../../Shared/ContainerTwo";
 import { Link } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
+import useUserData from "../../../Hooks/useUserData";
 const RoomReservation = ({ room }) => {
+  const { userData } = useUserData();
   return (
     <ContainerTwo>
       <div id="Reservation" className="my-5 md:my-10 lg:my-20 -z-10">
@@ -21,9 +24,26 @@ const RoomReservation = ({ room }) => {
                 <span className="font-normal text-sm">${room?.price}</span>
               </h1>
               <Link to={`/checkout/room/${room?._id}`}>
-                <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700">
+                <button
+                  disabled={room?.isBooked || userData?.role === "admin"}
+                  data-tooltip-id="tooltip"
+                  data-tooltip-delay-show={300}
+                  className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 disabled:cursor-not-allowed"
+                >
                   Reserve
                 </button>
+                <Tooltip
+                  id="tooltip"
+                  place="right"
+                  content={
+                    (userData?.role === "admin" && "You cannot book") ||
+                    (room?.isBooked ? "Already booked" : "Reserve room")
+                  }
+                  variant="light"
+                  style={{
+                    backgroundColor: "rgb(229 229 229)",
+                  }}
+                />
               </Link>
             </div>
             <hr />
