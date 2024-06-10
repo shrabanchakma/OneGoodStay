@@ -61,7 +61,8 @@ const AddRoom = () => {
         isBooked: false,
       };
       // save new room
-      await saveRoom(newRoom);
+      const data = await saveRoom(newRoom);
+      console.log(data);
       toast.success("Room added successfully");
       // reset every input value
       form.reset();
