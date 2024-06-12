@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const { scheduledCronJob } = require("./CronTask/CheckOutRooms");
 const app = express();
 const port = 8000 || process.env.PORT;
 
@@ -40,7 +40,8 @@ async function run() {
     const bookedRoomsCollection = await client
       .db("OneGoodStay")
       .createCollection("booked");
-
+    // validate room dates everyday at 1pm
+    // scheduledCronJob(roomCollection, bookedRoomsCollection);
     // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;

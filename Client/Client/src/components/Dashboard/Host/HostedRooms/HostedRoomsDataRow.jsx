@@ -71,6 +71,19 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
             Checked out
           </span>
         )}
+        {room?.status === "needs_update" && (
+          <span
+            data-tooltip-id="inform"
+            data-tooltip-delay-show={300}
+            data-tooltip-content={"Room is free now. Update room availability"}
+            data-tooltip-place="bottom"
+            data-tooltip-variant="warning"
+            data-tooltip-float="true"
+            className="font-semibold text-gray-500 leading-tight ring-2 ring-orange-500  rounded-sm whitespace-nowrap"
+          >
+            Checked out
+          </span>
+        )}
       </td>
       <td className="px-5 py-5 border-b border-gray-200  text-sm">
         <span
