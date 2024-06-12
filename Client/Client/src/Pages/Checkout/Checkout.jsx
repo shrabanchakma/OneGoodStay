@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import axiosSecure from "../../Api";
 import { useLoaderData, useParams } from "react-router-dom";
-import CheckoutForm from "./CheckoutFrom";
+import CheckoutForm from "./CheckoutForm";
 import useUserData from "../../Hooks/useUserData";
 import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";

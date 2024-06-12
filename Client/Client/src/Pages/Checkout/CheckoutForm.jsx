@@ -5,6 +5,7 @@ import { useState } from "react";
 import useUserData from "../../Hooks/useUserData";
 import { bookARoom } from "../../Api/rooms";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 const CheckoutForm = ({ roomID, roomData }) => {
   const { userData } = useUserData();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -40,11 +41,21 @@ const CheckoutForm = ({ roomID, roomData }) => {
           },
           roomDetails: {
             ...roomData,
+            status: "booked",
           },
         };
-        const data = await bookARoom(roomID, bookedRoom);
-        console.log(data);
-        navigate(`/room-details/${roomID}`);
+
+        const { insertedId } = await toast.promise(
+          bookARoom(roomID, bookedRoom),
+          {
+            loading: "Please Wait...",
+            success: <p className="text-green-500">Room booking successful</p>,
+            error: <p className="text-red-500">An error occurred</p>,
+          }
+        );
+        if (insertedId) {
+          navigate(`/room-details/${roomID}`);
+        }
       }
     } catch (error) {
       console.log(error.message);

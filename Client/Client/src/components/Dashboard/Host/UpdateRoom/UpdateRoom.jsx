@@ -65,6 +65,7 @@ const UpdateRoom = () => {
         amenities: amenities,
         startDate: dates.startDate,
         endDate: dates.endDate,
+        status: "available",
       };
       // update room
       const updateInfo = await updateARoom(updatedRoom, roomData?._id);

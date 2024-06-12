@@ -7,8 +7,15 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 
-const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
+const RoomEditDialogBox = ({
+  isOpen,
+  setIsOpen,
+  handleDeleteRoom,
+  roomId,
+  status,
+}) => {
   const [hoveringButton, setHoverButton] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -24,6 +31,12 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
   const handleCancelButton = () => {
     setIsModalOpen(false);
     setIsOpen(true);
+  };
+
+  const handleUpdateButton = () => {
+    if (status !== "booked") {
+      navigate(`update/${roomId}`);
+    }
   };
   return (
     <>
@@ -50,14 +63,18 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
               >
                 <div className="w-full h-1/2">
                   <button
-                    onClick={() => navigate(`update/${roomId}`)}
+                    onClick={handleUpdateButton}
+                    data-tooltip-id="tooltip"
+                    data-tooltip-delay-show={300}
                     onMouseEnter={() => setHoverButton("button1")}
                     onMouseLeave={() => setHoverButton(null)}
                     className={` w-full h-1/2 font-semibold transition-color duration-150 border-b-[1px] ${
                       hoveredButton("button1")
                         ? "bg-neutral-200"
                         : "bg-gray-600"
-                    } text-white  hover:text-green-600`}
+                    } text-white  hover:text-green-600 ${
+                      status === "booked" && "cursor-not-allowed"
+                    } `}
                   >
                     Update
                   </button>
@@ -69,10 +86,23 @@ const RoomEditDialogBox = ({ isOpen, setIsOpen, handleDeleteRoom, roomId }) => {
                       hoveredButton("button2")
                         ? "bg-neutral-200"
                         : "bg-gray-600"
-                    } text-white hover:text-red-600`}
+                    } text-white hover:text-red-600 `}
                   >
                     Delete
                   </button>
+                  <Tooltip
+                    id="tooltip"
+                    place="right"
+                    content={
+                      status === "booked"
+                        ? "You can not update. Room is already booked"
+                        : "Update Room"
+                    }
+                    variant="light"
+                    style={{
+                      backgroundColor: "rgb(229 229 229)",
+                    }}
+                  />
                 </div>
               </DialogPanel>
             </div>

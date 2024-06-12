@@ -25,10 +25,12 @@ const RoomReservation = ({ room }) => {
               </h1>
               <Link to={`/checkout/room/${room?._id}`}>
                 <button
-                  disabled={room?.isBooked || userData?.role === "admin"}
+                  disabled={
+                    room?.status === "booked" || userData?.role === "admin"
+                  }
                   data-tooltip-id="tooltip"
                   data-tooltip-delay-show={300}
-                  className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 disabled:cursor-not-allowed"
+                  className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 active:bg-sky-800 disabled:cursor-not-allowed"
                 >
                   Reserve
                 </button>
@@ -37,7 +39,9 @@ const RoomReservation = ({ room }) => {
                   place="right"
                   content={
                     (userData?.role === "admin" && "You cannot book") ||
-                    (room?.isBooked ? "Already booked" : "Reserve room")
+                    (room?.status === "booked"
+                      ? "Already booked"
+                      : "Reserve room")
                   }
                   variant="light"
                   style={{

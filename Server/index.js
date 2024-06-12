@@ -142,9 +142,8 @@ async function run() {
     // save rooms in database
     app.post("/rooms", async (req, res) => {
       const newRoom = req.body;
-      const result = await bookedRoomsCollection.insertOne(newRoom);
+      const result = await roomCollection.insertOne(newRoom);
       res.send(result);
-      booked;
     });
     // get all rooms from database
     app.get("/rooms", async (req, res) => {
@@ -258,7 +257,7 @@ async function run() {
           { _id: ObjectId.createFromHexString(id) },
           {
             $set: {
-              isBooked: true,
+              status: "booked",
             },
           },
           options

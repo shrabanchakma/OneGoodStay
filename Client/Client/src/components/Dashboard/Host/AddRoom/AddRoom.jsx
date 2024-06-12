@@ -58,7 +58,7 @@ const AddRoom = () => {
         amenities: amenities,
         startDate: dates.startDate,
         endDate: dates.endDate,
-        isBooked: false,
+        status: "available",
       };
       // save new room
       const data = await saveRoom(newRoom);

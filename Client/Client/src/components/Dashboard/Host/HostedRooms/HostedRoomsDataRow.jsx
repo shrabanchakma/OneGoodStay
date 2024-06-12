@@ -42,9 +42,26 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
         </p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <span className="font-semibold text-green-900 leading-tight">
-          Available
-        </span>
+        {room?.status === "available" && (
+          <span className="font-semibold text-green-900 leading-tight">
+            Available
+          </span>
+        )}
+        {room?.status === "booked" && (
+          <span className="font-semibold text-orange-500 leading-tight">
+            Booked
+          </span>
+        )}
+        {room?.status === "checkedIn" && (
+          <span className="font-semibold text-blue-500 leading-tight">
+            Checked in
+          </span>
+        )}
+        {room?.status === "checkedOut" && (
+          <span className="font-semibold text-gray-500 leading-tight">
+            Checked out
+          </span>
+        )}
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
         <span
@@ -63,6 +80,7 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
           setIsOpen={setIsOpen}
           handleDeleteRoom={handleDeleteRoom}
           roomId={room?._id}
+          status={room?.status}
         />
       </td>
     </tr>
