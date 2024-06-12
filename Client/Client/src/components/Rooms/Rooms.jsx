@@ -11,22 +11,24 @@ const Rooms = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { category } = queryString.parse(location.search);
-
+  const getAllRooms = async () => {
+    const allRooms = await getRooms();
+    if (category) {
+      const filteredRooms = allRooms.filter(
+        (room) => room?.category === category && room?.status !== "checkedOut"
+      );
+      setRooms(filteredRooms);
+    } else {
+      const filteredRooms = allRooms.filter(
+        (room) => room?.status !== "checkedOut"
+      );
+      console.log("length -->", filteredRooms.length);
+      setRooms(filteredRooms);
+    }
+    setLoading(false);
+  };
   useEffect(() => {
     setLoading(true);
-    const getAllRooms = async () => {
-      const allRooms = await getRooms();
-      if (category) {
-        const filteredRooms = allRooms.filter(
-          (room) => room?.category === category
-        );
-        console.log(filteredRooms);
-        setRooms(filteredRooms);
-      } else {
-        setRooms(allRooms);
-      }
-      setLoading(false);
-    };
     getAllRooms();
   }, [category]);
 
