@@ -11,9 +11,11 @@ const AddRoom = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [previewImg, setPreviewImg] = useState(null);
+  const defaultDate = new Date(new Date().setHours(0, 0, 0, 0));
+  console.log(defaultDate);
   const [dates, setDates] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: defaultDate,
+    endDate: defaultDate,
     key: "selection",
   });
   useEffect(() => {

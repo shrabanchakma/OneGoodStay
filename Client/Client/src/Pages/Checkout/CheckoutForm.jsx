@@ -6,6 +6,7 @@ import useUserData from "../../Hooks/useUserData";
 import { bookARoom } from "../../Api/rooms";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useHostedRooms } from "../../Hooks/useHostedRooms";
 const CheckoutForm = ({ roomID, roomData }) => {
   const { userData } = useUserData();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,7 +34,6 @@ const CheckoutForm = ({ roomID, roomData }) => {
         console.log("error->", error);
       } else if (paymentIntent.status === "succeeded") {
         // set room details in database
-
         const bookedRoom = {
           guest: {
             name: userData?.name,

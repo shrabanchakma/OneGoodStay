@@ -3,22 +3,15 @@ import useAuth from "../../../../Hooks/useAuth";
 import { deleteRoom, getHostedRooms } from "../../../../Api/rooms";
 import { useQuery } from "@tanstack/react-query";
 import HostedRoomsDataRow from "./HostedRoomsDataRow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../../Shared/Loader";
 import toast from "react-hot-toast";
 import EmptyRooms from "./EmptyRooms";
+import { useHostedRooms } from "../../../../Hooks/useHostedRooms";
 
 const HostedRoomsListings = () => {
-  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const { data: rooms = [], refetch } = useQuery({
-    enabled: !!user?.email,
-    queryKey: ["hostedRoom", user?.email],
-    queryFn: async () => {
-      setLoading(false);
-      return await getHostedRooms(user?.email);
-    },
-  });
+  const { rooms, refetch } = useHostedRooms();
   const handleDeleteRoom = async (roomId) => {
     try {
       const { deletedCount } = await deleteRoom(roomId);
@@ -32,6 +25,13 @@ const HostedRoomsListings = () => {
       console.log(error.message);
     }
   };
+
+  useEffect(() => {
+    if (rooms) {
+      setLoading(false);
+    }
+  }, [rooms]);
+
   if (loading) return <Loader />;
   else if (rooms.length === 0) return <EmptyRooms />;
 
