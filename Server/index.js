@@ -41,7 +41,7 @@ async function run() {
       .db("OneGoodStay")
       .createCollection("booked");
     // validate room dates everyday at 1pm
-    // scheduledCronJob(roomCollection, bookedRoomsCollection);
+    scheduledCronJob(roomCollection, bookedRoomsCollection);
     // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
