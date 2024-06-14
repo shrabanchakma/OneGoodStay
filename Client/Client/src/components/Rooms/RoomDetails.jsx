@@ -10,6 +10,7 @@ import { getRoomData } from "../../Api/rooms";
 const sections = ["Overview", "Amenities", "Reservation", "Review"];
 const RoomDetails = () => {
   const room = useLoaderData();
+  console.log(typeof room?.endDate);
   return (
     <Container>
       <img

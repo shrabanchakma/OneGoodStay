@@ -5,15 +5,14 @@ const cron = require("node-cron");
 const updateRoomStatus = async (roomCollection, bookedRoomsCollection) => {
   console.log("operation started");
   try {
-    const currentDate = new Date(new Date().setHours(0, 0, 0, 0));
-    console.log(currentDate);
+    const currentDate = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
     // filter available rooms
     const filterRooms = {
-      endDate: currentDate.toString(),
+      $and: [{ endDate: { $lte: currentDate } }, { status: "available" }],
     };
     //   filter booked rooms
     const filterBookedRooms = {
-      $and: [{ endDate: currentDate }],
+      $and: [{ endDate: { $lte: currentDate } }, { status: "booked" }],
     };
     // update available rooms
 
@@ -29,18 +28,21 @@ const updateRoomStatus = async (roomCollection, bookedRoomsCollection) => {
       },
     };
     //   update booked room status to "checkedOut" and available rooms to "needs_update"
-    // const data1 = await roomCollection.find(filterBookedRooms).toArray();
-    const data2 = await roomCollection.find(filterRooms).toArray();
+    const data1 = await roomCollection.updateMany(
+      filterBookedRooms,
+      updateBookedRooms
+    );
+    const data2 = await roomCollection.updateMany(filterRooms, updateRooms);
 
     // delete expired rooms in database
     // delete if todays the last day
     const deleteFilter = {
       "roomDetails.endDate": currentDate,
     };
-    // const data3 = await bookedRoomsCollection.deleteMany(deleteFilter);
-    // console.log("data1 --->", data1);
+    const data3 = await bookedRoomsCollection.deleteMany(deleteFilter);
+    console.log("data1 --->", data1);
     console.log("data2 --->", data2);
-    // console.log("data3 --->", data3);
+    console.log("data3 --->", data3);
     console.log("operation ended");
   } catch (error) {
     console.error(error.message);
