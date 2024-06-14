@@ -41,7 +41,7 @@ async function run() {
       .db("OneGoodStay")
       .createCollection("booked");
     // validate room dates everyday at 1pm
-    // scheduledCronJob(roomCollection, bookedRoomsCollection);
+    scheduledCronJob(roomCollection, bookedRoomsCollection);
     // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
@@ -164,7 +164,7 @@ async function run() {
     app.get("/rooms/:id", async (req, res) => {
       const roomId = req.params.id;
       const result = await roomCollection.findOne({
-        _id: ObjectId.createFromHexString(roomId),
+        _id: new ObjectId(roomId),
       });
       // get all rooms for host
       res.send(result);

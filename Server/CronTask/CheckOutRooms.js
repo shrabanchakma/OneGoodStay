@@ -15,7 +15,6 @@ const updateRoomStatus = async (roomCollection, bookedRoomsCollection) => {
       $and: [{ endDate: { $lte: currentDate } }, { status: "booked" }],
     };
     // update available rooms
-
     const updateRooms = {
       $set: {
         status: "needs_update",
@@ -28,21 +27,15 @@ const updateRoomStatus = async (roomCollection, bookedRoomsCollection) => {
       },
     };
     //   update booked room status to "checkedOut" and available rooms to "needs_update"
-    const data1 = await roomCollection.updateMany(
-      filterBookedRooms,
-      updateBookedRooms
-    );
-    const data2 = await roomCollection.updateMany(filterRooms, updateRooms);
+    await roomCollection.updateMany(filterBookedRooms, updateBookedRooms);
+    await roomCollection.updateMany(filterRooms, updateRooms);
 
-    // delete expired rooms in database
+    // delete expired rooms from database
     // delete if todays the last day
     const deleteFilter = {
       "roomDetails.endDate": currentDate,
     };
-    const data3 = await bookedRoomsCollection.deleteMany(deleteFilter);
-    console.log("data1 --->", data1);
-    console.log("data2 --->", data2);
-    console.log("data3 --->", data3);
+    await bookedRoomsCollection.deleteMany(deleteFilter);
     console.log("operation ended");
   } catch (error) {
     console.error(error.message);
@@ -51,7 +44,7 @@ const updateRoomStatus = async (roomCollection, bookedRoomsCollection) => {
 
 // cron task function
 const scheduledCronJob = (roomCollection, bookedRoomsCollection) => {
-  cron.schedule("*/5 * * * * *", async () => {
+  cron.schedule("0 13 * * *", async () => {
     await updateRoomStatus(roomCollection, bookedRoomsCollection);
   });
 };

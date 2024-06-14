@@ -75,13 +75,13 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
           <span
             data-tooltip-id="inform"
             data-tooltip-delay-show={300}
-            data-tooltip-content={"Room is free now. Update room availability"}
+            data-tooltip-content={"Room needs update(Change availability date)"}
             data-tooltip-place="bottom"
-            data-tooltip-variant="warning"
+            data-tooltip-variant="error"
             data-tooltip-float="true"
-            className="font-semibold text-gray-500 leading-tight ring-2 ring-orange-500  rounded-sm whitespace-nowrap"
+            className="font-semibold text-gray-500 leading-tight ring-2 ring-red-500  rounded-sm whitespace-nowrap"
           >
-            Checked out
+            Needs update
           </span>
         )}
       </td>
@@ -93,11 +93,11 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
           data-tooltip-content="edit"
           data-tooltip-float="true"
           data-tooltip-variant={
-            room?.status === "checkedOut" ? "warning" : "light"
+            room?.status === "checkedOut" ? "warning" : "error"
           }
           className={`px-2 cursor-pointer font-semibold text-lg leading-tight flex items-center justify-between active:bg-neutral-200 ${
             room?.status === "checkedOut" && "text-orange-500"
-          }`}
+          } ${room?.status === "needs_update" && "text-red-500"}`}
         >
           <FaPenToSquare />
           <FaAngleRight />

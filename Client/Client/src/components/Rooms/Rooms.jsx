@@ -15,12 +15,16 @@ const Rooms = () => {
     const allRooms = await getRooms();
     if (category) {
       const filteredRooms = allRooms.filter(
-        (room) => room?.category === category && room?.status !== "checkedOut"
+        (room) =>
+          room?.category === category &&
+          room?.status !== "checkedOut" &&
+          room?.status !== "needs_update"
       );
       setRooms(filteredRooms);
     } else {
       const filteredRooms = allRooms.filter(
-        (room) => room?.status !== "checkedOut"
+        (room) =>
+          room?.status !== "checkedOut" && room?.status !== "needs_update"
       );
       console.log("length -->", filteredRooms.length);
       setRooms(filteredRooms);
