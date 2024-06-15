@@ -10,7 +10,7 @@ const RoomReservation = ({ room }) => {
     <ContainerTwo>
       <div
         id="Reservation"
-        className="my-5 md:my-10 lg:my-20 -z-10 room-section bg-green-500"
+        className="my-5 md:my-10 lg:my-20 -z-10 room-section "
       >
         <Heading label="Room Reservation" />
         <div className="grid grid-cols-1 md:grid-cols-2  gap-4  p-5  border-[#e41b43] rounded-xl">

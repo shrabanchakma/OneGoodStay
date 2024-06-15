@@ -12,7 +12,6 @@ const AddRoom = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [previewImg, setPreviewImg] = useState(null);
   const defaultDate = new Date(new Date().setHours(0, 0, 0, 0));
-  console.log(defaultDate);
   const [dates, setDates] = useState({
     startDate: defaultDate,
     endDate: defaultDate,

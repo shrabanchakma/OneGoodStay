@@ -8,15 +8,14 @@ import { useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 const sections = ["Overview", "Amenities", "Reservation", "Review"];
 import "./RoomSection.css";
+import Feedback from "./Feedback";
 const RoomDetails = () => {
   const room = useLoaderData();
   const [currentSection, setCurrentSection] = useState("Overview");
-  console.log(currentSection);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   const modifyCurrentSection = () => {
-    console.log("hi");
     const sections = document.querySelectorAll(".room-section");
     sections.forEach((section) => {
       if (window.scrollY >= section.offsetTop - section.clientHeight / 2) {
@@ -36,7 +35,7 @@ const RoomDetails = () => {
       <img
         src={room?.image}
         alt=""
-        className="w-full w-[10vh h-[50vh] bg-green-500 lg:rounded-lg object-cover"
+        className="w-full w-[10vh h-[50vh]  lg:rounded-lg object-cover"
       />
       {/* sections */}
       <div className="sticky top-0 bg-white md:w-3/4 flex justify-between items-center h-12 lg:px-3 border-b border-gray-400 z-40">
@@ -59,6 +58,7 @@ const RoomDetails = () => {
       <TopAmenities roomAmenities={room?.amenities} />
       <RoomReservation room={room} />
       <RoomReview />
+      <Feedback />
     </Container>
   );
 };
