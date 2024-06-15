@@ -5,12 +5,31 @@ import TopAmenities from "./TopAmenities/TopAmenities";
 import RoomReservation from "./RoomReservation/RoomReservation";
 import RoomReview from "./RoomReview/RoomReview";
 import { useLoaderData } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const sections = ["Overview", "Amenities", "Reservation", "Review"];
+import "./RoomSection.css";
 const RoomDetails = () => {
   const room = useLoaderData();
+  const [currentSection, setCurrentSection] = useState("Overview");
+  console.log(currentSection);
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+  const modifyCurrentSection = () => {
+    console.log("hi");
+    const sections = document.querySelectorAll(".room-section");
+    sections.forEach((section) => {
+      if (window.scrollY >= section.offsetTop - section.clientHeight / 2) {
+        setCurrentSection(section.id);
+      }
+    });
+  };
+  useEffect(() => {
+    document.addEventListener("scroll", modifyCurrentSection);
+
+    return () => {
+      document.removeEventListener("scroll", modifyCurrentSection);
+    };
   }, []);
   return (
     <Container>
@@ -23,7 +42,12 @@ const RoomDetails = () => {
       <div className="sticky top-0 bg-white md:w-3/4 flex justify-between items-center h-12 lg:px-3 border-b border-gray-400 z-40">
         <div className="flex gap-4">
           {sections.map((section, idx) => (
-            <RoomSection key={idx} label={section} roomId={room?._id} />
+            <RoomSection
+              key={idx}
+              label={section}
+              roomId={room?._id}
+              isActive={section === currentSection}
+            />
           ))}
         </div>
         <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 hidden md:block">

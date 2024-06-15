@@ -26,7 +26,10 @@ const RoomReview = () => {
   };
   return (
     <ContainerTwo>
-      <div id="Review" className="flex flex-col items-start mt-24 mb-28 ">
+      <div
+        id="Review"
+        className="flex flex-col items-start room-section mb-36 "
+      >
         {/* average review / review stat / total review */}
         <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 ">
           <h1 className="text-5xl md:text-4xl font-medium">7/10</h1>
@@ -37,7 +40,7 @@ const RoomReview = () => {
           </p>
         </div>
 
-        <div className="w-full lg:w-11/12 h-full p-4 ">
+        <div className="w-full lg:w-11/12  p-4   ">
           <h1 className="font-medium text-gray-700 ">RecentReviews</h1>
           <div
             onMouseEnter={handleMouseEnter}

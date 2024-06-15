@@ -10,9 +10,9 @@ const TopAmenities = ({ roomAmenities }) => {
     setDisplayAmenities(filtered);
   }, [roomAmenities]);
   return (
-    <div id="Amenities" className="py-10">
+    <div id="Amenities" className="py-10 room-section">
       <Heading label="Popular amenities" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-1/2 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-1/2  h-56">
         {displayAmenities.map((amenity, idx) => (
           <div key={idx}>
             <div className="flex items-center justify-start gap-1">

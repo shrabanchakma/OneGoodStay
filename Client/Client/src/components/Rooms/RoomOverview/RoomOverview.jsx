@@ -3,7 +3,7 @@ import ContainerTwo from "../../Shared/ContainerTwo";
 const RoomOverview = ({ room }) => {
   return (
     <ContainerTwo>
-      <div id="Overview" className="space-y-2 mt-10">
+      <div id="Overview" className="space-y-2 mt-10 room-section">
         {/* todo: make it dynamic */}
         <h1 className="text-2xl font-medium">{room?.title}</h1>
 

@@ -8,7 +8,10 @@ const RoomReservation = ({ room }) => {
   const { userData } = useUserData();
   return (
     <ContainerTwo>
-      <div id="Reservation" className="my-5 md:my-10 lg:my-20 -z-10">
+      <div
+        id="Reservation"
+        className="my-5 md:my-10 lg:my-20 -z-10 room-section bg-green-500"
+      >
         <Heading label="Room Reservation" />
         <div className="grid grid-cols-1 md:grid-cols-2  gap-4  p-5  border-[#e41b43] rounded-xl">
           <ReservationCalender room={room} />
