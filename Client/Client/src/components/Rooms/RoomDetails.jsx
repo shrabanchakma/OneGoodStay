@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 const sections = ["Overview", "Amenities", "Reservation", "Review"];
 import "./RoomSection.css";
 import Feedback from "./Feedback";
+import { HashLink } from "react-router-hash-link";
 const RoomDetails = () => {
   const room = useLoaderData();
   const [currentSection, setCurrentSection] = useState("Overview");
@@ -50,7 +51,9 @@ const RoomDetails = () => {
           ))}
         </div>
         <button className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 hidden md:block">
-          Reserve a Room
+          <HashLink smooth to={`/room-details/${room?._id}#Reservation`}>
+            Reserve a Room
+          </HashLink>
         </button>
       </div>
 
@@ -58,7 +61,7 @@ const RoomDetails = () => {
       <TopAmenities roomAmenities={room?.amenities} />
       <RoomReservation room={room} />
       <RoomReview />
-      <Feedback />
+      <Feedback room={room} />
     </Container>
   );
 };

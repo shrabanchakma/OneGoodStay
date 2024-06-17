@@ -50,3 +50,9 @@ export const getBookedRooms = async (email) => {
   const { data } = await axiosSecure.get(`/booked-rooms/${email}`);
   return data;
 };
+
+// save user ratings
+export const saveRatingData = async (ratingData) => {
+  const { data } = await axiosSecure.post(`/rooms/ratings`, ratingData);
+  return data;
+};
