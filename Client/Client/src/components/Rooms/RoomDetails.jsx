@@ -60,7 +60,7 @@ const RoomDetails = () => {
       <RoomOverview room={room} />
       <TopAmenities roomAmenities={room?.amenities} />
       <RoomReservation room={room} />
-      <RoomReview />
+      <RoomReview room={room} />
       <Feedback room={room} />
     </Container>
   );

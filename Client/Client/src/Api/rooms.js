@@ -51,8 +51,14 @@ export const getBookedRooms = async (email) => {
   return data;
 };
 
-// save user ratings
+// save user reviews
 export const saveRatingData = async (ratingData) => {
   const { data } = await axiosSecure.post(`/rooms/ratings`, ratingData);
+  return data;
+};
+
+// get user reviews
+export const getRoomReviews = async (id) => {
+  const { data } = await axiosSecure.get(`/rooms/ratings/${id}`);
   return data;
 };

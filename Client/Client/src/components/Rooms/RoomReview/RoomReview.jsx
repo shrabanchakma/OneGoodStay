@@ -1,16 +1,33 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import RoomReviewBox from "./RoomReviewBox";
 import ContainerTwo from "../../Shared/ContainerTwo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CiCircleChevRight,
   CiCircleChevLeft,
   CiCircleInfo,
 } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa";
-const RoomReview = () => {
+import axiosSecure from "../../../Api";
+import { getRoomReviews } from "../../../Api/rooms";
+import RatingIndicator from "./RatingIndicator";
+const RoomReview = ({ room }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+  const [indicatorColor, setIndicatorColor] = useState("text-black");
+  const getIndicatorColor = (rating) => {
+    if (rating < 4) {
+      setIndicatorColor("text-red-500");
+    } else if (rating >= 4 && rating < 6) {
+      return setIndicatorColor("text-yellow-500");
+    } else if (rating >= 6 && rating < 7) {
+      setIndicatorColor("text-green-500");
+    } else {
+      setIndicatorColor("text-blue-600");
+    }
+  };
   const handleMouseEnter = () => {
     setIsVisible(true);
   };
@@ -24,6 +41,20 @@ const RoomReview = () => {
     1024: { slidesPerView: 2.1 },
     1538: { slidesPerView: 2.1 },
   };
+
+  useEffect(() => {
+    getRoomReviews(room?._id).then((reviewData) => setReviews(reviewData));
+  }, [room]);
+  useEffect(() => {
+    const total = reviews.reduce(
+      (acc, review) => review?.ratings?.["overall satisfaction"] + acc,
+      0
+    );
+    const avg = Math.floor(total / reviews.length) * 2;
+    setAverageRating(avg);
+    getIndicatorColor(avg);
+  }, [reviews]);
+
   return (
     <ContainerTwo>
       <div
@@ -32,10 +63,14 @@ const RoomReview = () => {
       >
         {/* average review / review stat / total review */}
         <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 ">
-          <h1 className="text-5xl md:text-4xl font-medium">7/10</h1>
-          <h2 className="text-3xl md:text-2xl font-medium">Good</h2>
+          <h1 className={`text-5xl md:text-4xl font-medium ${indicatorColor}`}>
+            {averageRating}/10
+          </h1>
+          <h2 className="text-3xl md:text-2xl font-medium">
+            <RatingIndicator rating={averageRating} />
+          </h2>
           <p className="text-sm flex items-center gap-2 ">
-            431 verified reviews
+            {reviews.length} verified reviews
             <CiCircleInfo className="text-xl font-bold hover:cursor-pointer" />
           </p>
         </div>
@@ -73,27 +108,11 @@ const RoomReview = () => {
               onSwiper={(swiper) => setSwiperInstance(swiper)}
               className="h-full"
             >
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RoomReviewBox />
-              </SwiperSlide>
+              {reviews.map((review) => (
+                <SwiperSlide key={review?._id}>
+                  <RoomReviewBox review={review} />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
           <div className="mt-3">

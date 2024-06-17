@@ -41,6 +41,7 @@ const CheckoutForm = ({ roomID, roomData }) => {
           },
           roomDetails: {
             ...roomData,
+            startDate: new Date(new Date().setHours(0, 0, 0, 0)),
             status: "booked",
           },
         };

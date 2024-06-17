@@ -287,10 +287,16 @@ async function run() {
       }
     });
 
-    // save rating data
+    // save review data
     app.post("/rooms/ratings", async (req, res) => {
       const ratingData = req.body;
       const result = await reviewCollection.insertOne(ratingData);
+      res.send(result);
+    });
+    // get room reviews
+    app.get("/rooms/ratings/:id", async (req, res) => {
+      const roomId = req.params.id;
+      const result = await reviewCollection.find({ roomId }).toArray();
       res.send(result);
     });
     // Send a ping to confirm a successful connection

@@ -36,7 +36,7 @@ const MyBookingsDataRow = ({ room }) => {
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm group-hover:bg-slate-50">
         <p className="text-gray-900 whitespace-no-wrap">
-          {formatDate(room?.startDate)}
+          {formatDate(room?.endDate)}
         </p>
       </td>
       <td className=" border-b border-gray-200 bg-white text-sm group-hover:bg-slate-50">

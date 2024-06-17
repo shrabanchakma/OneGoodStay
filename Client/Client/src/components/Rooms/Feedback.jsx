@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import "./Feedback.css";
 import {
   Dialog,
   DialogPanel,
@@ -35,8 +34,10 @@ const Feedback = ({ room }) => {
     setIsOpen(true);
   };
   const isUserSame = user?.email === room?.host?.email;
-
+  const isBtnDisabled =
+    !ratings?.["overall satisfaction"] || comment.length === 0;
   const handleSubmit = async () => {
+    setNextStep(false);
     try {
       const ratingData = {
         guest: {
@@ -45,6 +46,7 @@ const Feedback = ({ room }) => {
           image: user.photoURL,
         },
         roomId: room?._id,
+        date: new Date(new Date().setHours(0, 0, 0, 0)),
         comment,
         ratings: {
           ...ratings,
@@ -82,7 +84,7 @@ const Feedback = ({ room }) => {
         data-tooltip-variant="light"
         data-tooltip-float="true"
         disabled={isUserSame}
-        className="text-sky-700 font-bold border border-black bg-white  hover:bg-sky-100 active:bg-sky-200 px-4 py-2 rounded-3xl disabled:cursor-not-allowed"
+        className="text-sky-500 font-bold border border-black bg-white  hover:bg-sky-100 active:bg-sky-200 px-4 py-2 rounded-3xl disabled:cursor-not-allowed"
       >
         Share feedback
       </button>
@@ -180,7 +182,7 @@ const Feedback = ({ room }) => {
                       <textarea
                         onChange={handleComment}
                         placeholder="Please comment here ..."
-                        className="focus:outline-none px-4 pt-2 rounded-xl text-[17px]  border w-full min-h-[150px]"
+                        className="focus:outline-none px-4 pt-2 rounded-xl text-[17px]  border w-full min-h-[180px]"
                       />
                     </form>
                   </div>
@@ -206,8 +208,9 @@ const Feedback = ({ room }) => {
                           Previous
                         </button>
                         <button
+                          disabled={isBtnDisabled}
                           onClick={handleSubmit}
-                          className="w-full h-10 text-white rounded-3xl bg-sky-600 hover:bg-sky-700 active:bg-sky-800 outline-none"
+                          className="w-full h-10 text-white rounded-3xl bg-sky-600 hover:bg-sky-700 active:bg-sky-800 outline-none disabled:bg-sky-200"
                         >
                           Submit
                         </button>
