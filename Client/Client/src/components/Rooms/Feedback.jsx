@@ -13,12 +13,16 @@ import Logo from "../Shared/Logo";
 import useUserData from "../../Hooks/useUserData";
 import { Tooltip } from "react-tooltip";
 import { saveRatingData } from "../../Api/rooms";
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Feedback = ({ room }) => {
-  const { userData } = useUserData();
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
+  const [comment, setComment] = useState("");
   const [nextStep, setNextStep] = useState(false);
+  const totalRating = Array.from({ length: 5 }, (_, i) => i + 1);
   const handleRatings = (label, rating) => {
     let name = label.toLowerCase();
     let value = 0;
@@ -30,34 +34,41 @@ const Feedback = ({ room }) => {
   const handleModal = () => {
     setIsOpen(true);
   };
-  const isUserSame = userData?.email === room?.host?.email;
+  const isUserSame = user?.email === room?.host?.email;
 
   const handleSubmit = async () => {
     try {
-      const averageRating = Math.floor(
-        Object.values(ratings).reduce((acc, value) => acc + value, 0) / 5
-      );
       const ratingData = {
         guest: {
-          name: userData.name,
-          email: userData.email,
-          image: userData.image,
+          name: user.displayName,
+          email: user.email,
+          image: user.photoURL,
         },
+        roomId: room?._id,
+        comment,
         ratings: {
           ...ratings,
-          averageRating: averageRating,
         },
       };
-      const data = await saveRatingData(ratingData);
-      console.log(data);
+      console.table(ratingData);
+      setIsOpen(false);
+      await toast.promise(saveRatingData(ratingData), {
+        loading: "Saving changes...",
+        success: <p>Thank you for your feedback</p>,
+        error: <p className="text-pink-700">Ops! Something went wrong</p>,
+      });
+      setRatings({});
+      setComment("");
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleNext = () => {
-    console.log("next-->");
     setNextStep((prev) => !prev);
+  };
+  const handleComment = (e) => {
+    setComment(e.target.value);
   };
   return (
     <div className="w-full flex flex-col items-center justify-center gap-1">
@@ -137,16 +148,29 @@ const Feedback = ({ room }) => {
                       />
                     </div>
                     <form
-                      className={`w-[50%] h-auto  gap-1 flex flex-col justify-center items-center`}
+                      className={`w-[50%] h-auto  gap-1 flex flex-col justify-center items-start`}
                     >
                       <h1 className="font-medium w-full text-start">
-                        {"How was the room?"}
+                        {"Overall satisfaction?"} <br />
+                        <span>{"(1 = lowest and 5 = highest)"}</span>
                       </h1>
-                      <Rating
-                        label={"Overall Satisfaction"}
-                        handleRatings={handleRatings}
-                        currentRating={ratings?.["overall review"]}
-                      />
+                      <div className=" flex items-center justify-center  gap-2  mb-5 ">
+                        {totalRating.map((rating) => (
+                          <div
+                            key={rating}
+                            onClick={() =>
+                              handleRatings("overall satisfaction", rating)
+                            }
+                            className={`w-12 h-12 flex items-center justify-center  rounded-[50%] border bg-neutral-100  hover:bg-sky-600 active:bg-sky-700 cursor-pointer relative ${
+                              rating <= ratings?.["overall satisfaction"]
+                                ? " bg-sky-600 text-white  hover:text-white"
+                                : "text-sky-600 hover:text-white "
+                            }transition-colors ease-in-out duration-100 `}
+                          >
+                            <span>{rating}</span>
+                          </div>
+                        ))}
+                      </div>
 
                       <h1 className="mt-2 font-medium">
                         {
@@ -154,6 +178,7 @@ const Feedback = ({ room }) => {
                         }
                       </h1>
                       <textarea
+                        onChange={handleComment}
                         placeholder="Please comment here ..."
                         className="focus:outline-none px-4 pt-2 rounded-xl text-[17px]  border w-full min-h-[150px]"
                       />
@@ -163,7 +188,7 @@ const Feedback = ({ room }) => {
                     <div
                       className={`${
                         nextStep ? "bg-gray-500" : " bg-sky-600"
-                      } w-[40px] h-[3px]`}
+                      } w-[40px] h-[3px] `}
                     ></div>
                     <div
                       className={`${
@@ -181,7 +206,7 @@ const Feedback = ({ room }) => {
                           Previous
                         </button>
                         <button
-                          onClick={handleNext}
+                          onClick={handleSubmit}
                           className="w-full h-10 text-white rounded-3xl bg-sky-600 hover:bg-sky-700 active:bg-sky-800 outline-none"
                         >
                           Submit

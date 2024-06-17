@@ -40,9 +40,9 @@ async function run() {
     const bookedRoomsCollection = await client
       .db("OneGoodStay")
       .createCollection("booked");
-    const ratingCollection = await client
+    const reviewCollection = await client
       .db("OneGoodStay")
-      .createCollection("ratings");
+      .createCollection("reviews");
     // validate room dates everyday at 1pm
     scheduledCronJob(roomCollection, bookedRoomsCollection);
     // add users
@@ -290,7 +290,7 @@ async function run() {
     // save rating data
     app.post("/rooms/ratings", async (req, res) => {
       const ratingData = req.body;
-      const result = await ratingCollection.insertOne(ratingData);
+      const result = await reviewCollection.insertOne(ratingData);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
