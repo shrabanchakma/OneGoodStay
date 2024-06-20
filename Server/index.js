@@ -302,7 +302,7 @@ async function run() {
     // get category reviews
     app.get("/rooms/category-reviews/:id", async (req, res) => {
       const roomId = req.params.id;
-      const result = await reviewCollection
+      let result = await reviewCollection
         .aggregate([
           {
             $match: {
@@ -332,9 +332,31 @@ async function run() {
               },
             },
           },
+          {
+            $project: {
+              avg_cleanliness: {
+                $multiply: ["$avg_cleanliness", 2],
+              },
+              avg_staff_service: {
+                $multiply: ["$avg_staff_service", 2],
+              },
+              avg_amenities: {
+                $multiply: ["$avg_amenities", 2],
+              },
+              avg_condition_facilities: {
+                $multiply: ["$avg_condition_facilities", 2],
+              },
+              avg_eco_friendliness: {
+                $multiply: ["$avg_eco_friendliness", 2],
+              },
+              avg_overall_satisfaction: {
+                $multiply: ["$avg_overall_satisfaction", 2],
+              },
+            },
+          },
         ])
         .toArray();
-      res.send(result);
+      res.send(result[0]);
     });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

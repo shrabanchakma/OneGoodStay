@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import RoomReviewModal from "./RoomReviewModal";
 import PropTypes from "prop-types";
 import RatingIndicator from "./RatingIndicator";
-const RoomReviewBox = ({ review, roomId }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const RoomReviewBox = ({ review, setIsModalOpen }) => {
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -46,7 +44,7 @@ const RoomReviewBox = ({ review, roomId }) => {
           </p>
           <p
             onClick={() => {
-              setIsOpen(true);
+              setIsModalOpen(true);
             }}
             className="text-blue-500 hover:cursor-pointer text-[15px]"
           >
@@ -59,8 +57,6 @@ const RoomReviewBox = ({ review, roomId }) => {
           <p className="text-[12px] text-gray-700">{date}</p>
         </div>
       </div>
-      {/* modal */}
-      <RoomReviewModal isOpen={isOpen} setIsOpen={setIsOpen} roomId={roomId} />
     </div>
   );
 };

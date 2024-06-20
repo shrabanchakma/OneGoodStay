@@ -11,8 +11,10 @@ import { FaArrowRight } from "react-icons/fa";
 import axiosSecure from "../../../Api";
 import { getRoomReviews } from "../../../Api/rooms";
 import RatingIndicator from "./RatingIndicator";
+import RoomReviewModal from "./RoomReviewModal";
 const RoomReview = ({ room }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
@@ -33,6 +35,9 @@ const RoomReview = ({ room }) => {
   };
   const handleMouseLeave = () => {
     setIsVisible(false);
+  };
+  const handleModalButton = () => {
+    setIsModalOpen(true);
   };
   const swiperBreakpoints = {
     320: { slidesPerView: 1 },
@@ -110,17 +115,31 @@ const RoomReview = ({ room }) => {
             >
               {reviews.map((review) => (
                 <SwiperSlide key={review?._id}>
-                  <RoomReviewBox review={review} roomId={review?.roomId} />
+                  <RoomReviewBox
+                    review={review}
+                    setIsModalOpen={setIsModalOpen}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
           <div className="mt-3">
-            <button className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-full border border-gray-700 p-2 rounded-xl flex justify-center items-center ">
+            <button
+              onClick={handleModalButton}
+              className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-full border border-gray-700 p-2 rounded-xl flex justify-center items-center "
+            >
               See All Reviews
               <FaArrowRight />
             </button>
           </div>
+          {/* modal */}
+          <RoomReviewModal
+            isOpen={isModalOpen}
+            setIsOpen={setIsModalOpen}
+            roomId={room?._id}
+            averageRating={averageRating}
+            reviews={reviews}
+          />
         </div>
       </div>
     </ContainerTwo>

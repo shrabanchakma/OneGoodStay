@@ -2,13 +2,13 @@ import React from "react";
 const RatingIndicator = ({ rating }) => {
   const getRatingIndicator = () => {
     if (rating < 4) {
-      return <span className="inline-block">Bad</span>;
+      return "Bad";
     } else if (rating >= 4 && rating < 6) {
-      return <span className="inline-block">Medium</span>;
+      return "Medium";
     } else if (rating >= 6 && rating < 7) {
-      return <span className="inline-block">Good</span>;
+      return "Good";
     } else {
-      return <span className=" inline-block">Very Good</span>;
+      return "Very good";
     }
   };
 
