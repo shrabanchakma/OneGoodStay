@@ -62,3 +62,9 @@ export const getRoomReviews = async (id) => {
   const { data } = await axiosSecure.get(`/rooms/ratings/${id}`);
   return data;
 };
+
+// get all review data based on category
+export const getCategoryReviews = async (id) => {
+  const { data } = await axiosSecure.get(`/rooms/category-reviews/${id}`);
+  return data;
+};

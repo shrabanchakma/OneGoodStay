@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import RoomReviewModal from "./RoomReviewModal";
 import PropTypes from "prop-types";
 import RatingIndicator from "./RatingIndicator";
-const RoomReviewBox = ({ review }) => {
+const RoomReviewBox = ({ review, roomId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [date, setDate] = useState("");
 
@@ -32,7 +32,6 @@ const RoomReviewBox = ({ review }) => {
     return `${text.substring(0, length)}...`;
   };
   const averageRating = review?.ratings?.["overall satisfaction"] * 2;
-  // const
   // review box
   return (
     <div className="h-[30vh] w-[330px] sm:w-[350px] md:w-[400px] bg-white rounded-lg border-[1px] border-gray-400 space-y-4 ">
@@ -61,7 +60,7 @@ const RoomReviewBox = ({ review }) => {
         </div>
       </div>
       {/* modal */}
-      <RoomReviewModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <RoomReviewModal isOpen={isOpen} setIsOpen={setIsOpen} roomId={roomId} />
     </div>
   );
 };

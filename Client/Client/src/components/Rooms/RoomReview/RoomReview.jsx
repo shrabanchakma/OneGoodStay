@@ -110,7 +110,7 @@ const RoomReview = ({ room }) => {
             >
               {reviews.map((review) => (
                 <SwiperSlide key={review?._id}>
-                  <RoomReviewBox review={review} />
+                  <RoomReviewBox review={review} roomId={review?.roomId} />
                 </SwiperSlide>
               ))}
             </Swiper>

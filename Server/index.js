@@ -299,6 +299,43 @@ async function run() {
       const result = await reviewCollection.find({ roomId }).toArray();
       res.send(result);
     });
+    // get category reviews
+    app.get("/rooms/category-reviews/:id", async (req, res) => {
+      const roomId = req.params.id;
+      const result = await reviewCollection
+        .aggregate([
+          {
+            $match: {
+              roomId: roomId,
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              avg_cleanliness: {
+                $avg: "$ratings.cleanliness",
+              },
+              avg_staff_service: {
+                $avg: "$ratings.staff & service",
+              },
+              avg_amenities: {
+                $avg: "$ratings.amenities",
+              },
+              avg_condition_facilities: {
+                $avg: "$ratings.property conditions & facilities",
+              },
+              avg_eco_friendliness: {
+                $avg: "$ratings.eco-friendliness",
+              },
+              avg_overall_satisfaction: {
+                $avg: "$ratings.overall satisfaction",
+              },
+            },
+          },
+        ])
+        .toArray();
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

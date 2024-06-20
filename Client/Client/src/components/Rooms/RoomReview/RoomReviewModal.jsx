@@ -5,7 +5,16 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import PropTypes from "prop-types";
-const RoomReviewModal = ({ isOpen, setIsOpen }) => {
+import { useEffect } from "react";
+import { getCategoryReviews } from "../../../Api/rooms";
+const RoomReviewModal = ({ isOpen, setIsOpen, roomId }) => {
+  // get room review data
+  useEffect(() => {
+    getCategoryReviews(roomId).then((categoryData) =>
+      console.log(categoryData[0])
+    );
+  }, []);
+
   return (
     <Transition appear show={isOpen}>
       <Dialog
