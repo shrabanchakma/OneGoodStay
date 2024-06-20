@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { getCategoryReviews } from "../../../Api/rooms";
 import ProgressBar from "./ProgressBar";
 import RatingIndicator from "./RatingIndicator";
-import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import ModalReview from "./ModalReview";
 const RoomReviewModal = ({
@@ -86,7 +85,7 @@ const RoomReviewModal = ({
               <div className="w-full">
                 {/* reviews */}
                 {reviews.map((review) => (
-                  <ModalReview key={review?._id} />
+                  <ModalReview key={review?._id} review={review}/>
                 ))}
               </div>
             </DialogPanel>

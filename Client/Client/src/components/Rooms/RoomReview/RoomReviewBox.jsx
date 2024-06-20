@@ -1,30 +1,7 @@
-import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import RatingIndicator from "./RatingIndicator";
+import { formatDateTwo } from "../../../Api/utils";
 const RoomReviewBox = ({ review, setIsModalOpen }) => {
-  const [date, setDate] = useState("");
-
-  useEffect(() => {
-    const reviewDate = new Date(review?.date);
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const month = reviewDate.getMonth();
-    const day = reviewDate.getDate();
-    const year = reviewDate.getFullYear();
-    setDate(`${monthNames[month]} ${day}, ${year}`);
-  }, [review]);
   const truncateText = (text, length) => {
     if (text.length <= length) return text;
     return `${text.substring(0, length)}...`;
@@ -54,7 +31,9 @@ const RoomReviewBox = ({ review, setIsModalOpen }) => {
         <div>
           {/* user name and review date */}
           <h1 className="font-medium text-sm ">{review?.guest?.name}</h1>
-          <p className="text-[12px] text-gray-700">{date}</p>
+          <p className="text-[12px] text-gray-700">
+            {formatDateTwo(review?.date)}
+          </p>
         </div>
       </div>
     </div>
@@ -62,5 +41,6 @@ const RoomReviewBox = ({ review, setIsModalOpen }) => {
 };
 RoomReviewBox.propTypes = {
   review: PropTypes.object,
+  setIsModalOpen: PropTypes.func,
 };
 export default RoomReviewBox;
