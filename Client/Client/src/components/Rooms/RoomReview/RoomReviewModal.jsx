@@ -11,6 +11,7 @@ import ProgressBar from "./ProgressBar";
 import RatingIndicator from "./RatingIndicator";
 import { RxCross2 } from "react-icons/rx";
 import ModalReview from "./ModalReview";
+import { FaChevronDown } from "react-icons/fa";
 const RoomReviewModal = ({
   isOpen,
   setIsOpen,
@@ -19,12 +20,48 @@ const RoomReviewModal = ({
   reviews,
 }) => {
   const [reviewCategoryData, setReviewCategoryData] = useState({});
-  // get room review data
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [filteredReviews, setFilteredReviews] = useState([]);
+  const dropdownOptions = [
+    "Highest guest rating",
+    "Lowest guest rating",
+    "Most recent",
+  ];
+  const [selectedOption, setSelectedOption] = useState("");
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const selectOption = (option) => {
+    setSelectedOption(option);
+    setIsDropdownOpen((prev) => !prev);
+  };
+  // get room review data by categories
   useEffect(() => {
-    getCategoryReviews(roomId).then((categoryData) =>
-      setReviewCategoryData(categoryData)
-    );
-  }, []);
+    getCategoryReviews(roomId).then((categoryData) => {
+      setReviewCategoryData(categoryData);
+    });
+    setFilteredReviews(reviews);
+  }, [reviews, roomId]);
+
+  // filter reviews
+  useEffect(() => {
+    let filtered = [];
+    if (selectedOption === "Highest guest rating") {
+      filtered = reviews.filter(
+        (review) => review?.ratings["overall satisfaction"] > 3
+      );
+    } else if (selectedOption === "Lowest guest rating") {
+      filtered = reviews.filter(
+        (review) => review?.ratings["overall satisfaction"] < 4
+      );
+    } else {
+      filtered = reviews.sort((a, b) => new Date(b?.date) - new Date(a?.date));
+    }
+    setFilteredReviews(filtered);
+  }, [selectedOption]);
+
+  // console.log(reviewCategoryData);
   return (
     <Transition appear show={isOpen}>
       <Dialog
@@ -82,10 +119,60 @@ const RoomReviewModal = ({
                   value={reviewCategoryData?.avg_eco_friendliness}
                 />
               </div>
+              {/* filter */}
+              <div className="w-full my-10  ">
+                <div className="relative inline-block text-left w-full">
+                  <div>
+                    <button
+                      type="button"
+                      className=" flex flex-col justify-center items-start w-full rounded-md border border-gray-300 shadow-sm py-1 px-4    hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      id="menu-button"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onClick={toggleDropdown}
+                    >
+                      <div className="flex justify-between items-center w-full">
+                        <div className="flex flex-col items-start text-black text-[13px] font-medium ">
+                          Sort by
+                          <span className="text-gray-700 text-[15px] font-normal">
+                            {selectedOption
+                              ? selectedOption
+                              : "Highest guest rating"}
+                          </span>
+                        </div>
+                        <FaChevronDown />
+                      </div>
+                    </button>
+                  </div>
+
+                  {isDropdownOpen && (
+                    <div
+                      className="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="menu-button"
+                    >
+                      <ul className="py-1" role="none">
+                        {dropdownOptions.map((option) => (
+                          <li
+                            key={option}
+                            href="#"
+                            className="text-gray-700 block px-4 py-2 text-sm cursor-pointer hover:text-neutral-100 hover:bg-blue-600"
+                            role="menuitem"
+                            onClick={() => selectOption(option)}
+                          >
+                            {option}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="w-full">
                 {/* reviews */}
-                {reviews.map((review) => (
-                  <ModalReview key={review?._id} review={review}/>
+                {filteredReviews.map((review) => (
+                  <ModalReview key={review?._id} review={review} />
                 ))}
               </div>
             </DialogPanel>

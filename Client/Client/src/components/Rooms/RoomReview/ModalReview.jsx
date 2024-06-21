@@ -5,7 +5,7 @@ import { formatDate, formatDateTwo } from "../../../Api/utils";
 import logo from "../../../assets/OneGoodStay-logo.png";
 const ModalReview = ({ review }) => {
   // this is review
-  console.log(review);
+  // console.log(review);
   return (
     <div className="h-auto w-full flex flex-col items-end justify-center border-b pb-5 ">
       <div className="pb-[2px] pt-4 w-full">
