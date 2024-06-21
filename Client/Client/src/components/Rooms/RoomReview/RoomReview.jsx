@@ -9,7 +9,7 @@ import {
 } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa";
 import axiosSecure from "../../../Api";
-import { getRoomReviews } from "../../../Api/rooms";
+import { getAllReviews, getRoomReviews } from "../../../Api/rooms";
 import RatingIndicator from "./RatingIndicator";
 import RoomReviewModal from "./RoomReviewModal";
 const RoomReview = ({ room }) => {
@@ -48,7 +48,12 @@ const RoomReview = ({ room }) => {
   };
 
   useEffect(() => {
-    getRoomReviews(room?._id).then((reviewData) => setReviews(reviewData));
+    getRoomReviews(room?._id, 1, 6).then((reviewData) =>
+      setReviews(reviewData)
+    );
+    getAllReviews(room?._id).then((data) =>
+      console.log("total-reviews --->", data)
+    );
   }, [room]);
   useEffect(() => {
     const total = reviews.reduce(

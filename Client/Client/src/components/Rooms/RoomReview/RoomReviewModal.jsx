@@ -6,28 +6,25 @@ import {
 } from "@headlessui/react";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { getCategoryReviews } from "../../../Api/rooms";
+import { getCategoryReviews, getRoomReviews } from "../../../Api/rooms";
 import ProgressBar from "./ProgressBar";
 import RatingIndicator from "./RatingIndicator";
 import { RxCross2 } from "react-icons/rx";
 import ModalReview from "./ModalReview";
-import { FaChevronDown } from "react-icons/fa";
-const RoomReviewModal = ({
-  isOpen,
-  setIsOpen,
-  roomId,
-  averageRating,
-  reviews,
-}) => {
+import { FaArrowRight, FaChevronDown } from "react-icons/fa";
+const RoomReviewModal = ({ isOpen, setIsOpen, roomId, averageRating }) => {
   const [reviewCategoryData, setReviewCategoryData] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [filteredReviews, setFilteredReviews] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [page, setPage] = useState(1);
   const dropdownOptions = [
     "Highest guest rating",
     "Lowest guest rating",
     "Most recent",
+    "All",
   ];
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState("All");
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -36,6 +33,20 @@ const RoomReviewModal = ({
     setSelectedOption(option);
     setIsDropdownOpen((prev) => !prev);
   };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+  const handleMoreReviews = () => {
+    setPage((prev) => prev + 1);
+  };
+  console.log(page);
+  // get reviews
+  useEffect(() => {
+    getRoomReviews(roomId, page, 3).then((reviewData) =>
+      setReviews(reviewData)
+    );
+    console.log("entering");
+  }, [page]);
   // get room review data by categories
   useEffect(() => {
     getCategoryReviews(roomId).then((categoryData) => {
@@ -47,7 +58,9 @@ const RoomReviewModal = ({
   // filter reviews
   useEffect(() => {
     let filtered = [];
-    if (selectedOption === "Highest guest rating") {
+    if (selectedOption === "All") {
+      filtered = reviews;
+    } else if (selectedOption === "Highest guest rating") {
       filtered = reviews.filter(
         (review) => review?.ratings["overall satisfaction"] > 3
       );
@@ -81,7 +94,10 @@ const RoomReviewModal = ({
           >
             <DialogPanel className="h-[50rem] w-[40rem] px-5 py-5  bg-white rounded-xl overflow-y-scroll ">
               <div className="flex items-center gap-2 mb-9">
-                <button className=" hover:bg-blue-200 rounded-full w-8 h-8 flex items-center justify-center">
+                <button
+                  onClick={closeModal}
+                  className=" hover:bg-blue-200 rounded-full w-8 h-8 flex items-center justify-center"
+                >
                   <RxCross2 size={25} className="text-blue-500  " />
                 </button>
                 <span className="font-bold text-[17px]">Guest reviews</span>
@@ -135,9 +151,7 @@ const RoomReviewModal = ({
                         <div className="flex flex-col items-start text-black text-[13px] font-medium ">
                           Sort by
                           <span className="text-gray-700 text-[15px] font-normal">
-                            {selectedOption
-                              ? selectedOption
-                              : "Highest guest rating"}
+                            {selectedOption}
                           </span>
                         </div>
                         <FaChevronDown />
@@ -174,6 +188,13 @@ const RoomReviewModal = ({
                 {filteredReviews.map((review) => (
                   <ModalReview key={review?._id} review={review} />
                 ))}
+                <button
+                  onClick={handleMoreReviews}
+                  className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-[9rem] mx-auto mb-5 mt-2 border border-gray-700 p-2 rounded-xl flex justify-center items-center"
+                >
+                  More reviews
+                  <FaArrowRight />
+                </button>
               </div>
             </DialogPanel>
           </TransitionChild>

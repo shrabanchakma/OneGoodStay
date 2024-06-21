@@ -57,9 +57,21 @@ export const saveRatingData = async (ratingData) => {
   return data;
 };
 
-// get user reviews
-export const getRoomReviews = async (id) => {
-  const { data } = await axiosSecure.get(`/rooms/ratings/${id}`);
+// get reviews (lazy loading)
+export const getRoomReviews = async (id, page, limit) => {
+  const { data } = await axiosSecure.get(
+    `/rooms/reviews/${id}?page=${page}&&limit=${limit}`,
+    {
+      page,
+      limit,
+    }
+  );
+  return data;
+};
+
+// get reviews (lazy loading)
+export const getAllReviews = async (id) => {
+  const { data } = await axiosSecure(`/rooms/total-reviews/${id}`);
   return data;
 };
 

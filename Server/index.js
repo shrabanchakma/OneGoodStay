@@ -293,11 +293,35 @@ async function run() {
       const result = await reviewCollection.insertOne(ratingData);
       res.send(result);
     });
-    // get room reviews
-    app.get("/rooms/ratings/:id", async (req, res) => {
+    // get room reviews (lazy loading)
+    app.get("/rooms/reviews/:id", async (req, res) => {
+      const { page = 1, limit = 6 } = req.query;
       const roomId = req.params.id;
-      const result = await reviewCollection.find({ roomId }).toArray();
+      const start = 0;
+      const end = page * limit;
+      const result = (await reviewCollection.find({ roomId }).toArray()).slice(
+        start,
+        end
+      );
       res.send(result);
+    });
+
+    // total reviews
+    app.get("/rooms/total-reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await reviewCollection
+        .aggregate([
+          {
+            $match: {
+              roomId: id,
+            },
+          },
+          {
+            $count: "total_reviews",
+          },
+        ])
+        .toArray();
+      res.send(result[0]);
     });
     // get category reviews
     app.get("/rooms/category-reviews/:id", async (req, res) => {
