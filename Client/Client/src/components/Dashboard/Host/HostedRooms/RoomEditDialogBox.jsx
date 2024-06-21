@@ -46,6 +46,7 @@ const RoomEditDialogBox = ({
           onClose={() => setIsOpen(false)}
           className="relative z-50"
         >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
           <TransitionChild
             show={isOpen}
             enter="transition-all transform duration-200"
@@ -57,8 +58,8 @@ const RoomEditDialogBox = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl ${
-                  hoveringButton ? "bg-gray-600" : "bg-neutral-200"
+                className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl border-none ${
+                  hoveringButton ? "bg-gray-600" : "bg-white"
                 }`}
               >
                 <div className="w-full h-1/2">
@@ -66,19 +67,33 @@ const RoomEditDialogBox = ({
                     onClick={handleUpdateButton}
                     data-tooltip-id="tooltip"
                     data-tooltip-delay-show={300}
+                    data-tooltip-content={
+                      status === "booked"
+                        ? "You can not update. Room is already booked"
+                        : "Update Room"
+                    }
+                    data-tooltip-place="right"
+                    data-tooltip-variant={
+                      status === "booked" ? "warning" : "light"
+                    }
+                    data-tooltip-float="false"
                     onMouseEnter={() => setHoverButton("button1")}
                     onMouseLeave={() => setHoverButton(null)}
                     className={` w-full h-1/2 font-semibold transition-color duration-150 border-b-[1px] ${
-                      hoveredButton("button1")
-                        ? "bg-neutral-200"
-                        : "bg-gray-600"
-                    } text-white  hover:text-green-600 ${
-                      status === "booked" && "cursor-not-allowed"
+                      hoveredButton("button1") ? "bg-white" : "bg-gray-600"
+                    } text-white  hover:text-green-600 active:bg-neutral-200 ${
+                      status === "booked" && ""
                     } `}
                   >
                     Update
                   </button>
                   <button
+                    data-tooltip-id="tooltip"
+                    data-tooltip-delay-show={300}
+                    data-tooltip-content={"Delete room"}
+                    data-tooltip-place="right"
+                    data-tooltip-variant="light"
+                    data-tooltip-float="false"
                     onClick={handleDeleteButton}
                     onMouseEnter={() => setHoverButton("button2")}
                     onMouseLeave={() => setHoverButton(null)}
@@ -90,19 +105,7 @@ const RoomEditDialogBox = ({
                   >
                     Delete
                   </button>
-                  <Tooltip
-                    id="tooltip"
-                    place="right"
-                    content={
-                      status === "booked"
-                        ? "You can not update. Room is already booked"
-                        : "Update Room"
-                    }
-                    variant="light"
-                    style={{
-                      backgroundColor: "rgb(229 229 229)",
-                    }}
-                  />
+                  <Tooltip id="tooltip" />
                 </div>
               </DialogPanel>
             </div>
@@ -116,6 +119,7 @@ const RoomEditDialogBox = ({
           onClose={() => setIsModalOpen(false)}
           className="relative z-50"
         >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
           <TransitionChild
             show={isModalOpen}
             enter="transition-all transform duration-200"
@@ -127,10 +131,15 @@ const RoomEditDialogBox = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl bg-neutral-100`}
+                className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl bg-white`}
               >
                 <div className="flex flex-col items-center justify-center gap-4 w-full">
-                  <p className="font-semibold text-lg">Are you sure?</p>
+                  <div className="w-full text-center">
+                    <p className="font-semibold text-xl">Are you sure?</p>
+                    <p className="text-[12px] w-full text-center text-gray-700">
+                      This room will be permanently deleted
+                    </p>
+                  </div>
                   <div className="flex items-center justify-evenly w-full">
                     <button
                       onClick={handleCancelButton}
@@ -139,12 +148,19 @@ const RoomEditDialogBox = ({
                       Cancel
                     </button>
                     <button
+                      data-tooltip-id="confirm-delete"
+                      data-tooltip-delay-show={300}
+                      data-tooltip-content={"Confirm delete"}
+                      data-tooltip-place="right"
+                      data-tooltip-variant="warning"
+                      data-tooltip-float="false"
                       onClick={() => handleDeleteRoom(roomId)}
                       className="font-semibold py-2 px-3 bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700 rounded-xl"
                     >
                       Confirm
                     </button>
                   </div>
+                  <Tooltip id="confirm-delete" />
                 </div>
               </DialogPanel>
             </div>

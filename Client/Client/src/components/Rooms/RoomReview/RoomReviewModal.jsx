@@ -12,12 +12,20 @@ import RatingIndicator from "./RatingIndicator";
 import { RxCross2 } from "react-icons/rx";
 import ModalReview from "./ModalReview";
 import { FaArrowRight, FaChevronDown } from "react-icons/fa";
-const RoomReviewModal = ({ isOpen, setIsOpen, roomId, averageRating }) => {
+const RoomReviewModal = ({
+  isOpen,
+  setIsOpen,
+  roomId,
+  averageRating,
+  totalReviews,
+}) => {
   const [reviewCategoryData, setReviewCategoryData] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(1);
+  console.log("total reviews -->", totalReviews);
+  console.log("total reviews -->", averageRating);
   const dropdownOptions = [
     "Highest guest rating",
     "Lowest guest rating",
@@ -104,13 +112,18 @@ const RoomReviewModal = ({ isOpen, setIsOpen, roomId, averageRating }) => {
               </div>
               <div className="py-4">
                 <div className="text-2xl font-bold flex items-center gap-2">
-                  {averageRating}/10
+                  {!isNaN(averageRating)
+                    ? `${averageRating}/10`
+                    : "No rating yet"}
+
                   <span>
                     <RatingIndicator rating={averageRating} />
                   </span>
                 </div>
                 <div className="text-gray-700">
-                  Total {reviews.length} reviews
+                  {totalReviews
+                    ? `Total ${totalReviews} reviews`
+                    : "No reviews yet"}
                 </div>
               </div>
               <div className="w-full ">

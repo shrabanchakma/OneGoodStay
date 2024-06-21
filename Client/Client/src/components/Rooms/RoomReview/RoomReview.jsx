@@ -8,6 +8,7 @@ import {
   CiCircleInfo,
 } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa";
+import { BiSad } from "react-icons/bi";
 import axiosSecure from "../../../Api";
 import { getAllReviews, getRoomReviews } from "../../../Api/rooms";
 import RatingIndicator from "./RatingIndicator";
@@ -19,6 +20,7 @@ const RoomReview = ({ room }) => {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [indicatorColor, setIndicatorColor] = useState("text-black");
+  const [totalReviews, setTotalReviews] = useState(0);
   const getIndicatorColor = (rating) => {
     if (rating < 4) {
       setIndicatorColor("text-red-500");
@@ -52,7 +54,7 @@ const RoomReview = ({ room }) => {
       setReviews(reviewData)
     );
     getAllReviews(room?._id).then((data) =>
-      console.log("total-reviews --->", data)
+      setTotalReviews(data.total_reviews)
     );
   }, [room]);
   useEffect(() => {
@@ -72,80 +74,91 @@ const RoomReview = ({ room }) => {
         className="flex flex-col items-start room-section mb-36 "
       >
         {/* average review / review stat / total review */}
-        <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 ">
-          <h1 className={`text-5xl md:text-4xl font-medium ${indicatorColor}`}>
-            {averageRating}/10
-          </h1>
-          <h2 className="text-3xl md:text-2xl font-medium">
-            <RatingIndicator rating={averageRating} />
-          </h2>
-          <p className="text-sm flex items-center gap-2 ">
-            {reviews.length} verified reviews
-            <CiCircleInfo className="text-xl font-bold hover:cursor-pointer" />
-          </p>
-        </div>
-
-        <div className="w-full lg:w-11/12  p-4   ">
-          <h1 className="font-medium text-gray-700 ">RecentReviews</h1>
-          <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className=" relative "
-          >
-            {/* left button */}
-            <button
-              className={` ${
-                isVisible ? "opacity-100" : "opacity-0    "
-              } absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150 hover:bg-sky-100`}
-              onClick={() => swiperInstance.slidePrev()}
+        {!isNaN(averageRating) && averageRating ? (
+          <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 ">
+            <h1
+              className={`text-5xl md:text-4xl font-medium ${indicatorColor}`}
             >
-              <CiCircleChevLeft className="text-sky-700 text-4xl" />
-            </button>
-            {/* right button */}
-            <button
-              className={` ${
-                isVisible ? "opacity-100" : "opacity-0    "
-              } absolute right-0 -translate-y-1/2 top-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150 hover:bg-sky-100`}
-              onClick={() => swiperInstance.slideNext()}
-            >
-              <CiCircleChevRight className="text-sky-700 text-4xl" />
-            </button>
-
-            <Swiper
-              spaceBetween={5}
-              slidesPerView={1}
-              breakpoints={swiperBreakpoints}
-              onSwiper={(swiper) => setSwiperInstance(swiper)}
-              className="h-full"
-            >
-              {reviews.map((review) => (
-                <SwiperSlide key={review?._id}>
-                  <RoomReviewBox
-                    review={review}
-                    setIsModalOpen={setIsModalOpen}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+              {averageRating}/10
+            </h1>
+            <h2 className="text-3xl md:text-2xl font-medium">
+              <RatingIndicator rating={averageRating} />
+            </h2>
+            <p className="text-sm flex items-center gap-2 ">
+              {totalReviews} verified reviews
+              <CiCircleInfo className="text-xl font-bold hover:cursor-pointer" />
+            </p>
           </div>
-          <div className="mt-3">
-            <button
-              onClick={handleModalButton}
-              className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-full border border-gray-700 p-2 rounded-xl flex justify-center items-center "
-            >
-              See All Reviews
-              <FaArrowRight />
-            </button>
+        ) : (
+          <div className="lg:h-full lg:w-1/4 flex items-center justify-center text-5xl md:text-2xl font-medium text-blue-500  p-4 gap-2">
+            <BiSad size={26} className="text-gray-700" />
+            <h1>No Ratings Yet</h1>
           </div>
-          {/* modal */}
-          <RoomReviewModal
-            isOpen={isModalOpen}
-            setIsOpen={setIsModalOpen}
-            roomId={room?._id}
-            averageRating={averageRating}
-            reviews={reviews}
-          />
-        </div>
+        )}
+        {!isNaN(averageRating) && averageRating && (
+          <div className="w-full lg:w-11/12  p-4   ">
+            <h1 className="font-medium text-gray-700 ">RecentReviews</h1>
+            <div
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className=" relative "
+            >
+              {/* left button */}
+              <button
+                className={` ${
+                  isVisible ? "opacity-100" : "opacity-0    "
+                } absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150 hover:bg-sky-100`}
+                onClick={() => swiperInstance.slidePrev()}
+              >
+                <CiCircleChevLeft className="text-sky-700 text-4xl" />
+              </button>
+              {/* right button */}
+              <button
+                className={` ${
+                  isVisible ? "opacity-100" : "opacity-0    "
+                } absolute right-0 -translate-y-1/2 top-1/2 z-10 bg-white rounded-full transition-opacity ease-in duration-150 hover:bg-sky-100`}
+                onClick={() => swiperInstance.slideNext()}
+              >
+                <CiCircleChevRight className="text-sky-700 text-4xl" />
+              </button>
+
+              <Swiper
+                spaceBetween={5}
+                slidesPerView={1}
+                breakpoints={swiperBreakpoints}
+                onSwiper={(swiper) => setSwiperInstance(swiper)}
+                className="h-full"
+              >
+                {reviews.map((review) => (
+                  <SwiperSlide key={review?._id}>
+                    <RoomReviewBox
+                      review={review}
+                      setIsModalOpen={setIsModalOpen}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+            <div className="mt-3">
+              <button
+                onClick={handleModalButton}
+                className="text-sky-500 hover:text-sky-600 hover:bg-sky-100 font-bold w-full border border-gray-700 p-2 rounded-xl flex justify-center items-center "
+              >
+                See All Reviews
+                <FaArrowRight />
+              </button>
+            </div>
+            {/* modal */}
+            <RoomReviewModal
+              isOpen={isModalOpen}
+              setIsOpen={setIsModalOpen}
+              roomId={room?._id}
+              averageRating={averageRating}
+              reviews={reviews}
+              totalReviews={totalReviews}
+            />
+          </div>
+        )}
       </div>
     </ContainerTwo>
   );

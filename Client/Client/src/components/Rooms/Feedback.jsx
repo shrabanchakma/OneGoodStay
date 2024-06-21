@@ -79,10 +79,12 @@ const Feedback = ({ room }) => {
         onClick={handleModal}
         data-tooltip-id="feedback"
         data-tooltip-delay-show={300}
-        data-tooltip-content={isUserSame ? "Cannot rate hosted rooms" : ""}
+        data-tooltip-content={
+          isUserSame ? "Cannot rate hosted rooms" : "Rate this room"
+        }
         data-tooltip-place="right"
         data-tooltip-variant="light"
-        data-tooltip-float="true"
+        data-tooltip-float="false"
         disabled={isUserSame}
         className="text-sky-500 font-bold border border-black bg-white  hover:bg-sky-100 active:bg-sky-200 px-4 py-2 rounded-3xl disabled:cursor-not-allowed"
       >

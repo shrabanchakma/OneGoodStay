@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import RatingIndicator from "./RatingIndicator";
 import { formatDate, formatDateTwo } from "../../../Api/utils";
-import logo from "../../../assets/OneGoodStay-logo.png";
 const ModalReview = ({ review }) => {
   // this is review
   // console.log(review);
@@ -21,7 +20,11 @@ const ModalReview = ({ review }) => {
       <div className="w-full">{formatDateTwo(review?.date)}</div>
       <div className="w-full flex items-center justify-between  h-10 text-sm text-gray-700">
         <div className="flex items-center ">
-          <img src={logo} alt="" className="w-5 inline-block rounded-sm mr-2" />
+          <img
+            src={review?.guest?.image}
+            alt=""
+            className="w-5 inline-block rounded-sm mr-2"
+          />
           <span className="font-medium text-black">Feedback from:</span>{" "}
           {review?.guest?.name}
         </div>
