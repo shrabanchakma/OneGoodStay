@@ -10,9 +10,15 @@ const sections = ["Overview", "Amenities", "Reservation", "Review"];
 import "./RoomSection.css";
 import Feedback from "./Feedback";
 import { HashLink } from "react-router-hash-link";
+import useAuth from "../../Hooks/useAuth";
 const RoomDetails = () => {
   const room = useLoaderData();
+  const { user } = useAuth();
   const [currentSection, setCurrentSection] = useState("Overview");
+  const [isRoomHost, setIsRoomHost] = useState(false);
+  useEffect(() => {
+    setIsRoomHost(user?.email === room?.host?.email);
+  }, [user, room]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -59,9 +65,9 @@ const RoomDetails = () => {
 
       <RoomOverview room={room} />
       <TopAmenities roomAmenities={room?.amenities} />
-      <RoomReservation room={room} />
+      <RoomReservation room={room} isRoomHost={isRoomHost} />
       <RoomReview room={room} />
-      <Feedback room={room} />
+      <Feedback room={room} isRoomHost={isRoomHost} />
     </Container>
   );
 };

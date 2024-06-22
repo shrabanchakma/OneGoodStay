@@ -24,8 +24,8 @@ const RoomReviewModal = ({
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(1);
-  console.log("total reviews -->", totalReviews);
-  console.log("total reviews -->", averageRating);
+  // console.log("total reviews -->", totalReviews);
+  // console.log("total reviews -->", averageRating);
   const dropdownOptions = [
     "Highest guest rating",
     "Lowest guest rating",
@@ -47,13 +47,12 @@ const RoomReviewModal = ({
   const handleMoreReviews = () => {
     setPage((prev) => prev + 1);
   };
-  console.log(page);
+  // console.log(page);
   // get reviews
   useEffect(() => {
     getRoomReviews(roomId, page, 3).then((reviewData) =>
       setReviews(reviewData)
     );
-    console.log("entering");
   }, [page]);
   // get room review data by categories
   useEffect(() => {

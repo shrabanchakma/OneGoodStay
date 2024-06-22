@@ -44,6 +44,7 @@ const CheckoutForm = ({ roomID, roomData }) => {
             startDate: new Date(new Date().setHours(0, 0, 0, 0)),
             status: "booked",
           },
+          validity: null,
         };
 
         const { insertedId } = await toast.promise(

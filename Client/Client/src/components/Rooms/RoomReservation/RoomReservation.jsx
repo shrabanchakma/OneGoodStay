@@ -4,7 +4,7 @@ import ContainerTwo from "../../Shared/ContainerTwo";
 import { Link } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import useUserData from "../../../Hooks/useUserData";
-const RoomReservation = ({ room }) => {
+const RoomReservation = ({ room, isRoomHost }) => {
   const { userData } = useUserData();
   return (
     <ContainerTwo>
@@ -29,11 +29,13 @@ const RoomReservation = ({ room }) => {
               <Link to={`/checkout/room/${room?._id}`}>
                 <button
                   disabled={
-                    room?.status === "booked" || userData?.role === "admin"
+                    room?.status === "booked" ||
+                    userData?.role === "admin" ||
+                    isRoomHost
                   }
                   data-tooltip-id="tooltip"
                   data-tooltip-delay-show={300}
-                  className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 active:bg-sky-800 disabled:cursor-not-allowed"
+                  className="bg-sky-600 text-white  font-bold w-40 h-[40px] rounded-3xl hover:bg-sky-700 active:bg-sky-800 disabled:cursor-pointer"
                 >
                   Reserve
                 </button>
@@ -41,7 +43,8 @@ const RoomReservation = ({ room }) => {
                   id="tooltip"
                   place="right"
                   content={
-                    (userData?.role === "admin" && "You cannot book") ||
+                    ((userData?.role === "admin" || isRoomHost) &&
+                      "You cannot book") ||
                     (room?.status === "booked"
                       ? "Already booked"
                       : "Reserve room")

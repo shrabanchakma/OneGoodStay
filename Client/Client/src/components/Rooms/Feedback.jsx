@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import {
@@ -11,16 +11,17 @@ import Rating from "./Rating";
 import Logo from "../Shared/Logo";
 import useUserData from "../../Hooks/useUserData";
 import { Tooltip } from "react-tooltip";
-import { saveRatingData } from "../../Api/rooms";
+import { isReviewAllowed, saveRatingData } from "../../Api/rooms";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 
-const Feedback = ({ room }) => {
+const Feedback = ({ room, isRoomHost }) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [ratings, setRatings] = useState({});
   const [comment, setComment] = useState("");
   const [nextStep, setNextStep] = useState(false);
+  const [canReview, setCanReview] = useState(false);
   const totalRating = Array.from({ length: 5 }, (_, i) => i + 1);
   const handleRatings = (label, rating) => {
     let name = label.toLowerCase();
@@ -33,7 +34,6 @@ const Feedback = ({ room }) => {
   const handleModal = () => {
     setIsOpen(true);
   };
-  const isUserSame = user?.email === room?.host?.email;
   const isBtnDisabled =
     !ratings?.["overall satisfaction"] || comment.length === 0;
   const handleSubmit = async () => {
@@ -72,6 +72,14 @@ const Feedback = ({ room }) => {
   const handleComment = (e) => {
     setComment(e.target.value);
   };
+
+  // check if user can review this room
+  useEffect(() => {
+    isReviewAllowed(user?.email, room?._id).then((data) =>
+      setCanReview(data.isAllowed)
+    );
+  }, [room]);
+
   return (
     <div className="w-full flex flex-col items-center justify-center gap-1">
       <span className="text-sm">Tell us how was the room</span>
@@ -80,13 +88,17 @@ const Feedback = ({ room }) => {
         data-tooltip-id="feedback"
         data-tooltip-delay-show={300}
         data-tooltip-content={
-          isUserSame ? "Cannot rate hosted rooms" : "Rate this room"
+          isRoomHost
+            ? "Cannot review hosted rooms"
+            : canReview
+            ? "Rate this room"
+            : "You have to book the room before feedback"
         }
         data-tooltip-place="right"
-        data-tooltip-variant="light"
+        data-tooltip-variant={canReview ? "light" : "warning"}
         data-tooltip-float="false"
-        disabled={isUserSame}
-        className="text-sky-500 font-bold border border-black bg-white  hover:bg-sky-100 active:bg-sky-200 px-4 py-2 rounded-3xl disabled:cursor-not-allowed"
+        disabled={isRoomHost || !canReview}
+        className=" text-sky-500 font-bold border border-black bg-white  hover:bg-sky-100 active:bg-sky-200 px-4 py-2 rounded-3xl disabled:cursor-pointer"
       >
         Share feedback
       </button>

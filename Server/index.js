@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const { scheduledCronJob } = require("./CronTask/CheckOutRooms");
+const { updateRoomStatus } = require("./CronTask/CheckOutRooms");
+const { deleteBookedRooms } = require("./CronTask/deleteBookedRooms");
 const app = express();
 const port = 8000 || process.env.PORT;
 
@@ -44,7 +45,8 @@ async function run() {
       .db("OneGoodStay")
       .createCollection("reviews");
     // validate room dates everyday at 1pm
-    scheduledCronJob(roomCollection, bookedRoomsCollection);
+    updateRoomStatus(roomCollection, bookedRoomsCollection);
+    // deleteBookedRooms(roomCollection, bookedRoomsCollection);
     // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
@@ -277,10 +279,11 @@ async function run() {
     // get all booked rooms
     app.get("/booked-rooms/:email", async (req, res) => {
       const email = req.params.email;
+      const query = {
+        $and: [{ "guest.email": email }, { "roomDetails.status": "booked" }],
+      };
       try {
-        const result = await bookedRoomsCollection
-          .find({ "guest.email": email })
-          .toArray();
+        const result = await bookedRoomsCollection.find(query).toArray();
         res.send(result);
       } catch (error) {
         return res.status(400).send({ error: error.message });
@@ -382,6 +385,22 @@ async function run() {
         .toArray();
       res.send(result[0]);
     });
+
+    // check if user is allowed to give review
+    app.get("/can-review/:id", async (req, res) => {
+      const email = req.query.email;
+      const id = req.params.id;
+      const query = {
+        $and: [{ "guest.email": email }, { "roomDetails._id": id }],
+      };
+      const isUserExist = await bookedRoomsCollection.findOne(query);
+      if (isUserExist) {
+        res.send({ isAllowed: true });
+      } else {
+        res.send({ isAllowed: false });
+      }
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

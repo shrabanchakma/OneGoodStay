@@ -80,3 +80,9 @@ export const getCategoryReviews = async (id) => {
   const { data } = await axiosSecure.get(`/rooms/category-reviews/${id}`);
   return data;
 };
+
+// check if user can review the room
+export const isReviewAllowed = async (email, id) => {
+  const { data } = await axiosSecure.get(`/can-review/${id}?email=${email}`);
+  return data;
+};
