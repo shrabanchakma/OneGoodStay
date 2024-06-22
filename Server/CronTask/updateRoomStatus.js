@@ -7,7 +7,9 @@ const task = async (roomCollection, bookedRoomsCollection) => {
     const today = new Date(new Date().setHours(0, 0, 0, 0));
     const currentDate = today.toISOString();
     const validity = new Date(today).setDate(today.getDate() + 30);
-    const validityDate = new Date(new Date(validity).setHours(0, 0, 0, 0));
+    const validityDate = new Date(
+      new Date(validity).setHours(0, 0, 0, 0)
+    ).toISOString();
     // filter available rooms
     const filterRooms = {
       $and: [{ endDate: { $lte: currentDate } }, { status: "available" }],
@@ -43,13 +45,12 @@ const task = async (roomCollection, bookedRoomsCollection) => {
       },
     };
     //   update booked room status to "checkedOut" and available rooms to "needs_update"
-    const data1 = await bookedRoomsCollection.updateMany(
+    await bookedRoomsCollection.updateMany(
       filterBookedRooms,
       updateBookedRooms
     );
     await roomCollection.updateMany(filterRooms, updateRooms);
     await roomCollection.updateMany(filterRooms2, updateRooms2);
-    console.log("data1-->", data1);
     console.log("operation ended");
   } catch (error) {
     console.error(error.message);
@@ -58,7 +59,7 @@ const task = async (roomCollection, bookedRoomsCollection) => {
 
 // cron task function
 const updateRoomStatus = (roomCollection, bookedRoomsCollection) => {
-  cron.schedule("*/1 * * * *", async () => {
+  cron.schedule("0 13 * * *", async () => {
     await task(roomCollection, bookedRoomsCollection);
   });
 };

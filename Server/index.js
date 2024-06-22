@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { updateRoomStatus } = require("./CronTask/CheckOutRooms");
+const { updateRoomStatus } = require("./CronTask/updateRoomStatus");
 const { deleteBookedRooms } = require("./CronTask/deleteBookedRooms");
 const app = express();
 const port = 8000 || process.env.PORT;
@@ -46,7 +46,7 @@ async function run() {
       .createCollection("reviews");
     // validate room dates everyday at 1pm
     updateRoomStatus(roomCollection, bookedRoomsCollection);
-    // deleteBookedRooms(roomCollection, bookedRoomsCollection);
+    deleteBookedRooms(bookedRoomsCollection);
     // add users
     app.put("/users/:email", async (req, res) => {
       const newUser = req.body;
