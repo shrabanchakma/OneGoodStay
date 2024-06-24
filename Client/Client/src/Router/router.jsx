@@ -19,6 +19,7 @@ import UpdateContactInfo from "../components/Dashboard/Common/UpdateContactInfo"
 import UpdateProfile from "../components/Dashboard/Common/UpdateProfile";
 import PrivateRoute from "../UserRoutes/PrivateRoute";
 import Checkout from "../Pages/Checkout/Checkout";
+import AdminAnalytics from "../components/Dashboard/Admin/Analytics/AdminAnalytics";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllUsersListings />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "analytics",
+        element: (
+          <AdminRoute>
+            <AdminAnalytics />
           </AdminRoute>
         ),
       },

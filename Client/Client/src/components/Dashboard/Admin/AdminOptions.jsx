@@ -1,10 +1,17 @@
-import { FaUsers } from "react-icons/fa";
+import { FaUsers, FaChartLine } from "react-icons/fa";
 import SidebarItem from "../Siderbar/SidebarItem";
 
 const AdminOptions = () => {
   // todo: add analytics page for admin
   return (
-    <SidebarItem label="All Users" icon={FaUsers} address={"./all-users"} />
+    <>
+      <SidebarItem
+        label="Analytics"
+        icon={FaChartLine}
+        address={"./analytics"}
+      />
+      <SidebarItem label="All Users" icon={FaUsers} address={"./all-users"} />
+    </>
   );
 };
 

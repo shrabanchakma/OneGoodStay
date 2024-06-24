@@ -5,12 +5,11 @@ import Navbar from "../components/Shared/Navbar";
 const DashboardLayout = () => {
   return (
     <div>
-      <Navbar />
-      <div className="max-w-[1280px] min-h-[calc(100vh-193px)] mx-auto flex gap-3">
-        <div className="w-1/3 h-[80vh]">
+      <div className="min-h-screen mx-auto flex gap-3">
+        <div className="w-[25rem] min-h-full py-10">
           <Sidebar />
         </div>
-        <div className="w-full h-full border">
+        <div className="w-full min-h-full border">
           <Outlet />
         </div>
       </div>

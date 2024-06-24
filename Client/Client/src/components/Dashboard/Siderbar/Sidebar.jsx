@@ -28,7 +28,7 @@ const Sidebar = () => {
     else setIsModalOpen(true);
   };
   return (
-    <aside className="h-full flex flex-col justify-between">
+    <aside className="h-full flex flex-col justify-between ">
       <div>
         <div className="min-h-20 flex flex-col items-center justify-center ">
           <h1 className="font-medium ">{userData?.name}</h1>
@@ -38,8 +38,9 @@ const Sidebar = () => {
 
         <SidebarItem label="Profile" icon={TiUser} address={"./profile"} />
         {/* routes based on users */}
-        {userData?.role === "host" ? <HostOptions /> : <GuestOptions />}
         {userData?.role === "admin" && <AdminOptions />}
+        {userData?.role === "host" && <HostOptions />}
+        {userData?.role === "guest" && <GuestOptions />}
       </div>
 
       {/* request for host */}
