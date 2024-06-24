@@ -1,26 +1,14 @@
-import React, { useEffect, useState } from "react";
 import { Calendar } from "react-date-range";
-import { CiDollar } from "react-icons/ci";
 import SalesLineChart from "./SalesLineChart";
 import { FaUser, FaDollarSign } from "react-icons/fa";
-import { PiWaveSineLight } from "react-icons/pi";
-import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
 import wave from "../../../../assets/wave.webp";
-import TrendingRoomTypeChart from "./TrendingRoomTypeChart";
-// import { getAdminStat } from "../../../../api/utils";
 
 const AdminAnalytics = () => {
-  //   const [statData, setStatData] = useState({});
-  //   useEffect(() => {
-  //     getAdminStat().then((data) => {
-  //       setStatData(data);
-  //     });
-  //   }, []);
   return (
-    <div>
-      <div className="mt-12 p-2">
+    <div className="">
+      <div className="mt-12 p-2 bg-green-500 h-auto">
         {/* small cards */}
-        <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mb-8 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Sales Card */}
           <div className="relative flex  items-start justify-between p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
             <div className="flex flex-col justify-center ">
@@ -99,7 +87,7 @@ const AdminAnalytics = () => {
           </div>
         </div>
 
-        <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3 ">
           {/* Total Sales Graph */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
             <SalesLineChart />
@@ -109,10 +97,6 @@ const AdminAnalytics = () => {
             <h1 className="font-semibold text-xl px-3 pb-1 pt-3">Calender</h1>
             <Calendar color="#F43F5E" />
           </div>
-        </div>
-        {/* Pie chart */}
-        <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden">
-          <TrendingRoomTypeChart />
         </div>
       </div>
     </div>
