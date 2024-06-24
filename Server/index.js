@@ -279,13 +279,39 @@ async function run() {
     // get all booked rooms
     app.get("/booked-rooms/:email", async (req, res) => {
       const email = req.params.email;
-      const query = {
-        $and: [{ "guest.email": email }, { "roomDetails.status": "booked" }],
-      };
       try {
-        const result = await bookedRoomsCollection.find(query).toArray();
-        res.send(result);
+        const bookedRooms = await bookedRoomsCollection
+          .aggregate([
+            {
+              $match: {
+                "guest.email": email,
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                roomID: 1,
+              },
+            },
+          ])
+          .toArray();
+        const bookedRoomsID = bookedRooms.map((room) =>
+          ObjectId.createFromHexString(room.roomID)
+        );
+
+        const roomData = await roomCollection
+          .aggregate([
+            {
+              $match: {
+                _id: { $in: bookedRoomsID },
+              },
+            },
+          ])
+          .toArray();
+        console.log(roomData);
+        res.send(roomData);
       } catch (error) {
+        console.log(error.message);
         return res.status(400).send({ error: error.message });
       }
     });

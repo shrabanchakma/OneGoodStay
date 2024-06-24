@@ -80,10 +80,7 @@ const MyBookings = () => {
                 <tbody>
                   {/* my booking data row */}
                   {rooms.map((room) => (
-                    <MyBookingsDataRow
-                      key={room?._id}
-                      room={room?.roomDetails}
-                    />
+                    <MyBookingsDataRow key={room?._id} room={room} />
                   ))}
                 </tbody>
               </table>

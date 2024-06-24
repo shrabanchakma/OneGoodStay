@@ -5,7 +5,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { ImSpinner8 } from "react-icons/im";
 const MyBookingsDataRow = ({ room }) => {
-  console.log("inside-->", room);
+  // console.log("inside-->", room);
   const navigate = useNavigate();
   const [isSpinning, setIsSpinning] = useState(false);
   const handleRoomDetailsBtn = () => {

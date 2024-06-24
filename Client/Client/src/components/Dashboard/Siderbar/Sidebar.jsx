@@ -1,7 +1,7 @@
 import useAuth from "../../../Hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import { TiUser } from "react-icons/ti";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RequestForHostModal from "./RequestForHostModal";
 import { useState } from "react";
 import HostOptions from "../Host/HostOptions";
@@ -9,6 +9,8 @@ import GuestOptions from "../Guest/GuestOptions";
 import AdminOptions from "../Admin/AdminOptions";
 import useUserData from "../../../Hooks/useUserData";
 import toast from "react-hot-toast";
+import { FaArrowLeft } from "react-icons/fa";
+import { Tooltip } from "react-tooltip";
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +32,18 @@ const Sidebar = () => {
   return (
     <aside className="h-full flex flex-col justify-between ">
       <div>
+        <Link
+          to={"/"}
+          data-tooltip-id="go-back"
+          data-tooltip-delay-show={300}
+          data-tooltip-content={"Go back"}
+          data-tooltip-place="right"
+          data-tooltip-variant="light"
+          data-tooltip-float="false"
+          className="flex items-center justify-center bg-white hover:bg-blue-200  h-8 w-8 rounded-full absolute top-2 left-3"
+        >
+          <FaArrowLeft size={20} className="text-blue-500" />
+        </Link>
         <div className="min-h-20 flex flex-col items-center justify-center ">
           <h1 className="font-medium ">{userData?.name}</h1>
           <p className="font-light text-neutral-500">{userData?.email}</p>
@@ -65,6 +79,11 @@ const Sidebar = () => {
         setIsModalOpen={setIsModalOpen}
         email={user?.email}
         refetch={refetch}
+      />
+
+      <Tooltip
+        id="go-back"
+        style={{ backgroundColor: "#e5e5e5", color: "#374151" }}
       />
     </aside>
   );
