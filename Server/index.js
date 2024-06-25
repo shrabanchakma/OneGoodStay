@@ -209,7 +209,6 @@ async function run() {
       const roomInfo = req.body;
       const roomID = roomInfo?.roomID;
       const price = roomInfo?.price;
-      console.log("id --->", ObjectId.createFromHexString(roomID));
       const roomDB = await roomCollection.findOne({
         _id: ObjectId.createFromHexString(roomID),
       });
@@ -308,7 +307,6 @@ async function run() {
             },
           ])
           .toArray();
-        console.log(roomData);
         res.send(roomData);
       } catch (error) {
         console.log(error.message);
@@ -424,6 +422,40 @@ async function run() {
         res.send({ isAllowed: true });
       } else {
         res.send({ isAllowed: false });
+      }
+    });
+
+    // get analytics data
+    app.get("/analytics/dashboard", async (req, res) => {
+      try {
+        const [bookedRoomsData, totalUsers, totalRooms] = await Promise.all([
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $group: {
+                  _id: null,
+                  totalRevenue: {
+                    $sum: "$price",
+                  },
+                  totalBookings: {
+                    $sum: 1,
+                  },
+                },
+              },
+            ])
+            .toArray(),
+          userCollection.countDocuments(),
+          roomCollection.countDocuments(),
+        ]);
+
+        res.send({
+          totalRevenue: bookedRoomsData[0].totalRevenue,
+          totalBookings: bookedRoomsData[0].totalBookings,
+          totalUsers,
+          totalRooms,
+        });
+      } catch (err) {
+        res.status(400).send({ message: err.message });
       }
     });
 

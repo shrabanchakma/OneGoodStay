@@ -3,8 +3,14 @@ import SalesLineChart from "./SalesLineChart";
 import { FaUser, FaDollarSign } from "react-icons/fa";
 import wave from "../../../../assets/wave.webp";
 import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { getAnalyticsData } from "../../../../Api/analytics";
 
 const AdminAnalytics = () => {
+  const [analyticsData, setAnalyticsData] = useState({});
+  useEffect(() => {
+    getAnalyticsData().then((data) => setAnalyticsData(data));
+  }, []);
   return (
     <div className="">
       <div className="mt-12 p-2 bg-green-500 h-auto">
@@ -19,7 +25,9 @@ const AdminAnalytics = () => {
                 </div>
                 <p className="font-semibold text-gray-700 ">Total Revenue</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">$350.00</p>
+              <p className="font-medium text-gray-700 text-xl">
+                ${analyticsData?.totalRevenue}
+              </p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
@@ -38,7 +46,9 @@ const AdminAnalytics = () => {
                 </div>
                 <p className="font-semibold text-gray-700 ">Total Users</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">560 </p>
+              <p className="font-medium text-gray-700 text-xl">
+                {analyticsData?.totalUsers}
+              </p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
@@ -57,7 +67,9 @@ const AdminAnalytics = () => {
                 </div>
                 <p className="font-semibold text-gray-700 ">Total Bookings</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">560 </p>
+              <p className="font-medium text-gray-700 text-xl">
+                {analyticsData.totalBookings}
+              </p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
@@ -76,7 +88,9 @@ const AdminAnalytics = () => {
                 </div>
                 <p className="font-semibold text-gray-700 ">Total Rooms</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">50 </p>
+              <p className="font-medium text-gray-700 text-xl">
+                {analyticsData?.totalRooms}
+              </p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />

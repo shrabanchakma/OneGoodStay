@@ -18,7 +18,7 @@ const SalesLineChart = (props) => {
     ],
     datasets: [
       {
-        label: "Demo Data",
+        label: "Revenue",
         data: [65, 59, 80, 81, 56, 55, 40],
         fill: false,
         borderColor: "rgb(75, 192, 192)",

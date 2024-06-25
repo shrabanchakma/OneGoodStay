@@ -40,6 +40,7 @@ const CheckoutForm = ({ roomID, roomData }) => {
             email: userData?.email,
           },
           roomID: roomID,
+          bookingDate: new Date(new Date().setHours(0, 0, 0, 0)),
           price: roomData?.price,
         };
 
