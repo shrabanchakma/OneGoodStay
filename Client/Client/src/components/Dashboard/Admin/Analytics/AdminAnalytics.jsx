@@ -9,7 +9,10 @@ import { getAnalyticsData } from "../../../../Api/analytics";
 const AdminAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState({});
   useEffect(() => {
-    getAnalyticsData().then((data) => setAnalyticsData(data));
+    getAnalyticsData().then((data) => {
+      console.log(data);
+      setAnalyticsData(data);
+    });
   }, []);
   return (
     <div className="">

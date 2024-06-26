@@ -428,7 +428,14 @@ async function run() {
     // get analytics data
     app.get("/analytics/dashboard", async (req, res) => {
       try {
-        const [bookedRoomsData, totalUsers, totalRooms] = await Promise.all([
+        const [
+          bookedRoomsData,
+          totalUsers,
+          totalRooms,
+          third_week_total,
+          second_week_total,
+          first_week_total,
+        ] = await Promise.all([
           bookedRoomsCollection
             .aggregate([
               {
@@ -446,13 +453,68 @@ async function run() {
             .toArray(),
           userCollection.countDocuments(),
           roomCollection.countDocuments(),
+          bookedRoomsCollection.aggregate([
+            {
+              $match: {
+                bookingDate: {
+                  $gt: new Date(new Date().setDate(new Date().getDate() - 7)),
+                  $lt: new Date(),
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                total_revenue: { $sum: "$price" },
+              },
+            },
+          ]),
+          bookedRoomsCollection.aggregate([
+            {
+              $match: {
+                bookingDate: {
+                  $gt: new Date(new Date().setDate(new Date().getDate() - 14)),
+                  $lt: new Date(new Date().setDate(new Date().getDate() - 7)),
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                total_revenue: { $sum: "$price" },
+              },
+            },
+          ]),
+          bookedRoomsCollection.aggregate([
+            {
+              $match: {
+                bookingDate: {
+                  $gt: new Date(new Date().setDate(new Date().getDate() - 21)),
+                  $lt: new Date(new Date().setDate(new Date().getDate() - 14)),
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                total_revenue: { $sum: "$price" },
+              },
+            },
+          ]),
         ]);
-
+        console.log({
+          first_week_total: first_week_total[0].total_revenue,
+          second_week_total: second_week_total[0].total_revenue,
+          third_week_total: third_week_total[0].total_revenue,
+        });
         res.send({
           totalRevenue: bookedRoomsData[0].totalRevenue,
           totalBookings: bookedRoomsData[0].totalBookings,
           totalUsers,
           totalRooms,
+          // first_week_total: first_week_total[0].total_revenue,
+          // second_week_total: second_week_total[0].total_revenue,
+          // third_week_total: third_week_total[0].total_revenue,
         });
       } catch (err) {
         res.status(400).send({ message: err.message });
