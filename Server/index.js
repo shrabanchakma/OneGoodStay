@@ -453,68 +453,77 @@ async function run() {
             .toArray(),
           userCollection.countDocuments(),
           roomCollection.countDocuments(),
-          bookedRoomsCollection.aggregate([
-            {
-              $match: {
-                bookingDate: {
-                  $gt: new Date(new Date().setDate(new Date().getDate() - 7)),
-                  $lt: new Date(),
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $match: {
+                  bookingDate: {
+                    $gte: new Date(
+                      new Date().setDate(new Date().getDate() - 7)
+                    ),
+                    $lt: new Date(),
+                  },
                 },
               },
-            },
-            {
-              $group: {
-                _id: null,
-                total_revenue: { $sum: "$price" },
-              },
-            },
-          ]),
-          bookedRoomsCollection.aggregate([
-            {
-              $match: {
-                bookingDate: {
-                  $gt: new Date(new Date().setDate(new Date().getDate() - 14)),
-                  $lt: new Date(new Date().setDate(new Date().getDate() - 7)),
+              {
+                $group: {
+                  _id: null,
+                  total_revenue: { $sum: "$price" },
                 },
               },
-            },
-            {
-              $group: {
-                _id: null,
-                total_revenue: { $sum: "$price" },
-              },
-            },
-          ]),
-          bookedRoomsCollection.aggregate([
-            {
-              $match: {
-                bookingDate: {
-                  $gt: new Date(new Date().setDate(new Date().getDate() - 21)),
-                  $lt: new Date(new Date().setDate(new Date().getDate() - 14)),
+            ])
+            .toArray(),
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $match: {
+                  bookingDate: {
+                    $gte: new Date(
+                      new Date().setDate(new Date().getDate() - 14)
+                    ),
+                    $lt: new Date(new Date().setDate(new Date().getDate() - 7)),
+                  },
                 },
               },
-            },
-            {
-              $group: {
-                _id: null,
-                total_revenue: { $sum: "$price" },
+              {
+                $group: {
+                  _id: null,
+                  total_revenue: { $sum: "$price" },
+                },
               },
-            },
-          ]),
+            ])
+            .toArray(),
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $match: {
+                  bookingDate: {
+                    $gte: new Date(
+                      new Date().setDate(new Date().getDate() - 21)
+                    ),
+                    $lt: new Date(
+                      new Date().setDate(new Date().getDate() - 14)
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  total_revenue: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
         ]);
-        console.log({
-          first_week_total: first_week_total[0].total_revenue,
-          second_week_total: second_week_total[0].total_revenue,
-          third_week_total: third_week_total[0].total_revenue,
-        });
         res.send({
           totalRevenue: bookedRoomsData[0].totalRevenue,
           totalBookings: bookedRoomsData[0].totalBookings,
           totalUsers,
           totalRooms,
-          // first_week_total: first_week_total[0].total_revenue,
-          // second_week_total: second_week_total[0].total_revenue,
-          // third_week_total: third_week_total[0].total_revenue,
+          first_week_total: first_week_total[0].total_revenue,
+          second_week_total: second_week_total[0].total_revenue,
+          third_week_total: second_week_total[0].total_revenue,
         });
       } catch (err) {
         res.status(400).send({ message: err.message });
