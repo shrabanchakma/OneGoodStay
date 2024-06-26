@@ -268,7 +268,10 @@ async function run() {
           options
         );
 
-        const result = await bookedRoomsCollection.insertOne(roomDetails);
+        const result = await bookedRoomsCollection.insertOne({
+          ...roomDetails,
+          bookingDate: new Date(roomDetails.bookingDate),
+        });
         res.send(result);
       } catch (error) {
         return res.status(400).send({ error: { message: error.message } });
@@ -428,13 +431,25 @@ async function run() {
     // get analytics data
     app.get("/analytics/dashboard", async (req, res) => {
       try {
+        const currentDate = new Date(req.query.date);
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = (currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+        const lastMonth = currentDate.getMonth().toString().padStart(2, "0");
+        const twoMonthsAgo = (currentDate.getMonth() - 1)
+          .toString()
+          .padStart(2, "0");
+        const threeMonthsAgo = (currentDate.getMonth() - 2)
+          .toString()
+          .padStart(2, "0");
         const [
           bookedRoomsData,
           totalUsers,
           totalRooms,
-          third_week_total,
-          second_week_total,
-          first_week_total,
+          revenue_last_month,
+          revenue_two_months_ago,
+          revenue_three_months_ago,
         ] = await Promise.all([
           bookedRoomsCollection
             .aggregate([
@@ -453,56 +468,61 @@ async function run() {
             .toArray(),
           userCollection.countDocuments(),
           roomCollection.countDocuments(),
+          // get revenues of last three months
           bookedRoomsCollection
             .aggregate([
               {
                 $match: {
                   bookingDate: {
                     $gte: new Date(
-                      new Date().setDate(new Date().getDate() - 7)
-                    ),
-                    $lt: new Date(),
-                  },
-                },
-              },
-              {
-                $group: {
-                  _id: null,
-                  total_revenue: { $sum: "$price" },
-                },
-              },
-            ])
-            .toArray(),
-          bookedRoomsCollection
-            .aggregate([
-              {
-                $match: {
-                  bookingDate: {
-                    $gte: new Date(
-                      new Date().setDate(new Date().getDate() - 14)
-                    ),
-                    $lt: new Date(new Date().setDate(new Date().getDate() - 7)),
-                  },
-                },
-              },
-              {
-                $group: {
-                  _id: null,
-                  total_revenue: { $sum: "$price" },
-                },
-              },
-            ])
-            .toArray(),
-          bookedRoomsCollection
-            .aggregate([
-              {
-                $match: {
-                  bookingDate: {
-                    $gte: new Date(
-                      new Date().setDate(new Date().getDate() - 21)
+                      `${currentYear}-${lastMonth}-01T00:00:00.000Z`
                     ),
                     $lt: new Date(
-                      new Date().setDate(new Date().getDate() - 14)
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  total_revenue: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $match: {
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${twoMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${lastMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  total_revenue: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $match: {
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${threeMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${twoMonthsAgo}-01T00:00:00.000Z`
                     ),
                   },
                 },
@@ -521,9 +541,18 @@ async function run() {
           totalBookings: bookedRoomsData[0].totalBookings,
           totalUsers,
           totalRooms,
-          first_week_total: first_week_total[0].total_revenue,
-          second_week_total: second_week_total[0].total_revenue,
-          third_week_total: second_week_total[0].total_revenue,
+          revenue_last_month:
+            revenue_last_month.length > 0
+              ? revenue_last_month[0].total_revenue
+              : 0,
+          revenue_two_months_ago:
+            revenue_two_months_ago.length > 0
+              ? revenue_two_months_ago[0].total_revenue
+              : 0,
+          revenue_three_months_ago:
+            revenue_three_months_ago.length > 0
+              ? revenue_three_months_ago[0].total_revenue
+              : 0,
         });
       } catch (err) {
         res.status(400).send({ message: err.message });

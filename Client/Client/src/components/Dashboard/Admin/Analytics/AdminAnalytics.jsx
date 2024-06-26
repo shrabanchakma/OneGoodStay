@@ -5,18 +5,37 @@ import wave from "../../../../assets/wave.webp";
 import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { getAnalyticsData } from "../../../../Api/analytics";
+import { getLastThreeMonths } from "../../../../Api/utils";
 
 const AdminAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState({});
+  const [lastThreeMonths, setLastThreeMonths] = useState([]);
+  const [lastThreeMonthsRevenue, setLastThreeMonthsRevenue] = useState([]);
   useEffect(() => {
     getAnalyticsData().then((data) => {
       console.log(data);
       setAnalyticsData(data);
     });
   }, []);
+  useEffect(() => {
+    const currentDate = new Date();
+    const getMonths = getLastThreeMonths([
+      currentDate.getMonth() - 1,
+      currentDate.getMonth() - 2,
+      currentDate.getMonth() - 3,
+    ]);
+    setLastThreeMonths(getMonths);
+  }, []);
+  useEffect(() => {
+    setLastThreeMonthsRevenue([
+      analyticsData?.revenue_three_months_ago,
+      analyticsData?.revenue_two_months_ago,
+      analyticsData?.revenue_last_month,
+    ]);
+  }, [analyticsData]);
   return (
     <div className="">
-      <div className="mt-12 p-2 bg-green-500 h-auto">
+      <div className="mt-12 p-2  h-auto">
         {/* small cards */}
         <div className="mb-8 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Sales Card */}
@@ -108,7 +127,10 @@ const AdminAnalytics = () => {
         <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3 ">
           {/* Total Sales Graph */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
-            <SalesLineChart />
+            <SalesLineChart
+              labels={lastThreeMonths}
+              data={lastThreeMonthsRevenue}
+            />
           </div>
           {/* Calender */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden">

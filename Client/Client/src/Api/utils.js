@@ -1,5 +1,20 @@
 import axiosSecure from ".";
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export const uploadImage = async (image) => {
   try {
     const { data } = await axiosSecure.post(
@@ -29,22 +44,16 @@ export const formatDate = (date) => {
 //format date month dd, yy
 export const formatDateTwo = (date) => {
   const reviewDate = new Date(date);
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+
   const month = reviewDate.getMonth();
   const day = reviewDate.getDate();
   const year = reviewDate.getFullYear();
   return `${monthNames[month]} ${day}, ${year}`;
+};
+
+export const getLastThreeMonths = (lastThreeMonthIdx) => {
+  const lastThreeMonths = monthNames.filter((_, idx) =>
+    lastThreeMonthIdx.includes(idx)
+  );
+  return lastThreeMonths;
 };
