@@ -35,7 +35,7 @@ const AdminAnalytics = () => {
   }, [analyticsData]);
   return (
     <div className="">
-      <div className="mt-12 p-2  h-auto">
+      <div className="md:mt-12 p-2  h-auto">
         {/* small cards */}
         <div className="mb-8 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Sales Card */}

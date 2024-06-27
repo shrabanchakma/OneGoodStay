@@ -1,18 +1,19 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Dashboard/Siderbar/Sidebar";
 import Navbar from "../components/Shared/Navbar";
+import BottomNavbar from "../components/Dashboard/BottomNavbar/BottomNavbar";
 
 const DashboardLayout = () => {
   return (
-    <div>
-      <div className="min-h-screen  mx-auto flex gap-3">
-        <div className="w-[25rem] min-h-full py-10">
-          <Sidebar />
-        </div>
+    <div className="">
+      <div className="min-h-screen  mx-auto md:flex gap-3 ">
+        <Sidebar />
         <div className="w-full min-h-full">
           <Outlet />
         </div>
       </div>
+      {/* for small screens */}
+      <BottomNavbar />
     </div>
   );
 };

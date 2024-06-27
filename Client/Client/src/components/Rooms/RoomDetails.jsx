@@ -42,10 +42,10 @@ const RoomDetails = () => {
       <img
         src={room?.image}
         alt=""
-        className="w-full w-[10vh h-[50vh]  lg:rounded-lg object-cover"
+        className="w-full h-[50vh]  lg:rounded-lg object-cover"
       />
       {/* sections */}
-      <div className="sticky top-0 bg-white md:w-3/4 flex justify-between items-center h-12 lg:px-3 border-b border-gray-400 z-40">
+      <div className="sticky top-0 bg-white  md:w-3/4 flex justify-between items-center h-12 lg:px-3 border-b border-gray-400 z-40">
         <div className="flex gap-4">
           {sections.map((section, idx) => (
             <RoomSection
