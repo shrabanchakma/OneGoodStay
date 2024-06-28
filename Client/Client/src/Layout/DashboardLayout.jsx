@@ -5,10 +5,10 @@ import BottomNavbar from "../components/Dashboard/BottomNavbar/BottomNavbar";
 
 const DashboardLayout = () => {
   return (
-    <div className="">
-      <div className="min-h-screen  mx-auto md:flex gap-3 ">
+    <div>
+      <div className="md:flex   gap-3 ">
         <Sidebar />
-        <div className="w-full min-h-full">
+        <div className="w-full">
           <Outlet />
         </div>
       </div>

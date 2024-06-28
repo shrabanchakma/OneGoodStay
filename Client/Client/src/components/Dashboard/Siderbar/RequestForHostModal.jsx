@@ -52,6 +52,7 @@ const RequestForHostModal = ({
           onClose={() => setIsModalOpen(false)}
           className="relative z-50"
         >
+          <div className="fixed inset-0 bg-black/30" />
           <TransitionChild
             show={+isModalOpen}
             enter="transition-all transform duration-200"
@@ -63,7 +64,7 @@ const RequestForHostModal = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={`min-h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl bg-neutral-100`}
+                className={`w-[21rem] md:w-[21rem] md:h-[22rem] flex items-center justify-center space-y-4 border   rounded-xl bg-white`}
               >
                 <div className="flex flex-col items-center justify-center gap-4 w-full my-10">
                   <p className="font-semibold text-lg">

@@ -37,10 +37,14 @@ const Sidebar = () => {
     <>
       {/* small screens */}
 
-      <SidebarMobile userRole={userData?.role} handleSignOut={handleSignOut} />
+      <SidebarMobile
+        userRole={userData?.role}
+        handleSignOut={handleSignOut}
+        handleRequestHost={handleRequestHost}
+      />
       {/* for big screens */}
       <aside
-        className={`w-[25rem] min-h-full py-10 hidden md:flex flex-col justify-between  z-10 bg-white`}
+        className={`w-[25rem] h-[calc(100vh-40px)] py-12 hidden md:flex flex-col justify-between  z-10 bg-white`}
       >
         <div>
           <Link
@@ -55,7 +59,7 @@ const Sidebar = () => {
           >
             <FaArrowLeft size={20} className="text-blue-500" />
           </Link>
-          <div className="min-h-20 flex flex-col items-center justify-center ">
+          <div className="flex flex-col items-center justify-center ">
             <h1 className="font-medium ">{userData?.name}</h1>
             <p className="font-light text-neutral-500">{userData?.email}</p>
           </div>

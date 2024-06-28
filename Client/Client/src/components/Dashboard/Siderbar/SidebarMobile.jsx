@@ -1,16 +1,22 @@
-import React from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { RiMenuFold2Fill, RiMenuFoldFill } from "react-icons/ri";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HostOptionsMobile from "../Host/HostOptionsMobile";
 import GuestOptionMobile from "../Guest/GuestOptionsMobile";
 import AdminOptionsMobile from "../Admin/AdminOptionsMobile";
-export const SidebarMobile = ({ userRole: role, handleSignOut }) => {
+import useUserData from "../../../Hooks/useUserData";
+import CustomTextDisplay from "./CustomTextDisplay";
+export const SidebarMobile = ({
+  userRole: role,
+  handleSignOut,
+  handleRequestHost,
+}) => {
   const [isActive, setIsActive] = useState(false);
+  const { userData } = useUserData();
   const sidebarRef = useRef(null);
-  const { pathname } = useLocation();
+
   const openSidebar = () => {
     setIsActive(true);
     console.log(isActive);
@@ -40,18 +46,26 @@ export const SidebarMobile = ({ userRole: role, handleSignOut }) => {
         <button onClick={openSidebar} className="block md:hidden ">
           <RiMenuFold2Fill size={35} />
         </button>
-        {pathname.includes("analytics") && (
-          <p className="font-normal text-xl text-right">
-            Dashboard <br />
-            <span className="text-4xl font-bold">Analytics</span>
-          </p>
-        )}
-        {pathname.includes("all-users") && (
-          <p className="font-normal text-xl text-right">
-            List <br />
-            <span className="text-4xl font-bold">All Users</span>
-          </p>
-        )}
+        <CustomTextDisplay
+          pathMatch={"analytics"}
+          mainText={"Dashboard"}
+          HighlightedText={"Analytics"}
+        />
+        <CustomTextDisplay
+          pathMatch={"all-users"}
+          mainText={"List"}
+          HighlightedText={"All Users"}
+        />
+        <CustomTextDisplay
+          pathMatch={"profile"}
+          mainText={"Profile"}
+          HighlightedText={userData?.name}
+        />
+        <CustomTextDisplay
+          pathMatch={"my-bookings"}
+          mainText={"List"}
+          HighlightedText={"Bookings"}
+        />
       </div>
       <aside
         ref={sidebarRef}
@@ -82,14 +96,14 @@ export const SidebarMobile = ({ userRole: role, handleSignOut }) => {
           <div className="mb-10 ">
             {/* request for host */}
             <div>
-              {/* {userData?.role === "guest" && (
-            <p
-              onClick={handleRequestHost}
-              className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
-            >
-              Request for Host
-            </p>
-          )} */}
+              {userData?.role === "guest" && (
+                <p
+                  onClick={handleRequestHost}
+                  className="underline text-blue-500 hover:text-blue-600 active:text-blue-700 text-center cursor-pointer font-semibold"
+                >
+                  Request for Host
+                </p>
+              )}
               <button
                 onClick={handleSignOut}
                 className="text-sky-600 font-bold w-full h-12 rounded-3xl hover:text-sky-700 hover:bg-sky-100 active:bg-sky-200 transition-all duration-100 ease-in-out"

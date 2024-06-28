@@ -10,16 +10,16 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
   };
   return (
     <tr>
-      <td className="p-1 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm">
+      <td className="p-1 lg:px-5 lg:py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap font-semibold md:font-normal">
           {user?.name}
         </p>
-        <p className="text-gray-500 whitespace-no-wrap text-[11px] md:hidden ">
-          {user?.email}
+        <p className="text-gray-500 text-wrap text-[11px] lg:hidden ">
+          {user?.email.split("@")[0]} <br />@{user?.email.split("@")[1]}
         </p>
       </td>
 
-      <td className="hidden md:block px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      <td className="hidden lg:table-cell px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">{user?.email}</p>
       </td>
       <td className="p-3 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm">
@@ -50,7 +50,7 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
           }}
         />
       </td>
-      <td className=" md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm ">
+      <td className="px-2 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm ">
         <div className="w-20 p-1 px-3  bg-[#ffa726] text-white rounded-xl font-medium  cursor-pointer hover:bg-[#de9120] active:bg-[#be7b19]  text-center">
           Delete
         </div>

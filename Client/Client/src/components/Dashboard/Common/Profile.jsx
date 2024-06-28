@@ -17,8 +17,10 @@ const Profile = () => {
       <Helmet>
         <title>Dashboard | Profile</title>
       </Helmet>
-      <section className="p-28  w-full">
-        <h1 className="font-medium text-2xl mb-10">{userData?.name}</h1>
+      <section className="px-4 md:p-28  w-full ">
+        <h1 className="hidden md:block font-medium text-2xl mb-10">
+          {userData?.name}
+        </h1>
         <div className="flex mb-10">
           <div className="w-11/12 ">
             <h1 className="font-medium text-2xl mb-2">Basic information</h1>

@@ -45,9 +45,9 @@ const UpdateUserRoleModal = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={` w-1/5  space-y-4 border   rounded-xl bg-neutral-100`}
+                className={` w-[21rem] md:w-[30rem] md:h-[22rem] flex items-center justify-center space-y-4 border   rounded-xl bg-neutral-100`}
               >
-                <div className="p-4 px-5 gap-4 w-full  ">
+                <div className="p-4 px-5 gap-4 w-full ">
                   <div className=" w-full space-y-2">
                     {user?.status === "requested" && (
                       <>
@@ -118,7 +118,7 @@ const UpdateUserRoleModal = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={`h-36 w-1/5 flex items-center space-y-4 border   rounded-xl bg-neutral-100`}
+                className={`w-[21rem] md:w-[30rem] md:h-[22rem]  flex items-center space-y-4 border   rounded-xl bg-neutral-100`}
               >
                 <div className="p-4 px-5 gap-4 w-full space-y-10">
                   <h1 className="font-semibold">

@@ -83,10 +83,10 @@ async function run() {
     // update user role
     app.patch("/user/role/:email", async (req, res) => {
       const email = req.params.email;
-      const role = req.body.role;
+      const role = req.body.role || "";
       const options = { upsert: true };
 
-      if (Object.keys(role).length !== 0) {
+      if (role.length !== 0) {
         const result = await userCollection.updateOne(
           { email },
           {
