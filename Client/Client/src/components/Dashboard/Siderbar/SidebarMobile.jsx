@@ -46,6 +46,12 @@ export const SidebarMobile = ({ userRole: role, handleSignOut }) => {
             <span className="text-4xl font-bold">Analytics</span>
           </p>
         )}
+        {pathname.includes("all-users") && (
+          <p className="font-normal text-xl text-right">
+            List <br />
+            <span className="text-4xl font-bold">All Users</span>
+          </p>
+        )}
       </div>
       <aside
         ref={sidebarRef}

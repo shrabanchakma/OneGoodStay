@@ -10,17 +10,24 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
   };
   return (
     <tr>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">{user?.name}</p>
+      <td className="p-1 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap font-semibold md:font-normal">
+          {user?.name}
+        </p>
+        <p className="text-gray-500 whitespace-no-wrap text-[11px] md:hidden ">
+          {user?.email}
+        </p>
       </td>
 
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      <td className="hidden md:block px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">{user?.email}</p>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap ">{"verified"}</p>
+      <td className="p-3 md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 whitespace-no-wrap text-center">
+          {"verified"}
+        </p>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white w-28 text-sm ">
+      <td className="p-2 md:px-5  md:py-5 border-b border-gray-200 bg-white text-sm ">
         <p
           onClick={handleOpenProfile}
           data-tooltip-id="tooltip"
@@ -43,7 +50,7 @@ const AllUserDataRow = ({ user, handleConfirmButton, setIsOpen }) => {
           }}
         />
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+      <td className=" md:px-5 md:py-5 border-b border-gray-200 bg-white text-sm ">
         <div className="w-20 p-1 px-3  bg-[#ffa726] text-white rounded-xl font-medium  cursor-pointer hover:bg-[#de9120] active:bg-[#be7b19]  text-center">
           Delete
         </div>
