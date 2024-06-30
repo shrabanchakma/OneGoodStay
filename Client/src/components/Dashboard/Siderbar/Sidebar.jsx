@@ -65,7 +65,11 @@ const Sidebar = () => {
           </div>
           <hr />
 
-          <SidebarItem label="Profile" icon={TiUser} address={"./profile"} />
+          <SidebarItem
+            label="Profile"
+            icon={TiUser}
+            address={"/dashboard/profile"}
+          />
           {/* routes based on users */}
           {userData?.role === "admin" && <AdminOptions />}
           {userData?.role === "host" && <HostOptions />}

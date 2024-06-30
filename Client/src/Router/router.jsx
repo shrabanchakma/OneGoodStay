@@ -20,6 +20,7 @@ import UpdateProfile from "../components/Dashboard/Common/UpdateProfile";
 import PrivateRoute from "../UserRoutes/PrivateRoute";
 import Checkout from "../Pages/Checkout/Checkout";
 import AdminAnalytics from "../components/Dashboard/Admin/Analytics/AdminAnalytics";
+import HostAnalytics from "../components/Dashboard/Host/HostAnalytics/HostAnalytics";
 
 const router = createBrowserRouter([
   {
@@ -119,6 +120,14 @@ const router = createBrowserRouter([
           <AdminRoute>
             <AdminAnalytics />
           </AdminRoute>
+        ),
+      },
+      {
+        path: "analytics/host",
+        element: (
+          <HostRoute>
+            <HostAnalytics />
+          </HostRoute>
         ),
       },
     ],

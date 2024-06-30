@@ -1,41 +1,22 @@
 import { Calendar } from "react-date-range";
-import AdminSalesLineChart from "./AdminSalesLineChart";
-import { FaUser, FaDollarSign } from "react-icons/fa";
-import wave from "../../../../assets/wave.webp";
+import { FaDollarSign } from "react-icons/fa";
 import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
-import { useEffect, useState } from "react";
-import { getAdminAnalyticsData } from "../../../../Api/analytics";
-import { getLastThreeMonths } from "../../../../Api/utils";
-
-const AdminAnalytics = () => {
-  const [analyticsData, setAnalyticsData] = useState({});
-  const [lastThreeMonths, setLastThreeMonths] = useState([]);
-  const [lastThreeMonthsRevenue, setLastThreeMonthsRevenue] = useState([]);
+import { GiPlayerTime } from "react-icons/gi";
+import HostSalesLineChart from "./HostSalesLineChart";
+import wave from "../../../../assets/wave.webp";
+import { useEffect } from "react";
+import { getHostAnalyticsData } from "../../../../Api/analytics";
+import useUserData from "../../../../Hooks/useUserData";
+const HostAnalytics = () => {
+  const { userData } = useUserData();
   useEffect(() => {
-    getAdminAnalyticsData().then((data) => {
-      // console.log(data);
-      setAnalyticsData(data);
+    getHostAnalyticsData(userData?.email, userData?.timestamp).then((data) => {
+      console.log(data);
     });
   }, []);
-  useEffect(() => {
-    const currentDate = new Date();
-    const getMonths = getLastThreeMonths([
-      currentDate.getMonth() - 1,
-      currentDate.getMonth() - 2,
-      currentDate.getMonth() - 3,
-    ]);
-    setLastThreeMonths(getMonths);
-  }, []);
-  useEffect(() => {
-    setLastThreeMonthsRevenue([
-      analyticsData?.revenue_three_months_ago,
-      analyticsData?.revenue_two_months_ago,
-      analyticsData?.revenue_last_month,
-    ]);
-  }, [analyticsData]);
   return (
-    <div className="">
-      <div className="md:mt-12 p-2  h-auto">
+    <div>
+      <div className="mt-12">
         {/* small cards */}
         <div className="mb-8 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {/* Sales Card */}
@@ -45,11 +26,9 @@ const AdminAnalytics = () => {
                 <div className="w-7 h-7 place-items-center rounded-xl grid  bg-gradient-to-r from-sky-600 to-sky-500 shadow-md shadow-sky-500">
                   <FaDollarSign className="w-5 h-5 text-white" />
                 </div>
-                <p className="font-semibold text-gray-700 ">Total Revenue</p>
+                <p className="font-semibold text-gray-700 ">Total Sales</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">
-                ${analyticsData?.totalRevenue}
-              </p>
+              <p className="font-medium text-gray-700 text-xl">$100</p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
@@ -64,13 +43,11 @@ const AdminAnalytics = () => {
             <div className="flex flex-col justify-center ">
               <div className="flex items-center gap-2 mb-5">
                 <div className="w-7 h-7 place-items-center rounded-xl grid  bg-gradient-to-r from-zinc-600 to-zinc-500 shadow-md shadow-zinc-500">
-                  <FaUser className="w-5 h-5 text-white" />
+                  <BsFillCartPlusFill className="w-5 h-5 text-white" />
                 </div>
-                <p className="font-semibold text-gray-700 ">Total Users</p>
+                <p className="font-semibold text-gray-700 ">Total Bookings</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">
-                {analyticsData?.totalUsers}
-              </p>
+              <p className="font-medium text-gray-700 text-xl">100</p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
@@ -85,13 +62,11 @@ const AdminAnalytics = () => {
             <div className="flex flex-col justify-center ">
               <div className="flex items-center gap-2 mb-5">
                 <div className="w-7 h-7 place-items-center rounded-xl grid  bg-gradient-to-r from-purple-600 to-purple-500 shadow-md shadow-purple-500">
-                  <BsFillCartPlusFill className="w-5 h-5 text-white" />
+                  <BsFillHouseDoorFill className="w-5 h-5 text-white" />
                 </div>
-                <p className="font-semibold text-gray-700 ">Total Bookings</p>
+                <p className="font-semibold text-gray-700 ">Total Rooms</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">
-                {analyticsData.totalBookings}
-              </p>
+              <p className="font-medium text-gray-700 text-xl">120</p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
@@ -106,35 +81,26 @@ const AdminAnalytics = () => {
             <div className="flex flex-col justify-center ">
               <div className="flex items-center gap-2 mb-5">
                 <div className="w-7 h-7 place-items-center rounded-xl grid  bg-gradient-to-r from-cyan-600 to-cyan-500 shadow-md shadow-cyan-500">
-                  <BsFillHouseDoorFill className="w-5 h-5 text-white" />
+                  <GiPlayerTime className="w-5 h-5 text-white" />
                 </div>
-                <p className="font-semibold text-gray-700 ">Total Rooms</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">
-                {analyticsData?.totalRooms}
-              </p>
             </div>
-            <div className="bg-white ">
-              <img src={wave} alt="" className="w-[4rem]" />
-              <div>
-                <p className="text-green-500 font-semibold text-2xl">80%</p>
-                <p className="whitespace-nowrap">this month</p>
-              </div>
+            <div className="bg-white absolute bottom-3 right-5">
+              <p className="font-medium text-gray-500 text-[14px]">
+                Host since
+              </p>
+              <p className="font-medium text-gray-700 text-xl">360 days</p>
             </div>
           </div>
         </div>
 
-        <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3 ">
+        <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
           {/* Total Sales Graph */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
-            <AdminSalesLineChart
-              labels={lastThreeMonths}
-              data={lastThreeMonthsRevenue}
-            />
+            <HostSalesLineChart />
           </div>
           {/* Calender */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden">
-            <h1 className="font-semibold text-xl px-3 pb-1 pt-3">Calender</h1>
             <Calendar color="#F43F5E" />
           </div>
         </div>
@@ -143,4 +109,4 @@ const AdminAnalytics = () => {
   );
 };
 
-export default AdminAnalytics;
+export default HostAnalytics;

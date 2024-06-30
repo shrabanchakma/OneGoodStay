@@ -429,7 +429,7 @@ async function run() {
     });
 
     // get analytics data
-    app.get("/analytics/dashboard", async (req, res) => {
+    app.get("admin/analytics/dashboard", async (req, res) => {
       try {
         const currentDate = new Date(req.query.date);
         const currentYear = currentDate.getFullYear();
@@ -537,25 +537,541 @@ async function run() {
             .toArray(),
         ]);
         res.send({
-          totalRevenue: bookedRoomsData[0].totalRevenue,
-          totalBookings: bookedRoomsData[0].totalBookings,
-          totalUsers,
-          totalRooms,
-          revenue_last_month:
-            revenue_last_month.length > 0
-              ? revenue_last_month[0].total_revenue
-              : 0,
-          revenue_two_months_ago:
-            revenue_two_months_ago.length > 0
-              ? revenue_two_months_ago[0].total_revenue
-              : 0,
+          totalRevenue: bookedRoomsData[0]?.totalRevenue || 0,
+          totalBookings: bookedRoomsData[0]?.totalBookings || 0,
+          totalUsers: totalUsers || 0,
+          totalRooms: totalRooms || 0,
+          revenue_last_month: revenue_last_month[0]?.total_revenue || 0,
+          revenue_two_months_ago: revenue_two_months_ago[0]?.total_revenue || 0,
           revenue_three_months_ago:
-            revenue_three_months_ago.length > 0
-              ? revenue_three_months_ago[0].total_revenue
-              : 0,
+            revenue_three_months_ago[0]?.total_revenue || 0,
         });
       } catch (err) {
         res.status(400).send({ message: err.message });
+      }
+    });
+
+    app.get("/host/analytics/dashboard", async (req, res) => {
+      try {
+        const email = req.query.email;
+        const accountCreationTimestamp = parseInt(req.query.timestamp);
+        const currentDate = new Date(req.query.date);
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = (currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0");
+        const nextMonth = (currentDate.getMonth() + 2)
+          .toString()
+          .padStart(2, "0");
+        const lastMonth = currentDate.getMonth().toString().padStart(2, "0");
+        const twoMonthsAgo = (currentDate.getMonth() - 1)
+          .toString()
+          .padStart(2, "0");
+        const threeMonthsAgo = (currentDate.getMonth() - 2)
+          .toString()
+          .padStart(2, "0");
+        const fourMonthsAgo = (currentDate.getMonth() - 3)
+          .toString()
+          .padStart(2, "0");
+        const fiveMonthsAgo = (currentDate.getMonth() - 4)
+          .toString()
+          .padStart(2, "0");
+        const data = await Promise.all([
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: { $arrayElemAt: ["$roomDetailsArray", 0] },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  total_sales: { $sum: "$price" },
+                  total_bookings: { $sum: 1 },
+                },
+              },
+            ])
+            .toArray(),
+          roomCollection
+            .aggregate([
+              {
+                $match: {
+                  "host.email": email,
+                },
+              },
+              {
+                $count: "total_rooms",
+              },
+            ])
+            .toArray(),
+          // get revenues of last 5 months
+
+          // sales last month
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${lastMonth}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  sales_last_month: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          // sales two months ago
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${twoMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${lastMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  sales_two_months_ago: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          // sales three months ago
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${threeMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${twoMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  sales_three_months_ago: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          // sales four months ago
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${fourMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${threeMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  sales_four_months_ago: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          // sales five months ago
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${fiveMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${fourMonthsAgo}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  sales_five_months_ago: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          // current month
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${nextMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  sales_current_month: { $sum: "$price" },
+                },
+              },
+            ])
+            .toArray(),
+          // total bookings for current month (idx = 8)
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${nextMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $count: "current_month_total_bookings",
+              },
+            ])
+            .toArray(),
+          // total bookings for previous month (idx = 9)
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${lastMonth}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $count: "previous_month_total_bookings",
+              },
+            ])
+            .toArray(),
+          // room added in current month (idx = 10)
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${nextMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $count: "room_added_in_current_month",
+              },
+            ])
+            .toArray(),
+        ]);
+
+        const today = new Date().getTime() / (1000 * 60 * 60 * 24);
+        const accountCreationDay =
+          new Date(accountCreationTimestamp).getTime() / (1000 * 60 * 60 * 24);
+        const user_since = Math.round(Math.abs(today - accountCreationDay));
+
+        // line chart data
+        const sales_last_month = data[2][0]?.sales_last_month || 0;
+        const sales_two_months_ago = data[3][0]?.sales_two_months_ago || 0;
+        const sales_three_months_ago = data[4][0]?.sales_three_months_ago || 0;
+        const sales_four_months_ago = data[5][0]?.sales_four_months_ago || 0;
+        const sales_five_months_ago = data[6][0]?.sales_five_months_ago || 0;
+        // growth and decline
+        const sales_current_month = data[7][0]?.sales_current_month || 0;
+        const current_month_total_bookings =
+          data[8][0]?.current_month_total_bookings || 0;
+        const previous_month_total_bookings =
+          data[8][0]?.previous_month_total_bookings || 0;
+
+        const salesChangePercentage =
+          sales_last_month === 0
+            ? 100
+            : Math.round(
+                ((sales_current_month - sales_last_month) / sales_last_month) *
+                  100
+              );
+        const bookingsChangePercentage =
+          previous_month_total_bookings === 0
+            ? 100
+            : Math.round(
+                ((current_month_total_bookings -
+                  previous_month_total_bookings) /
+                  previous_month_total_bookings) *
+                  100
+              );
+
+        const room_added_in_current_month =
+          data[10][0]?.room_added_in_current_month || 0;
+        const analyticsData = {
+          totalSales: data[0][0]?.total_sales || 0,
+          totalBookings: data[0][0]?.total_bookings || 0,
+          totalRooms: data[1][0]?.total_rooms || 0,
+          lineChartData: [
+            sales_five_months_ago,
+            sales_four_months_ago,
+            sales_three_months_ago,
+            sales_two_months_ago,
+            sales_last_month,
+          ],
+          userSince: user_since,
+          percentages: {
+            salesChangePercentage,
+            bookingsChangePercentage,
+            room_added_in_current_month,
+          },
+        };
+        res.send(analyticsData);
+      } catch (err) {
+        res.send({ message: err.message });
       }
     });
 
