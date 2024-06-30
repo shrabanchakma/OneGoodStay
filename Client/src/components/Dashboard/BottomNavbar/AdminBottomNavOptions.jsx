@@ -6,7 +6,7 @@ const AdminBottomNavOptions = (props) => {
   return (
     <>
       <BottomNavOption path="/" icon={FaArrowLeft} />
-      <BottomNavOption path="./analytics" icon={FaChartLine} />
+      <BottomNavOption path="./analytics/admin" icon={FaChartLine} />
       <BottomNavOption path="./all-users" icon={FaUsers} />
       <BottomNavOption path="./profile" icon={TiUser} />
     </>

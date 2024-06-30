@@ -114,7 +114,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "analytics",
+        path: "analytics/admin",
         element: (
           <AdminRoute>
             <AdminAnalytics />

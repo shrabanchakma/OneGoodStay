@@ -5,7 +5,7 @@ const AdminOptionsMobile = () => {
     <div className="px-4">
       <ul className="font-medium">
         <li className="py-2 active:bg-neutral-100">
-          <Link to="./analytics">Analytics</Link>
+          <Link to="./analytics/admin">Analytics</Link>
         </li>
         <li className="py-2 active:bg-neutral-100">
           <Link to="./all-users">All users</Link>

@@ -5,6 +5,11 @@ const HostOptions = () => {
   return (
     <>
       <SidebarItem
+        label="Analytics"
+        icon={BsHousesFill}
+        address={"./analytics/host"}
+      />
+      <SidebarItem
         label="myBookings"
         icon={BsFillHouseAddFill}
         address={"./my-bookings"}

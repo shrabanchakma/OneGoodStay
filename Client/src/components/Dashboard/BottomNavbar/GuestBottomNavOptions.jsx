@@ -8,7 +8,7 @@ const GuestBottomNavOptions = (props) => {
   return (
     <>
       <BottomNavOption path="/" icon={FaArrowLeft} />
-      <BottomNavOption path="./analytics" icon={IoStatsChart} />
+      <BottomNavOption path="./analytics/guest" icon={IoStatsChart} />
       <BottomNavOption path="./my-bookings" icon={BsFillHouseAddFill} />
       <BottomNavOption path="./profile" icon={TiUser} />
     </>

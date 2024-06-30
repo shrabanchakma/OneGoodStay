@@ -8,7 +8,7 @@ const AdminOptions = () => {
       <SidebarItem
         label="Analytics"
         icon={FaChartLine}
-        address={"./analytics"}
+        address={"./analytics/admin"}
       />
       <SidebarItem label="All Users" icon={FaUsers} address={"./all-users"} />
     </>

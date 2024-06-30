@@ -6,7 +6,7 @@ const HostBottomNavOptions = (props) => {
   return (
     <>
       <BottomNavOption path="./my-bookings" icon={BsHousesFill} />
-      <BottomNavOption path="./analytics" icon={IoStatsChart} />
+      <BottomNavOption path="./analytics/host" icon={IoStatsChart} />
       <BottomNavOption path="./add-rooms" icon={BsFillHouseAddFill} />
       <BottomNavOption path="./hosted-rooms" icon={BsHousesFill} />
       <BottomNavOption path="./profile" icon={FaUser} />
