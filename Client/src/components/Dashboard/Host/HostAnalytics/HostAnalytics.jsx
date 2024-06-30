@@ -1,18 +1,34 @@
 import { Calendar } from "react-date-range";
-import { FaDollarSign } from "react-icons/fa";
+import { FaDollarSign, FaMinus, FaPlus } from "react-icons/fa";
 import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
 import { GiPlayerTime } from "react-icons/gi";
 import HostSalesLineChart from "./HostSalesLineChart";
 import wave from "../../../../assets/wave.webp";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getHostAnalyticsData } from "../../../../Api/analytics";
 import useUserData from "../../../../Hooks/useUserData";
+import { RiArrowUpSFill } from "react-icons/ri";
+import { getMonths } from "../../../../Api/utils";
 const HostAnalytics = () => {
   const { userData } = useUserData();
+  const [analyticsData, setAnalyticsData] = useState({});
+  const [months, setMonths] = useState([]);
   useEffect(() => {
     getHostAnalyticsData(userData?.email, userData?.timestamp).then((data) => {
+      setAnalyticsData(data);
       console.log(data);
     });
+  }, [userData]);
+  useEffect(() => {
+    const currentDate = new Date();
+    const months = getMonths([
+      currentDate.getMonth() - 1,
+      currentDate.getMonth() - 2,
+      currentDate.getMonth() - 3,
+      currentDate.getMonth() - 4,
+      currentDate.getMonth() - 5,
+    ]);
+    setMonths(months);
   }, []);
   return (
     <div>
@@ -28,12 +44,24 @@ const HostAnalytics = () => {
                 </div>
                 <p className="font-semibold text-gray-700 ">Total Sales</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">$100</p>
+              <p className="font-medium text-gray-700 text-xl">
+                ${analyticsData?.totalSales}
+              </p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
               <div>
-                <p className="text-green-500 font-semibold text-2xl">45%</p>
+                {analyticsData?.percentages?.salesChangePercentage > 0 ? (
+                  <p className="text-green-500 font-semibold text-2xl flex items-center gap-2">
+                    {analyticsData?.percentages?.salesChangePercentage}%
+                    <RiArrowUpSFill />
+                  </p>
+                ) : (
+                  <p className="relative text-rose-600 font-semibold text-2xl flex items-center gap-2">
+                    {analyticsData?.percentages?.salesChangePercentage}%
+                    <RiArrowUpSFill className="rotate-180" />
+                  </p>
+                )}
                 <p className="whitespace-nowrap">this month</p>
               </div>
             </div>
@@ -47,12 +75,24 @@ const HostAnalytics = () => {
                 </div>
                 <p className="font-semibold text-gray-700 ">Total Bookings</p>
               </div>
-              <p className="font-medium text-gray-700 text-xl">100</p>
+              <p className="font-medium text-gray-700 text-xl">
+                {analyticsData?.totalBookings}
+              </p>
             </div>
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
               <div>
-                <p className="text-green-500 font-semibold text-2xl">70%</p>
+                {analyticsData?.percentages?.bookingsChangePercentage > 0 ? (
+                  <p className="text-green-500 font-semibold text-2xl flex items-center gap-2">
+                    {analyticsData?.percentages?.bookingsChangePercentage}%
+                    <RiArrowUpSFill />
+                  </p>
+                ) : (
+                  <p className="relative text-rose-600 font-semibold text-2xl flex items-center gap-2">
+                    {analyticsData?.percentages?.bookingsChangePercentage}%
+                    <RiArrowUpSFill className="rotate-180" />
+                  </p>
+                )}
                 <p className="whitespace-nowrap">this month</p>
               </div>
             </div>
@@ -71,7 +111,17 @@ const HostAnalytics = () => {
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
               <div>
-                <p className="text-rose-500 font-semibold text-2xl">-10%</p>
+                {analyticsData?.percentages?.changeOfRoomNumbers > 0 ? (
+                  <p className="text-green-500 font-semibold text-2xl flex items-center justify-end gap-1">
+                    <FaPlus size={16} />
+                    {analyticsData?.percentages?.changeOfRoomNumbers}
+                  </p>
+                ) : (
+                  <p className="relative text-rose-600 font-semibold text-2xl flex items-center justify-end gap-1">
+                    <FaMinus size={16} />
+                    {analyticsData?.percentages?.changeOfRoomNumbers}
+                  </p>
+                )}
                 <p className="whitespace-nowrap">this month</p>
               </div>
             </div>
@@ -89,7 +139,9 @@ const HostAnalytics = () => {
               <p className="font-medium text-gray-500 text-[14px]">
                 Host since
               </p>
-              <p className="font-medium text-gray-700 text-xl">360 days</p>
+              <p className="font-medium text-gray-700 text-xl">
+                {analyticsData?.userSince} days
+              </p>
             </div>
           </div>
         </div>
@@ -97,7 +149,10 @@ const HostAnalytics = () => {
         <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
           {/* Total Sales Graph */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
-            <HostSalesLineChart />
+            <HostSalesLineChart
+              labels={months}
+              data={analyticsData?.lineChartData}
+            />
           </div>
           {/* Calender */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden">

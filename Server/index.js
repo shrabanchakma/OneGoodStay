@@ -1012,6 +1012,47 @@ async function run() {
               },
             ])
             .toArray(),
+          // room added in previous month (idx = 11)
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "roomDetails.host.email": email,
+                  bookingDate: {
+                    $gte: new Date(
+                      `${currentYear}-${lastMonth}-01T00:00:00.000Z`
+                    ),
+                    $lt: new Date(
+                      `${currentYear}-${currentMonth}-01T00:00:00.000Z`
+                    ),
+                  },
+                },
+              },
+              {
+                $count: "room_added_in_previous_month",
+              },
+            ])
+            .toArray(),
         ]);
 
         const today = new Date().getTime() / (1000 * 60 * 60 * 24);
@@ -1051,6 +1092,14 @@ async function run() {
 
         const room_added_in_current_month =
           data[10][0]?.room_added_in_current_month || 0;
+
+        const room_added_in_previous_month =
+          data[10][0]?.room_added_in_previous_month || 0;
+
+        const changeOfRoomNumbers =
+          room_added_in_current_month === room_added_in_previous_month
+            ? room_added_in_current_month
+            : room_added_in_current_month - room_added_in_previous_month;
         const analyticsData = {
           totalSales: data[0][0]?.total_sales || 0,
           totalBookings: data[0][0]?.total_bookings || 0,
@@ -1066,7 +1115,7 @@ async function run() {
           percentages: {
             salesChangePercentage,
             bookingsChangePercentage,
-            room_added_in_current_month,
+            changeOfRoomNumbers,
           },
         };
         res.send(analyticsData);

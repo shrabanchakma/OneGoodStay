@@ -57,3 +57,8 @@ export const getLastThreeMonths = (lastThreeMonthIdx) => {
   );
   return lastThreeMonths;
 };
+
+export const getMonths = (monthsIdx) => {
+  const months = monthNames.filter((_, idx) => monthsIdx.includes(idx));
+  return months;
+};

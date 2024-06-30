@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables, Tooltip } from "chart.js";
 Chart.register(...registerables, Tooltip);
-const HostSalesLineChart = (props) => {
+const HostSalesLineChart = ({ labels, data }) => {
   const chartData = {
-    labels: ["january", "february", "april"],
+    labels,
     datasets: [
       {
-        label: ["Revenue of last three months"],
-        data: [10, 100, 0],
+        label: ["Sales Chart"],
+        data,
         fill: false,
         borderColor: "#e41b43",
         tension: 0.1,
