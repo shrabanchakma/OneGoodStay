@@ -15,6 +15,9 @@ const HostOptionsMobile = (props) => {
         <li className="py-2 active:bg-neutral-100">
           <Link to="./hosted-rooms">Hosted Rooms</Link>
         </li>
+        <li className="py-2 active:bg-neutral-100">
+          <Link to="/">Go Home</Link>
+        </li>
       </ul>
     </div>
   );

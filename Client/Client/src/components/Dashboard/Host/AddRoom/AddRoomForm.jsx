@@ -67,8 +67,15 @@ const AddRoomForm = ({
   }, [isAmenityVisible]);
 
   return (
-    <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
-      <form onSubmit={handleSubmit}>
+    <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl ">
+      {/* title */}
+      <div className="my-5 md:my-2 py-5 bg-slate-200 w-11/12">
+        <h1 className="text-xl text-gray-700 font-medium uppercase text-center mb-2">
+          Add room
+        </h1>
+        <p className="text-gray-700 text-center">Form</p>
+      </div>
+      <form onSubmit={handleSubmit} className="w-11/12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="space-y-6">
             <div className="space-y-1 text-sm">
@@ -299,16 +306,19 @@ const AddRoomForm = ({
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
-        >
-          {loading ? (
-            <TbFidgetSpinner className="m-auto animate-spin" size={24} />
-          ) : (
-            "Save & Continue"
-          )}
-        </button>
+        <div className="w-1/2 mx-auto">
+          {" "}
+          <button
+            type="submit"
+            className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
+          >
+            {loading ? (
+              <TbFidgetSpinner className="m-auto animate-spin" size={24} />
+            ) : (
+              "Save & Continue"
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

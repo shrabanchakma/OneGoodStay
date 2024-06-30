@@ -8,35 +8,58 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleDialogBoxVisibility = () => setIsOpen(true);
   return (
-    <tr className={`${room?.status === "checkedOut" && "bg-orange-50"}`}>
-      <td className="px-5 py-5 border-b border-gray-200  text-sm">
-        <div className="flex items-center">
+    <tr className={`${room?.status === "checkedOut" && "bg-orange-50"} `}>
+      <td className="p-1 md:px-5 md:py-5 border-b border-gray-200  text-sm ">
+        <div className="flex flex-col  md:flex-row items-center ">
           <div className="flex-shrink-0">
-            <div className="block relative">
+            <div className="hidden md:block relative md:mr-2">
               <img
                 alt="profile"
                 src={room?.image}
-                className="mx-auto object-cover rounded h-10 w-15 "
+                className="object-cover rounded  md:h-10 md:w-15 "
               />
             </div>
           </div>
-          <div className="ml-3">
-            <p className="text-gray-900 whitespace-no-wrap">{room?.title}</p>
+          <div className="w-full">
+            <p className="text-gray-900 whitespace-nowrap text-start">
+              <span className="font-semibold text-gray-800  md:hidden">
+                Title:
+              </span>{" "}
+              {room?.title}
+            </p>
+            <div className="table-cell md:hidden">
+              <p className="text-gray-900 whitespace-nowrap text-start">
+                <span className="font-semibold text-gray-800">Location:</span>{" "}
+                {room?.location}
+              </p>
+              <div>
+                <span className="font-semibold text-gray-800">From:</span>{" "}
+                <p className="text-gray-900 whitespace-no-wrap inline-block">
+                  {formatDate(room?.startDate)}
+                </p>
+              </div>
+              <div>
+                <span className="font-semibold text-gray-800">To:</span>{" "}
+                <p className="text-gray-900 whitespace-no-wrap inline-block">
+                  {formatDate(room?.endDate)}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200  text-sm">
+      <td className="hidden md:table-cell px-5 py-5 border-b border-gray-200  text-sm">
         <p className="text-gray-900 whitespace-no-wrap">{room?.location}</p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200  text-sm">
         <p className="text-gray-900 whitespace-no-wrap">${room?.price}</p>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200  text-sm">
+      <td className="hidden md:table-cell px-5 py-5 border-b border-gray-200  text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
           {formatDate(room?.startDate)}
         </p>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200  text-sm">
+      <td className="hidden md:table-cell px-5 py-5 border-b border-gray-200  text-sm">
         <p className="text-gray-900 whitespace-no-wrap">
           {formatDate(room?.endDate)}
         </p>

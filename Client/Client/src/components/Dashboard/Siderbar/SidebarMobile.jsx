@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { RiMenuFold2Fill, RiMenuFoldFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import HostOptionsMobile from "../Host/HostOptionsMobile";
 import GuestOptionMobile from "../Guest/GuestOptionsMobile";
 import AdminOptionsMobile from "../Admin/AdminOptionsMobile";
@@ -16,6 +16,8 @@ export const SidebarMobile = ({
   const [isActive, setIsActive] = useState(false);
   const { userData } = useUserData();
   const sidebarRef = useRef(null);
+  const { pathname } = useLocation();
+  const [roomId, setRoomId] = useState(null);
 
   const openSidebar = () => {
     setIsActive(true);
@@ -30,7 +32,10 @@ export const SidebarMobile = ({
       setIsActive(false);
     }
   };
-
+  useEffect(() => {
+    setRoomId(pathname.split("/")[4] || null);
+    console.log(pathname.split("/")[4]);
+  }, [pathname]);
   useEffect(() => {
     console.log("from use effect");
     document.addEventListener("mousedown", handleClickOutside);
@@ -65,6 +70,23 @@ export const SidebarMobile = ({
           pathMatch={"my-bookings"}
           mainText={"List"}
           HighlightedText={"Bookings"}
+        />
+        {!roomId && (
+          <CustomTextDisplay
+            pathMatch={"hosted-rooms"}
+            mainText={"List"}
+            HighlightedText={"Hosted Rooms"}
+          />
+        )}
+        <CustomTextDisplay
+          pathMatch={"add-rooms"}
+          mainText={"Form"}
+          HighlightedText={"Add New Room"}
+        />
+        <CustomTextDisplay
+          pathMatch={`update/${roomId}`}
+          mainText={"Form"}
+          HighlightedText={"Update"}
         />
       </div>
       <aside

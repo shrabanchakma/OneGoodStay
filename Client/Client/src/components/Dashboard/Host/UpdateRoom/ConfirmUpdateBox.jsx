@@ -13,6 +13,7 @@ const ConfirmUpdateBox = ({ isOpen, setIsOpen, handleUpdate, formData }) => {
         onClose={() => setIsOpen(false)}
         className="relative z-50"
       >
+        <div className="fixed inset-0 bg-black/30"></div>
         <TransitionChild
           show={isOpen}
           enter="transition-all transform duration-200"
@@ -24,7 +25,7 @@ const ConfirmUpdateBox = ({ isOpen, setIsOpen, handleUpdate, formData }) => {
         >
           <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
             <DialogPanel
-              className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl bg-neutral-100`}
+              className={`h-[10rem] w-[20rem] flex items-center justify-center space-y-4 border   rounded-xl bg-neutral-100`}
             >
               <div className="flex flex-col items-center justify-center gap-4 w-full">
                 <p className="font-semibold text-lg">Are you sure?</p>

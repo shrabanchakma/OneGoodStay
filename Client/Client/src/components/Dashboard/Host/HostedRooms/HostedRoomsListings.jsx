@@ -42,21 +42,27 @@ const HostedRoomsListings = () => {
       </Helmet>
 
       <div className="container mx-auto ">
-        <div className="py-8">
-          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto  ">
-            <div className="overflow-x-auto overflow-y-auto max-h-[600px]">
-              <table className="min-w-full leading-normal">
+        <div>
+          <div className=" sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto w-full ">
+            <div className="overflow-x-auto overflow-y-auto max-h-[600px] ">
+              <table className="min-w-full leading-normal ">
                 <thead>
                   <tr>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="hidden md:table-cell px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       Title
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="table-cell md:hidden px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                    >
+                      Room Details
+                    </th>
+                    <th
+                      scope="col"
+                      className="hidden md:table-cell px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       Location
                     </th>
@@ -68,13 +74,13 @@ const HostedRoomsListings = () => {
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="hidden md:table-cell px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       From
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="hidden md:table-cell px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       To
                     </th>

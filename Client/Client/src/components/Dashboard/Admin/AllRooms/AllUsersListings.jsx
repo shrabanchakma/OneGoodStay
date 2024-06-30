@@ -79,9 +79,9 @@ const AllUsersListings = () => {
             ))}
           </select>
         </div>
-        <div className="md:py-8  w-full">
-          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto w-full ">
-            <div className="overflow-x-auto overflow-y-auto max-h-[600px] w-full ">
+        <div className="">
+          <div className="sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto w-full ">
+            <div className="overflow-x-auto overflow-y-auto max-h-[600px] ">
               <table className="min-w-full leading-normal ">
                 <thead>
                   <tr>

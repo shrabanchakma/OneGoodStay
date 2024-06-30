@@ -29,6 +29,7 @@ const RoomEditDialogBox = ({
   };
 
   const handleCancelButton = () => {
+    setHoverButton(null);
     setIsModalOpen(false);
     setIsOpen(true);
   };
@@ -58,11 +59,11 @@ const RoomEditDialogBox = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl border-none ${
+                className={`w-[50rem] h-[15rem] flex items-center justify-center space-y-4 border   rounded-xl border-none ${
                   hoveringButton ? "bg-gray-600" : "bg-white"
                 }`}
               >
-                <div className="w-full h-1/2">
+                <div className="w-full">
                   <button
                     onClick={handleUpdateButton}
                     data-tooltip-id="tooltip"
@@ -79,7 +80,7 @@ const RoomEditDialogBox = ({
                     data-tooltip-float="false"
                     onMouseEnter={() => setHoverButton("button1")}
                     onMouseLeave={() => setHoverButton(null)}
-                    className={` w-full h-1/2 font-semibold transition-color duration-150 border-b-[1px] ${
+                    className={` w-full h-[4rem] font-semibold transition-color duration-150 border-b-[1px] ${
                       hoveredButton("button1") ? "bg-white" : "bg-gray-600"
                     } text-white  hover:text-green-600 active:bg-neutral-200 ${
                       status === "booked" && ""
@@ -97,7 +98,7 @@ const RoomEditDialogBox = ({
                     onClick={handleDeleteButton}
                     onMouseEnter={() => setHoverButton("button2")}
                     onMouseLeave={() => setHoverButton(null)}
-                    className={` w-full h-1/2 font-semibold transition-color duration-150  ${
+                    className={` w-full h-[4rem]  font-semibold transition-color duration-150  ${
                       hoveredButton("button2")
                         ? "bg-neutral-200"
                         : "bg-gray-600"
@@ -131,7 +132,7 @@ const RoomEditDialogBox = ({
           >
             <div className="fixed inset-0 flex items-center w-screen justify-center p-4">
               <DialogPanel
-                className={`h-[20vh] w-1/5 flex items-center justify-center space-y-4 border   rounded-xl bg-white`}
+                className={`w-[20rem] h-[10rem] flex items-center justify-center space-y-4 border   rounded-xl bg-white`}
               >
                 <div className="flex flex-col items-center justify-center gap-4 w-full">
                   <div className="w-full text-center">
@@ -176,6 +177,7 @@ RoomEditDialogBox.propTypes = {
   setIsOpen: PropTypes.func,
   handleDeleteRoom: PropTypes.func,
   roomId: PropTypes.string,
+  status: PropTypes.string,
 };
 
 export default RoomEditDialogBox;
