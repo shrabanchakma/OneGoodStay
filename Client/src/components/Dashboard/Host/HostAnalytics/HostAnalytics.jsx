@@ -97,7 +97,7 @@ const HostAnalytics = () => {
               </div>
             </div>
           </div>
-          {/* Total Bookings */}
+          {/* Total rooms */}
           <div className="relative flex  items-start justify-between p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
             <div className="flex flex-col justify-center ">
               <div className="flex items-center gap-2 mb-5">
@@ -111,7 +111,7 @@ const HostAnalytics = () => {
             <div className="bg-white ">
               <img src={wave} alt="" className="w-[4rem]" />
               <div>
-                {analyticsData?.percentages?.changeOfRoomNumbers > 0 ? (
+                {analyticsData?.percentages?.changeOfRoomNumbers >= 0 ? (
                   <p className="text-green-500 font-semibold text-2xl flex items-center justify-end gap-1">
                     <FaPlus size={16} />
                     {analyticsData?.percentages?.changeOfRoomNumbers}
@@ -126,13 +126,14 @@ const HostAnalytics = () => {
               </div>
             </div>
           </div>
-          {/* Total Rooms */}
+          {/* host since */}
           <div className="relative flex  items-start justify-between p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-            <div className="flex flex-col justify-center ">
-              <div className="flex items-center gap-2 mb-5">
+            <div className="flex flex-col justify-center w-full">
+              <div className="flex items-center justify-between  gap-2 mb-5">
                 <div className="w-7 h-7 place-items-center rounded-xl grid  bg-gradient-to-r from-cyan-600 to-cyan-500 shadow-md shadow-cyan-500">
                   <GiPlayerTime className="w-5 h-5 text-white" />
                 </div>
+                <img src={wave} alt="" className="w-[4rem]" />
               </div>
             </div>
             <div className="bg-white absolute bottom-3 right-5">

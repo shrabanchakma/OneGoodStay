@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { formatDate } from "../../../Api/utils";
 import { FaAngleRight } from "react-icons/fa6";
@@ -14,18 +14,25 @@ const MyBookingsDataRow = ({ room }) => {
       navigate(`/room-details/${room?._id}`);
     }, 200);
   };
+  const handleClick = () => {
+    navigate(`/room-details/${room?._id}`);
+  };
   return (
-    <tr className="group">
+    <tr onClick={handleClick} className="group">
       <td className="px-5 py-3 border-b border-gray-200 bg-white text-sm group-hover:bg-slate-50">
-        <img src={room?.image} alt="" className="hidden md:table-cell w-16 " />
+        <img
+          src={room?.image}
+          alt=""
+          className="hidden md:table-cell h-16 w-28 "
+        />
         <div className="w-full">
-          <p className="text-gray-900 text-start">
+          <p className="text-gray-900 text-start  md:hidden">
             <span className="font-semibold text-gray-800  md:hidden">
               Title:
             </span>{" "}
             {room?.title}
           </p>
-          <div className="table-cell md:hidden">
+          <div className=" md:hidden">
             <p className="text-gray-900 text-start">
               <span className="font-semibold text-gray-800">Location:</span>{" "}
               {room?.location}
@@ -71,6 +78,8 @@ const MyBookingsDataRow = ({ room }) => {
   );
 };
 
-MyBookingsDataRow.propTypes = {};
+MyBookingsDataRow.propTypes = {
+  room: PropTypes.object,
+};
 
 export default MyBookingsDataRow;

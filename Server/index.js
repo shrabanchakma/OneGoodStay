@@ -429,7 +429,7 @@ async function run() {
     });
 
     // get analytics data
-    app.get("admin/analytics/dashboard", async (req, res) => {
+    app.get("/admin/analytics/dashboard", async (req, res) => {
       try {
         const currentDate = new Date(req.query.date);
         const currentYear = currentDate.getFullYear();
@@ -536,7 +536,7 @@ async function run() {
             ])
             .toArray(),
         ]);
-        res.send({
+        const analyticsData = {
           totalRevenue: bookedRoomsData[0]?.totalRevenue || 0,
           totalBookings: bookedRoomsData[0]?.totalBookings || 0,
           totalUsers: totalUsers || 0,
@@ -545,7 +545,8 @@ async function run() {
           revenue_two_months_ago: revenue_two_months_ago[0]?.total_revenue || 0,
           revenue_three_months_ago:
             revenue_three_months_ago[0]?.total_revenue || 0,
-        });
+        };
+        res.send(analyticsData);
       } catch (err) {
         res.status(400).send({ message: err.message });
       }
@@ -1121,6 +1122,45 @@ async function run() {
         res.send(analyticsData);
       } catch (err) {
         res.send({ message: err.message });
+      }
+    });
+
+    app.get("/guest/analytics/dashboard", async (req, res) => {
+      const email = req.query.email;
+      const accountCreationTimestamp = parseInt(req.query.timestamp);
+      try {
+        const [totalSpent] = await Promise.all([
+          // total spent
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $match: {
+                  "guest.email": email,
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  total_spent: { $sum: "$price" },
+                  total_bookings: { $sum: 1 },
+                },
+              },
+            ])
+            .toArray(),
+        ]);
+        const today = new Date().getTime() / (1000 * 60 * 60 * 24);
+        const accountCreationDay =
+          new Date(accountCreationTimestamp).getTime() / (1000 * 60 * 60 * 24);
+        const user_since = Math.round(Math.abs(today - accountCreationDay));
+
+        const analyticsData = {
+          totalSpent: totalSpent[0].total_spent,
+          totalBookings: totalSpent[0].total_bookings,
+          userSince: user_since,
+        };
+        res.send(analyticsData);
+      } catch (err) {
+        res.status(400).send({ message: err.message });
       }
     });
 

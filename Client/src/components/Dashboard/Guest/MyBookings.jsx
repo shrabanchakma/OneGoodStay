@@ -6,19 +6,21 @@ import { getBookedRooms } from "../../../Api/rooms";
 import Loader from "../../Shared/Loader";
 import { Helmet } from "react-helmet-async";
 import MyBookingsDataRow from "./MyBookingsDataRow";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const MyBookings = () => {
   const { user } = useAuth();
-  const {
-    data: rooms = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["booked-rooms"],
-    queryFn: async () => await getBookedRooms(user?.email),
-  });
+  const [rooms, setRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   console.log("user email---->", user?.email);
   console.log("rooms---->", rooms);
+  useEffect(() => {
+    getBookedRooms(user?.email).then((roomsData) => {
+      setRooms(roomsData);
+    });
+    setIsLoading(false);
+  }, [user?.email]);
   if (isLoading) return <Loader />;
   return (
     <>

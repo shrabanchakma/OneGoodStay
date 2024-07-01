@@ -21,6 +21,7 @@ import PrivateRoute from "../UserRoutes/PrivateRoute";
 import Checkout from "../Pages/Checkout/Checkout";
 import AdminAnalytics from "../components/Dashboard/Admin/Analytics/AdminAnalytics";
 import HostAnalytics from "../components/Dashboard/Host/HostAnalytics/HostAnalytics";
+import GuestAnalytics from "../components/Dashboard/Guest/GuestAnalytics/GuestAnalytics";
 
 const router = createBrowserRouter([
   {
@@ -74,12 +75,12 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
         path: "my-bookings",
         element: <MyBookings />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
       {
         path: "add-rooms",
@@ -128,6 +129,14 @@ const router = createBrowserRouter([
           <HostRoute>
             <HostAnalytics />
           </HostRoute>
+        ),
+      },
+      {
+        path: "analytics/guest",
+        element: (
+          <PrivateRoute>
+            <GuestAnalytics />
+          </PrivateRoute>
         ),
       },
     ],
