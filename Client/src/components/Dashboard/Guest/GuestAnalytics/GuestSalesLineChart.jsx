@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Line } from "react-chartjs-2";
-const GuestSalesLineChart = (props) => {
+import { Doughnut, Line } from "react-chartjs-2";
+const GuestSalesDoughnutChart = ({ labels, data, backgroundColor }) => {
   const chartData = {
-    labels: ["january", "february", "march"],
+    labels,
     datasets: [
       {
         label: ["Sales Chart"],
-        data: [10, 1000, 10],
+        data,
+        backgroundColor,
         fill: false,
-        borderColor: "#e41b43",
         tension: 0.1,
       },
     ],
@@ -18,9 +18,9 @@ const GuestSalesLineChart = (props) => {
     responsive: true,
     maintainAspectRatio: false,
   };
-  return <Line data={chartData} options={options} />;
+  return <Doughnut data={chartData} options={options} />;
 };
 
-GuestSalesLineChart.propTypes = {};
+GuestSalesDoughnutChart.propTypes = {};
 
-export default GuestSalesLineChart;
+export default GuestSalesDoughnutChart;

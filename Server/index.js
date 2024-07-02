@@ -1129,7 +1129,7 @@ async function run() {
       const email = req.query.email;
       const accountCreationTimestamp = parseInt(req.query.timestamp);
       try {
-        const [totalSpent] = await Promise.all([
+        const [totalSpent, chartData] = await Promise.all([
           // total spent
           bookedRoomsCollection
             .aggregate([
@@ -1147,6 +1147,42 @@ async function run() {
               },
             ])
             .toArray(),
+          // doughnut chart data
+          bookedRoomsCollection
+            .aggregate([
+              {
+                $addFields: {
+                  roomIDObjectId: { $toObjectId: "$roomID" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "rooms",
+                  localField: "roomIDObjectId",
+                  foreignField: "_id",
+                  as: "roomDetailsArray",
+                },
+              },
+              {
+                $addFields: {
+                  roomDetails: {
+                    $arrayElemAt: ["$roomDetailsArray", 0],
+                  },
+                },
+              },
+              {
+                $match: {
+                  "guest.email": email,
+                },
+              },
+              {
+                $group: {
+                  _id: "$roomDetails.category",
+                  category_sum: { $sum: 1 },
+                },
+              },
+            ])
+            .toArray(),
         ]);
         const today = new Date().getTime() / (1000 * 60 * 60 * 24);
         const accountCreationDay =
@@ -1157,6 +1193,7 @@ async function run() {
           totalSpent: totalSpent[0].total_spent,
           totalBookings: totalSpent[0].total_bookings,
           userSince: user_since,
+          chartData,
         };
         res.send(analyticsData);
       } catch (err) {
