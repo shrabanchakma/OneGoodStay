@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosSecure from ".";
 
 const monthNames = [
@@ -16,19 +17,16 @@ const monthNames = [
 ];
 
 export const uploadImage = async (image) => {
+  const formData = new FormData();
+  formData.append("image", image);
   try {
-    const { data } = await axiosSecure.post(
+    const { data } = await axios.post(
       `https://api.imgbb.com/1/upload?key=${
         import.meta.env.VITE_IMGBB_API_KEY
       }`,
-      { image },
-      {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      }
+      formData
     );
-    return data.data;
+    return data;
   } catch (error) {
     console.error(error.message);
   }

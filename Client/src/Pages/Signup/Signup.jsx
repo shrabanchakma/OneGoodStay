@@ -55,12 +55,12 @@ const Signup = () => {
       return toast.error("Password should be at least 6 characters");
     if (!isPasswordMatched) return toast.error("Password does not match");
     try {
-      const { data } = await axiosSecure.put(
-        `/users/${signUpData?.email}`,
-        signUpData
-      );
-      if (data.upsertedCount > 0) {
-        await createUser(signUpData?.email, password);
+      const {
+        user: { email: userEmail },
+      } = await createUser(signUpData?.email, password);
+
+      if (userEmail) {
+        await axiosSecure.put(`/users/${signUpData?.email}`, signUpData);
         setIsSubmit(true);
         const { display_url } = await uploadImage(file);
         await updateUserProfile(signUpData.name, display_url);

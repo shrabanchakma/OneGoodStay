@@ -254,7 +254,7 @@ async function run() {
       res.send(result);
     });
     // get all rooms from database
-    app.get("/rooms", verifyToken, async (req, res) => {
+    app.get("/rooms", async (req, res) => {
       const email = req.query.email;
       // get rooms based on user email
       if (email) {
