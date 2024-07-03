@@ -1,12 +1,10 @@
-import React from "react";
 import PropTypes from "prop-types";
-import { Doughnut, Line } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 const GuestSalesDoughnutChart = ({ labels, data, backgroundColor }) => {
   const chartData = {
     labels,
     datasets: [
       {
-        label: ["Sales Chart"],
         data,
         backgroundColor,
         fill: false,
@@ -21,6 +19,10 @@ const GuestSalesDoughnutChart = ({ labels, data, backgroundColor }) => {
   return <Doughnut data={chartData} options={options} />;
 };
 
-GuestSalesDoughnutChart.propTypes = {};
+GuestSalesDoughnutChart.propTypes = {
+  labels: PropTypes.array,
+  data: PropTypes.array,
+  backgroundColor: PropTypes.array,
+};
 
 export default GuestSalesDoughnutChart;

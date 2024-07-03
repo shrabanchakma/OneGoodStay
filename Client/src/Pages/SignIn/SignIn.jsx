@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import axiosSecure from "../../Api";
 import { useState } from "react";
 import { ImSpinner } from "react-icons/im";
+import { getToken } from "../../Api/auth";
 const SignIn = () => {
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
@@ -23,6 +24,7 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
     try {
+      const data = await getToken(email);
       await signInUser(email, password);
       toast.success("Sign In Successful!");
       navigate(redirectURL);

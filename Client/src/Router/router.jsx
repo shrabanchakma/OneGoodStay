@@ -63,11 +63,19 @@ const router = createBrowserRouter([
   },
   {
     path: "profile/update/basic-information",
-    element: <UpdateProfile />,
+    element: (
+      <PrivateRoute>
+        <UpdateProfile />
+      </PrivateRoute>
+    ),
   },
   {
     path: "profile/update/contact-information",
-    element: <UpdateContactInfo />,
+    element: (
+      <PrivateRoute>
+        <UpdateContactInfo />
+      </PrivateRoute>
+    ),
   },
   // dashboard
   {
@@ -76,11 +84,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "my-bookings",
-        element: <MyBookings />,
+        element: (
+          <PrivateRoute>
+            <MyBookings />
+          </PrivateRoute>
+        ),
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-rooms",

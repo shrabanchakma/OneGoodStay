@@ -34,7 +34,7 @@ const GuestAnalytics = () => {
         setAnalyticsData(analyticsData);
       }
     );
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     if (analyticsData?.chartData) {
@@ -111,18 +111,23 @@ const GuestAnalytics = () => {
           </div>
         </div>
 
-        <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="mb-4 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3 ">
           {/* Total Sales Graph */}
-          <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden xl:col-span-2">
-            <GuestSalesDoughnutChart
-              labels={chartLabels}
-              data={chartData}
-              backgroundColor={chartColors}
-            />
+          <div className="xl:col-span-2 relative ">
+            <p className="text-2xl font-semibold absolute top-0 left-1/2 -translate-x-1/2  z-10 whitespace-nowrap">
+              Favorite Categories
+            </p>
+            <div className="py-10 relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden  ">
+              <GuestSalesDoughnutChart
+                labels={chartLabels}
+                data={chartData}
+                backgroundColor={chartColors}
+              />
+            </div>
           </div>
           {/* Calender */}
           <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden">
-            <Calendar color="#F43F5E" />
+            <Calendar color="#F43F5E" className="bg-green-500" />
           </div>
         </div>
       </div>

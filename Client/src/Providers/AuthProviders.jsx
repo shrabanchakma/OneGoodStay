@@ -14,6 +14,7 @@ import {
 import { auth } from "../firebaseConfig";
 import { GoogleAuthProvider } from "firebase/auth";
 import PropTypes from "prop-types";
+import { removeToken } from "../Api/auth";
 export const AuthContext = createContext({});
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
@@ -79,8 +80,9 @@ const AuthProviders = ({ children }) => {
   }, []);
 
   // sign out user
-  const signOutUser = () => {
+  const signOutUser = async () => {
     setLoading(true);
+    await removeToken();
     return signOut(auth);
   };
 
