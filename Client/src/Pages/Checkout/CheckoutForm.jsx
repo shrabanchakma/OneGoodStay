@@ -34,6 +34,7 @@ const CheckoutForm = ({ roomID, roomData }) => {
         console.log("error->", error);
       } else if (paymentIntent.status === "succeeded") {
         // set room details in database
+        console.log("paymentIntent --------->", paymentIntent);
         const bookedRoom = {
           guest: {
             name: userData?.name,

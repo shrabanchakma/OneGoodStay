@@ -24,7 +24,6 @@ const SignIn = () => {
     const email = form.email.value;
     const password = form.password.value;
     try {
-      const data = await getToken(email);
       await signInUser(email, password);
       toast.success("Sign In Successful!");
       navigate(redirectURL);

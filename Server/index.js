@@ -5,6 +5,7 @@ const { deleteBookedRooms } = require("./CronTask/deleteBookedRooms");
 const app = express();
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const nodemailer = require("nodemailer");
 const port = 8000 || process.env.PORT;
 
 // middlewares
@@ -32,6 +33,41 @@ const verifyToken = (req, res, next) => {
     // console.log(decoded);
     res.user = decoded;
     next();
+  });
+};
+
+// send email
+const sendEmail = async (emailAddress, emailData) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: { user: process.env.ETHEREAL_MAIL, pass: process.env.ETHEREAL_PASS },
+  });
+
+  //verify connection
+  transporter.verify((error, success) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Server is ready to take our emails", success);
+    }
+  });
+
+  const mailBody = {
+    from: process.env.ETHEREAL_MAIL,
+    to: emailAddress,
+    subject: emailData?.subject,
+    html: `<p>${emailData?.message}</p>`,
+  };
+
+  transporter.sendMail(mailBody, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
   });
 };
 
@@ -338,6 +374,13 @@ async function run() {
           ...roomDetails,
           bookingDate: new Date(roomDetails.bookingDate),
         });
+        // send mail
+        if (result.insertedId) {
+          sendEmail(roomDetails?.guest?.email, {
+            subject: "Bookings successful",
+            message: "Your room had been booked",
+          });
+        }
         res.send(result);
       } catch (error) {
         return res.status(400).send({ error: { message: error.message } });

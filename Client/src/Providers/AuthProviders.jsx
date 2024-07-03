@@ -14,7 +14,7 @@ import {
 import { auth } from "../firebaseConfig";
 import { GoogleAuthProvider } from "firebase/auth";
 import PropTypes from "prop-types";
-import { removeToken } from "../Api/auth";
+import { getToken, removeToken } from "../Api/auth";
 export const AuthContext = createContext({});
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
@@ -71,9 +71,16 @@ const AuthProviders = ({ children }) => {
 
   // get the current user
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       console.log("user->", currentUser);
+      if (currentUser) {
+        try {
+          await getToken(currentUser?.email);
+        } catch (e) {
+          console.error(e.message);
+        }
+      }
       setLoading(false);
     });
     return () => unsubscribe();
