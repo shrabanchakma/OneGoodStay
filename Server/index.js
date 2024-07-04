@@ -24,11 +24,15 @@ app.use(cookieParser());
 const verifyToken = (req, res, next) => {
   const token = req.cookies?.token;
   if (!token) {
-    return res.status(401).send({ message: "Unauthorized access" });
+    return res
+      .status(401)
+      .send({ message: "Unauthorized access -- i did not found token" });
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
     if (err) {
-      return res.status(401).send({ message: "Unauthorized access" });
+      return res
+        .status(401)
+        .send({ message: "Unauthorized access -- there was an error" });
     }
     // console.log(decoded);
     res.user = decoded;
@@ -37,13 +41,13 @@ const verifyToken = (req, res, next) => {
 };
 
 // send email
-const sendEmail = async (emailAddress, emailData) => {
+const sendEmail = (emailAddress, emailData) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
-    auth: { user: process.env.ETHEREAL_MAIL, pass: process.env.ETHEREAL_PASS },
+    auth: { user: process.env.USER_MAIL, pass: process.env.USER_PASS },
   });
 
   //verify connection
@@ -56,10 +60,10 @@ const sendEmail = async (emailAddress, emailData) => {
   });
 
   const mailBody = {
-    from: process.env.ETHEREAL_MAIL,
+    from: process.env.USER_MAIL,
     to: emailAddress,
     subject: emailData?.subject,
-    html: `<p>${emailData?.message}</p>`,
+    html: `<div>${emailData?.message}</div>`,
   };
 
   transporter.sendMail(mailBody, (error, info) => {
@@ -104,15 +108,22 @@ async function run() {
 
     // middleware
     const verifyAdmin = async (req, res, next) => {
-      const email = req.user.email;
-      const user = await userCollection.findOne({ email });
-      if (!user || user?.role !== "admin") {
-        return res.status(401).send({ message: "Unauthorized access" });
+      const user = req.user;
+      console.log("user-->", user);
+      if (user) {
+        const result = await userCollection.findOne({ email: user?.email });
+        console.log("user-->", result);
+        if (!result || result?.role !== "admin") {
+          return res
+            .status(401)
+            .send({ message: "Unauthorized access -- you are not admin" });
+        }
+        next();
       }
-      next();
     };
     const verifyHost = async (req, res, next) => {
       const email = res.user.email;
+      console.log("email-->", res.user?.email);
       const user = await userCollection.findOne({ email });
       if (!user || user?.role !== "host") {
         return res.status(401).send({ message: "Unauthorized access" });
@@ -357,6 +368,7 @@ async function run() {
     app.put("/book/room/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const roomDetails = req.body;
+      const transactionId = roomDetails.transactionId;
       const options = { upsert: true };
       // set isBooked true for that room
       try {
@@ -374,13 +386,64 @@ async function run() {
           ...roomDetails,
           bookingDate: new Date(roomDetails.bookingDate),
         });
-        // send mail
-        if (result.insertedId) {
+        const roomData = await roomCollection.findOne({
+          _id: ObjectId.createFromHexString(roomDetails?.roomID),
+        });
+        // send mail to guest
+        if (result.insertedId && roomData) {
+          const startDate = new Date(roomData?.startDate);
+          const endDate = new Date(roomData?.endDate);
           sendEmail(roomDetails?.guest?.email, {
-            subject: "Bookings successful",
-            message: "Your room had been booked",
+            subject: `Your Booking Confirmation at ${roomData?.title}`,
+            message: `
+          <h1>Booking Confirmation</h1>
+            <p>Dear ${roomDetails?.guest?.name},</p>
+           <p>Thank you for booking with ${
+             roomData?.title
+           }! We are pleased to confirm your reservation.</p>
+          <p><strong>Booking Details:</strong></p>
+        <ul>
+          <li><strong>Check-in Date:</strong> <span id="check-in-date">${startDate.toLocaleDateString(
+            "en-US"
+          )}</span></li>
+          <li><strong>Check-out Date:</strong> <span id="check-out-date">${endDate.toLocaleDateString(
+            "en-US"
+          )}</span></li>
+          <li><strong>Room Type:</strong> ${roomData?.category}</li>
+       </ul>
+    <p>If you have any questions or need to make any changes, please contact us.</p>
+    <p>We look forward to welcoming you!</p>
+    <p>Best regards,</p>
+    <p>${roomData?.title}</p>
+            `,
+          });
+          // send mail to host
+          sendEmail(roomData?.host?.email, {
+            subject: `New Booking Alert: ${roomDetails?.guest?.name} at ${roomData?.title}`,
+            message: `
+                <h1>New Booking Alert</h1>
+    <p>Dear ${roomData?.host?.name},</p>
+    <p>We are excited to inform you that ${
+      roomDetails?.guest?.name
+    } has made a reservation at ${roomData?.title}.</p>
+    <p><strong>Booking Details:</strong></p>
+    <ul>
+        <li><strong>Guest Name:</strong> ${roomDetails?.guest?.name}</li>
+        <li><strong>Check-in Date:</strong>${startDate.toLocaleDateString(
+          "en-US"
+        )}</li>
+        <li><strong>Check-out Date:</strong>${endDate.toLocaleDateString(
+          "en-US"
+        )}</li>
+        <li><strong>Room Type:</strong> ${roomData?.category}</li>
+    </ul>
+    <p>Please ensure that the room is prepared and ready for the guest's arrival. If you have any questions, feel free to contact us.</p>
+    <p>Best regards,</p>
+    <p>${roomData?.title}</p>
+            `,
           });
         }
+
         res.send(result);
       } catch (error) {
         return res.status(400).send({ error: { message: error.message } });

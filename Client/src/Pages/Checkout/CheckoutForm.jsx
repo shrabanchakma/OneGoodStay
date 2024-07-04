@@ -28,8 +28,6 @@ const CheckoutForm = ({ roomID, roomData }) => {
           // return_url: `${window.location.origin}/room-details/${roomID}`,
         },
       });
-
-      // console.log("error-->", error);
       if (error) {
         console.log("error->", error);
       } else if (paymentIntent.status === "succeeded") {
@@ -42,6 +40,7 @@ const CheckoutForm = ({ roomID, roomData }) => {
           },
           roomID: roomID,
           bookingDate: new Date(new Date().setHours(0, 0, 0, 0)),
+          transactionId: paymentIntent.id,
           price: roomData?.price,
         };
 
