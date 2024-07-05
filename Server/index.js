@@ -1400,6 +1400,61 @@ async function run() {
         res.status(400).send({ message: err.message });
       }
     });
+    // add visited rooms
+    app.post("/visited-rooms", async (req, res) => {
+      const roomId = ObjectId.createFromHexString(req.body.roomId);
+      const email = req.body.userEmail;
+      console.log("roomId is --->", roomId);
+      console.log("email is --->", email);
+      try {
+        const room = await roomCollection.findOne({ _id: roomId });
+        const user = await userCollection.findOne({ email });
+        const visitedRoomDetails = {
+          roomId: room?._id,
+          image: room?.image,
+          title: room?.title,
+        };
+        if (!user?.visitedRooms || user?.visitedRooms.length === 0) {
+          const result = await userCollection.updateOne(
+            { email },
+            { $set: { visitedRooms: [visitedRoomDetails] } },
+            { upsert: true }
+          );
+          res.send(result);
+        } else {
+          const visitedRooms = user?.visitedRooms;
+          if (visitedRooms.length === 4) {
+            visitedRooms.pop();
+            visitedRooms.unshift(visitedRoomDetails);
+          } else {
+            visitedRooms.unshift(visitedRoomDetails);
+          }
+          const result = await userCollection.updateOne(
+            { email },
+            { $set: { visitedRooms } },
+            { upsert: true }
+          );
+          res.send(result);
+        }
+      } catch (err) {
+        res.status(400).send({ message: err.message });
+      }
+    });
+
+    // get visited rooms
+    app.get("/visited-rooms", async (req, res) => {
+      try {
+        const email = req.query.email;
+        const user = await userCollection.findOne({ email });
+        if (!user?.visitedRooms || user.visitedRooms.length === 0) {
+          res.send({ visitedRooms: [] });
+        } else {
+          res.send({ visitedRooms: user.visitedRooms });
+        }
+      } catch (err) {
+        res.status(400).send({ message: err.message });
+      }
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

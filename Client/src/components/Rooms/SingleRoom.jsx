@@ -1,10 +1,20 @@
 import PropTypes from "prop-types";
 import DefaultButton from "../Shared/DefaultButton";
 import { Link } from "react-router-dom";
-const SingleRoom = ({ room }) => {
+import { saveVisitedRooms } from "../../Api/rooms";
+const SingleRoom = ({ room, userEmail }) => {
+  const addVisitedRoom = async () => {
+    try {
+      const data = await saveVisitedRooms(userEmail, room?._id);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <Link
       to={`room-details/${room?._id}`}
+      onClick={addVisitedRoom}
       className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out active:bg-neutral-200 active:shadow-[#e41b43] active:shadow-2xl"
     >
       <div className="overflow-hidden">

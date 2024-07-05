@@ -44,7 +44,7 @@ const Sidebar = () => {
       />
       {/* for big screens */}
       <aside
-        className={`w-1/4 xl:w-[25rem] h-[calc(100vh-40px)] py-12 hidden lg:flex flex-col justify-between  z-10 bg-white`}
+        className={`w-1/4 xl:w-[20rem] h-[calc(100vh-40px)] py-12 hidden lg:flex flex-col justify-between  z-10 bg-white`}
       >
         <div>
           <Link

@@ -86,3 +86,18 @@ export const isReviewAllowed = async (email, id) => {
   const { data } = await axiosSecure.get(`/can-review/${id}?email=${email}`);
   return data;
 };
+
+// add visited rooms
+export const saveVisitedRooms = async (userEmail, roomId) => {
+  const { data } = await axiosSecure.post(`/visited-rooms`, {
+    roomId,
+    userEmail,
+  });
+  return data;
+};
+
+// get visitedRooms
+export const getVisitedRooms = async (email) => {
+  const { data } = await axiosSecure.get(`/visited-rooms?email=${email}`);
+  return data;
+};
