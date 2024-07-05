@@ -24,17 +24,13 @@ app.use(cookieParser());
 const verifyToken = (req, res, next) => {
   const token = req.cookies?.token;
   if (!token) {
-    return res
-      .status(401)
-      .send({ message: "Unauthorized access -- i did not found token" });
+    return res.status(401).send({ message: "Unauthorized access" });
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
     if (err) {
-      return res
-        .status(401)
-        .send({ message: "Unauthorized access -- there was an error" });
+      return res.status(401).send({ message: "Unauthorized access" });
     }
-    // console.log(decoded);
+    // console.log("decoded --->", decoded);
     res.user = decoded;
     next();
   });
@@ -108,24 +104,17 @@ async function run() {
 
     // middleware
     const verifyAdmin = async (req, res, next) => {
-      const user = req.user;
-      console.log("user-->", user);
-      if (user) {
-        const result = await userCollection.findOne({ email: user?.email });
-        console.log("user-->", result);
-        if (!result || result?.role !== "admin") {
-          return res
-            .status(401)
-            .send({ message: "Unauthorized access -- you are not admin" });
-        }
-        next();
+      const user = res.user;
+      const result = await userCollection.findOne({ email: user?.email });
+      if (!result || result?.role !== "admin") {
+        return res.status(401).send({ message: "Unauthorized access" });
       }
+      next();
     };
     const verifyHost = async (req, res, next) => {
-      const email = res.user.email;
-      console.log("email-->", res.user?.email);
-      const user = await userCollection.findOne({ email });
-      if (!user || user?.role !== "host") {
+      const user = res.user;
+      const result = await userCollection.findOne({ email: user?.email });
+      if (!result || result?.role !== "host") {
         return res.status(401).send({ message: "Unauthorized access" });
       }
       next();
@@ -178,6 +167,31 @@ async function run() {
         },
         { upsert: true }
       );
+      if (result.upsertedCount) {
+        const accountCreationDate = new Date();
+        emailData = {
+          subject: `Welcome to OneGoodStay!`,
+          message: `
+    <h1>Welcome to OneGoodStay!</h1>
+    <p>Dear ${newUser?.name},</p>
+    <p>Thank you for creating an account with us. We're excited to have you on board!</p>
+    <p>With your new account, you can easily book rooms, manage your reservations, and enjoy a seamless experience on our platform.</p>
+    <p><strong>Account Details:</strong></p>
+    <ul>
+        <li><strong>Username:</strong> ${newUser?.name}</li>
+        <li><strong>Email:</strong> ${newUser?.email}</li>
+        <li><strong>Account Created On:</strong> <span id="account-created-date">${accountCreationDate.toLocaleDateString(
+          "en-GB"
+        )}</span></li>
+    </ul>
+    <p>If you have any questions or need assistance, feel free to contact our support team.</p>
+    <p>We look forward to providing you with the best service.</p>
+    <p>Best regards,</p>
+    <p>OneGoodStay Team</p>
+          `,
+        };
+        sendEmail(email, emailData);
+      }
       res.send(result);
     });
 

@@ -51,9 +51,14 @@ const Signup = () => {
     setIsLoading(true);
     e.preventDefault();
     console.log(signUpData);
-    if (password.length < 6)
+    if (password.length < 6) {
+      setIsLoading(false);
       return toast.error("Password should be at least 6 characters");
-    if (!isPasswordMatched) return toast.error("Password does not match");
+    }
+    if (!isPasswordMatched) {
+      setIsLoading(false);
+      return toast.error("Password does not match");
+    }
     try {
       const {
         user: { email: userEmail },

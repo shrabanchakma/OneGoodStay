@@ -29,8 +29,8 @@ const MyBookings = () => {
       </Helmet>
 
       <div className="container mx-auto ">
-        <div className="md:py-8 w-full">
-          <div className="sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto w-full  ">
+        <div className="lg:py-8 w-full ">
+          <div className=" px-4 sm:px-8 py-4 overflow-x-auto w-full  ">
             <div className="overflow-x-auto overflow-y-auto max-h-[600px] w-full">
               <table className="min-w-full leading-normal w-full">
                 <thead>

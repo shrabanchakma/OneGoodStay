@@ -11,20 +11,20 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
     <tr className={`${room?.status === "checkedOut" && "bg-orange-50"} `}>
       <td className="p-1 md:px-5 md:py-5 border-b border-gray-200  text-sm ">
         <div className="flex flex-col  md:flex-row items-center ">
-          <div className="flex-shrink-0">
-            <div className="hidden md:block relative md:mr-2">
-              <img
-                alt="profile"
-                src={room?.image}
-                className="object-cover rounded  md:h-10 md:w-15 "
-              />
-            </div>
+          <div className="hidden md:flex items-center relative md:mr-2">
+            <img
+              alt="profile"
+              src={room?.image}
+              className="object-cover rounded w-20 "
+            />
+            <p className="text-gray-900 whitespace-normal w-[15rem] text-start">
+              <span className="font-semibold text-gray-800  ">Title:</span>{" "}
+              {room?.title}
+            </p>
           </div>
           <div className="w-full">
-            <p className="text-gray-900 whitespace-nowrap text-start">
-              <span className="font-semibold text-gray-800  md:hidden">
-                Title:
-              </span>{" "}
+            <p className="text-gray-900 whitespace-nowrap  md:hidden text-start">
+              <span className="font-semibold text-gray-800  ">Title:</span>{" "}
               {room?.title}
             </p>
             <div className="table-cell md:hidden">
@@ -47,6 +47,7 @@ const HostedRoomsDataRow = ({ room, handleDeleteRoom }) => {
             </div>
           </div>
         </div>
+        {/*  */}
       </td>
       <td className="hidden md:table-cell px-5 py-5 border-b border-gray-200  text-sm">
         <p className="text-gray-900 whitespace-no-wrap">{room?.location}</p>

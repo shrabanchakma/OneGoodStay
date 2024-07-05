@@ -44,11 +44,10 @@ export const SidebarMobile = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  //   todo: add make me host option
   return (
     <>
-      <div className="w-full flex  md:hidden justify-between  p-3 mt-6 mb-9">
-        <button onClick={openSidebar} className="block md:hidden ">
+      <div className="w-full flex  lg:hidden justify-between  p-3 mt-6 mb-9">
+        <button onClick={openSidebar} className="block lg:hidden ">
           <RiMenuFold2Fill size={35} />
         </button>
         <CustomTextDisplay
@@ -91,7 +90,7 @@ export const SidebarMobile = ({
       </div>
       <aside
         ref={sidebarRef}
-        className={` py-10 fixed md:hidden left-0 right-44  top-0 bottom-0 ${
+        className={` py-10 fixed lg:hidden left-0 right-44  top-0 bottom-0 ${
           !isActive && "-translate-x-full"
         } z-10 bg-white transition-position duration-150 ease-in-out `}
       >
