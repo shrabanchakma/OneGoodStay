@@ -15,7 +15,7 @@ const SingleRoom = ({ room, userEmail }) => {
     <Link
       to={`room-details/${room?._id}`}
       onClick={addVisitedRoom}
-      className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out active:bg-neutral-200 active:shadow-[#e41b43] active:shadow-2xl"
+      className=" rounded overflow-hidden shadow-lg flex flex-col group  hover:shadow-[#e41b43] transition-all duration-300 ease-in-out active:bg-neutral-200 active:shadow-[#e41b43] active:shadow-2xl"
     >
       <div className="overflow-hidden">
         <img

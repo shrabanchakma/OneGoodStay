@@ -1,0 +1,26 @@
+#calendar-wrapper {
+  width: 100%;
+}
+#calendar-wrapper .rdrMonth {
+  width: 100%;
+}
+
+#calendar-wrapper .rdrMonths {
+  width: 32rem;
+}
+
+@media screen and (max-width: 425px) {
+  #calendar-wrapper .rdrMonths {
+    width: 25rem;
+  }
+}
+@media screen and (max-width: 375px) {
+  #calendar-wrapper .rdrMonths {
+    width: 24rem;
+  }
+}
+@media screen and (max-width: 320px) {
+  #calendar-wrapper .rdrMonths {
+    width: 20rem;
+  }
+}

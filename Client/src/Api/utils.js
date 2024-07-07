@@ -15,6 +15,20 @@ const monthNames = [
   "November",
   "December",
 ];
+const monthNamesShort = [
+  "Jan",
+  "Feb",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 export const uploadImage = async (image) => {
   const formData = new FormData();
@@ -49,6 +63,14 @@ export const formatDateTwo = (date) => {
   const day = reviewDate.getDate();
   const year = reviewDate.getFullYear();
   return `${monthNames[month]} ${day}, ${year}`;
+};
+//format date month dd
+export const formatDateThree = (date) => {
+  const reviewDate = new Date(date);
+
+  const month = reviewDate.getMonth();
+  const day = reviewDate.getDate();
+  return `${monthNamesShort[month]} ${day}`;
 };
 
 export const getLastThreeMonths = (lastThreeMonthIdx) => {
