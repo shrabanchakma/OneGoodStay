@@ -1,21 +1,25 @@
+import { useState } from "react";
 import Heading from "../Shared/Heading";
 import FilterByDate from "./FilterByDate";
 import FilterByGuestNumbers from "./FilterByGuestNumbers";
 import FilterByPlace from "./FilterByPlace";
 
 const SearchBar = () => {
+  
+  const handleFilter = () => {
+    console.log("this is handle filter");
+  };
   return (
-    <div>
-      <Heading label="Where to?" />
-      <div className="flex items-center gap-3">
-        {/* filter search */}
-        <div className="w-11/12 flex items-center justify-evenly gap-4  ">
-          <FilterByPlace />
-          <FilterByDate />
-          <FilterByGuestNumbers />
-        </div>
-        {/* search button*/}
-        <button className="bg-sky-600 text-white font-bold w-1/12 h-12 rounded-3xl ">
+    <div className="flex flex-col items-center md:items-start">
+      <div className="w-10/12 text-start">
+        <Heading label="Where to?" />
+      </div>
+      {/* filter search */}
+      <div className="w-10/12 md:w-full grid  grid-cols-1 md:grid-cols-4 gap-4">
+        <FilterByPlace />
+        <FilterByDate />
+        <FilterByGuestNumbers />
+        <button className="w-full md:w-1/2 bg-sky-600 text-white font-bold  h-12 rounded-3xl ">
           Search
         </button>
       </div>

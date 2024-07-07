@@ -24,7 +24,7 @@ const Categories = () => {
   return (
     <div>
       <Heading label="Categories" />
-      <div className="flex items-center justify-evenly h-24">
+      <div className="flex items-center justify-evenly h-24 overflow-auto">
         {categories.map((category, idx) => (
           <CategoryBox
             key={idx}

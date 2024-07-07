@@ -19,8 +19,8 @@ const RecentViews = () => {
           <Heading label="Your recently viewed rooms" />
           {/* generate cards here */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-10/12">
-            {visitedRooms.map((room) => (
-              <RecentViewsCard key={room?.roomId} room={room} />
+            {visitedRooms.map((room, idx) => (
+              <RecentViewsCard key={idx} room={room} />
             ))}
           </div>
         </>

@@ -1404,8 +1404,6 @@ async function run() {
     app.post("/visited-rooms", async (req, res) => {
       const roomId = ObjectId.createFromHexString(req.body.roomId);
       const email = req.body.userEmail;
-      console.log("roomId is --->", roomId);
-      console.log("email is --->", email);
       try {
         const room = await roomCollection.findOne({ _id: roomId });
         const user = await userCollection.findOne({ email });

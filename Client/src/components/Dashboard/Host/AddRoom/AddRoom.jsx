@@ -62,8 +62,7 @@ const AddRoom = () => {
         status: "available",
       };
       // save new room
-      const data = await saveRoom(newRoom);
-      console.log(data);
+      await saveRoom(newRoom);
       toast.success("Room added successfully");
       // reset every input value
       form.reset();
