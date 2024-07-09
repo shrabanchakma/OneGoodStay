@@ -5,7 +5,17 @@ import FilterByGuestNumbers from "./FilterByGuestNumbers";
 import FilterByPlace from "./FilterByPlace";
 
 const SearchBar = () => {
-  
+  const [searchData, setSearchData] = useState({});
+  const saveSearchData = (name, value) => {
+    setSearchData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  console.log("searchData--->", searchData);
   const handleFilter = () => {
     console.log("this is handle filter");
   };
@@ -16,9 +26,12 @@ const SearchBar = () => {
       </div>
       {/* filter search */}
       <div className="w-10/12 md:w-full grid  grid-cols-1 md:grid-cols-4 gap-4">
-        <FilterByPlace />
-        <FilterByDate />
-        <FilterByGuestNumbers />
+        <FilterByPlace
+          saveSearchData={saveSearchData}
+          searchData={searchData}
+        />
+        <FilterByDate saveSearchData={saveSearchData} />
+        <FilterByGuestNumbers saveSearchData={saveSearchData} />
         <button className="w-full md:w-1/2 bg-sky-600 text-white font-bold  h-12 rounded-3xl ">
           Search
         </button>

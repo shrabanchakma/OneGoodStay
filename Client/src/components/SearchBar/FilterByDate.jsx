@@ -1,5 +1,6 @@
 import {
   Button,
+  CloseButton,
   Dialog,
   DialogBackdrop,
   DialogPanel,
@@ -7,15 +8,19 @@ import {
   MenuButton,
   MenuItem,
   MenuItems,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
   Transition,
 } from "@headlessui/react";
 import { MdDateRange } from "react-icons/md";
 import Calendar from "./Calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Calendar.css";
 import { RxCross2 } from "react-icons/rx";
 import { formatDateThree } from "../../Api/utils";
-const FilterByDate = () => {
+import "./SearchBar.css";
+const FilterByDate = ({ saveSearchData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState({
     startDate: new Date(),
@@ -36,10 +41,15 @@ const FilterByDate = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    saveSearchData("startDate", value?.startDate);
+    saveSearchData("endDate", value?.endDate);
+  }, [value]);
   return (
     <div className="w-full">
-      <Menu>
-        <MenuButton className="text-xl w-full h-12 border border-black rounded-lg text-start hidden lg:flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]  ">
+      <Popover className={"relative hidden lg:block"}>
+        <PopoverButton className="text-xl w-full h-12 border border-black rounded-lg text-start hidden lg:flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]  ">
           <MdDateRange className="text-2xl" />
           <div>
             <h3 className="font-medium">Dates</h3>
@@ -48,29 +58,32 @@ const FilterByDate = () => {
               {formatDateThree(value?.endDate)}
             </p>
           </div>
-        </MenuButton>
-        <Transition
-          enter="transition ease-out duration-95"
-          leave="transition ease-in duration-100"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
+        </PopoverButton>
+        <PopoverPanel
+          transition
+          anchor="bottom"
+          className={
+            "flex origin-top-left flex-col transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0 [--anchor-offset:10.5rem] [--anchor-gap:-3.2rem]  shadow bg-white"
+          }
         >
-          <MenuItems
-            anchor="bottom"
-            className="bg-white w-auto origin-top-left border-[1px] rounded-lg min-h-24"
-          >
-            <MenuItem>
-              <Calendar
-                value={value}
-                handleDateChange={handleDateChange}
-                months={2}
-              />
-            </MenuItem>
-          </MenuItems>
-        </Transition>
-      </Menu>
+          <div className="flex flex-col items-end">
+            <Calendar
+              value={value}
+              handleDateChange={handleDateChange}
+              months={2}
+            />
+            <div className="w-full text-end">
+              <CloseButton
+                as={"button"}
+                className="w-3/12 bg-sky-600 text-white font-bold  h-12  rounded-3xl mb-2"
+              >
+                Done
+              </CloseButton>
+            </div>
+          </div>
+        </PopoverPanel>
+      </Popover>
+
       {/* for small screen */}
       <div className="relative block lg:hidden">
         <Button
@@ -93,23 +106,31 @@ const FilterByDate = () => {
           <DialogBackdrop className={"fixed inset-0 bg-black/30"} />
           <div className="fixed inset-0 z-10  overflow-y-auto ">
             <div className="flex h-full items-center justify-center p-0 md:p-4">
-              <DialogPanel className="h-full w-full md:w-[35rem] md:h-[30rem] md:rounded-xl bg-white  p-6 backdrop-blur-2xl  overflow-y-auto overflow-x-hidden">
+              <DialogPanel className="h-full w-full md:w-[35rem] md:h-[31rem] md:rounded-xl bg-white  p-6 backdrop-blur-2xl  overflow-y-auto overflow-x-hidden flex flex-col justify-between">
+                <div>
+                  <button
+                    onClick={closeModal}
+                    className="flex items-center justify-center bg-white hover:bg-blue-200  h-8 w-8 rounded-full absolute left-1 top-3"
+                  >
+                    <RxCross2 className="text-blue-500  text-[1.5rem]" />
+                  </button>
+                  <div
+                    id="calendar-wrapper"
+                    className="flex items-center justify-center mt-5"
+                  >
+                    <Calendar
+                      value={value}
+                      handleDateChange={handleDateChange}
+                      months={1}
+                    />
+                  </div>
+                </div>
                 <button
                   onClick={closeModal}
-                  className="flex items-center justify-center bg-white hover:bg-blue-200  h-8 w-8 rounded-full absolute left-1 top-3"
+                  className="w-full bg-sky-600 text-white font-bold  h-12  rounded-3xl "
                 >
-                  <RxCross2 className="text-blue-500  text-[1.5rem]" />
+                  Done
                 </button>
-                <div
-                  id="calendar-wrapper"
-                  className="flex items-center justify-center mt-5"
-                >
-                  <Calendar
-                    value={value}
-                    handleDateChange={handleDateChange}
-                    months={1}
-                  />
-                </div>
               </DialogPanel>
             </div>
           </div>

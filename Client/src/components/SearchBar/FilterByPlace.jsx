@@ -8,6 +8,7 @@ import {
   Dialog,
   Button,
   DialogBackdrop,
+  CloseButton,
 } from "@headlessui/react";
 import { IoLocationSharp } from "react-icons/io5";
 import "./SearchBar.css";
@@ -17,7 +18,7 @@ import { MdCancel } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
 import City from "./City";
 import { RxCross2 } from "react-icons/rx";
-const FilterByPlace = () => {
+const FilterByPlace = ({ saveSearchData, searchData }) => {
   const [searchText, setSearchText] = useState("");
   const [filteredCities, setFilteredCities] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,7 @@ const FilterByPlace = () => {
   const panelRef = useRef();
   const removeTextBtn = useRef();
   console.log("searchText -->", searchText);
+  console.log("filtered cities -->", filteredCities);
   const handleInputText = (e) => {
     if (e.target.value.length === 0) {
       setFilteredCities([]);
@@ -69,7 +71,13 @@ const FilterByPlace = () => {
             "text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] "
           }
         >
-          <IoLocationSharp /> Where to?
+          <IoLocationSharp />
+          <div>
+            <span>Where to?</span>
+            {searchData && searchData?.city && (
+              <p className="text-sm ">{searchData?.city}</p>
+            )}
+          </div>
         </PopoverButton>
         <PopoverPanel
           transition
@@ -100,11 +108,23 @@ const FilterByPlace = () => {
               )}
             </Field>
           </div>
+
           <div className=" h-[20rem] overflow-y-auto overflow-x-hidden">
             {filteredCities && filteredCities.length > 0 ? (
               filteredCities.map((city, idx) => (
-                <City key={idx} city={city} icon={IoLocationSharp} />
+                <City
+                  key={idx}
+                  city={city}
+                  icon={IoLocationSharp}
+                  closeModal={closeModal}
+                  saveSearchData={saveSearchData}
+                />
               ))
+            ) : searchText.length > 0 && filteredCities == 0 ? (
+              <div className="flex flex-col items-center justify-center mt-10">
+                <IoSearch size={35} />
+                <p className="text-gray-700">Not found</p>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center mt-10">
                 <IoSearch size={35} />
@@ -141,6 +161,7 @@ const FilterByPlace = () => {
                 >
                   <RxCross2 className="text-blue-500  text-[1.5rem]" />
                 </button>
+
                 <div className="border-b flex items-center justify-between mt-3 px-3">
                   <Input
                     ref={inputRef}
@@ -163,8 +184,19 @@ const FilterByPlace = () => {
                 <div>
                   {filteredCities && filteredCities.length > 0 ? (
                     filteredCities.map((city, idx) => (
-                      <City key={idx} city={city} icon={IoLocationSharp} />
+                      <City
+                        key={idx}
+                        city={city}
+                        icon={IoLocationSharp}
+                        closeModal={closeModal}
+                        saveSearchData={saveSearchData}
+                      />
                     ))
+                  ) : searchText.length > 0 && filteredCities == 0 ? (
+                    <div className="flex flex-col items-center justify-center mt-10">
+                      <IoSearch size={35} />
+                      <p className="text-gray-700">Not found</p>
+                    </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center mt-10">
                       <IoSearch size={35} />
