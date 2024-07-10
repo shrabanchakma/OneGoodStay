@@ -1,10 +1,11 @@
 import { CloseButton, useClose } from "@headlessui/react";
 import PropTypes from "prop-types";
 
-const City = ({ city, icon: Icon, saveSearchData, closeModal }) => {
+const City = ({ city, icon: Icon, saveSearchData, closeModal, setErrMsg }) => {
   const close = useClose();
   const saveSelectedCity = () => {
     saveSearchData("city", city);
+    setErrMsg("");
     closeModal();
     close();
   };

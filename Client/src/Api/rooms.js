@@ -101,3 +101,16 @@ export const getVisitedRooms = async (email) => {
   const { data } = await axiosSecure.get(`/visited-rooms?email=${email}`);
   return data;
 };
+
+// search rooms
+export const getSearchedRooms = async (location) => {
+  const city = location.searchParams.get("city");
+  const startDate = location.searchParams.get("startDate");
+  const endDate = location.searchParams.get("endDate");
+  const rooms = location.searchParams.get("rooms");
+  const guests = location.searchParams.get("guests");
+  const { data } = await axiosSecure.get(
+    `/room-search?city=${city}&startDate=${startDate}&endDate=${endDate}&rooms=${rooms}&guests=${guests}`
+  );
+  return data;
+};

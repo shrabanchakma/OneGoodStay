@@ -22,6 +22,8 @@ import Checkout from "../Pages/Checkout/Checkout";
 import AdminAnalytics from "../components/Dashboard/Admin/Analytics/AdminAnalytics";
 import HostAnalytics from "../components/Dashboard/Host/HostAnalytics/HostAnalytics";
 import GuestAnalytics from "../components/Dashboard/Guest/GuestAnalytics/GuestAnalytics";
+import SearchedRooms from "../Pages/SearchedRooms/SearchedRooms";
+import { fetchFilteredRooms } from "../loaders/RoomsSearchLoader";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +43,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: async ({ params }) => await getRoomData(params?.id),
+      },
+      {
+        path: "/room-search",
+        element: (
+          <PrivateRoute>
+            <SearchedRooms />
+          </PrivateRoute>
+        ),
+        loader: fetchFilteredRooms,
       },
     ],
   },
@@ -77,6 +88,7 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+
   // dashboard
   {
     path: "/dashboard",

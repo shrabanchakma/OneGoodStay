@@ -22,9 +22,10 @@ import { formatDateThree } from "../../Api/utils";
 import "./SearchBar.css";
 const FilterByDate = ({ saveSearchData }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const initialEndDate = new Date().setDate(new Date().getDate() + 1);
   const [value, setValue] = useState({
     startDate: new Date(),
-    endDate: new Date(),
+    endDate: new Date(initialEndDate),
     key: "selection",
   });
   const handleDateChange = (ranges) => {

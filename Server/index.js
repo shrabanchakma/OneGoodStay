@@ -1454,6 +1454,47 @@ async function run() {
       }
     });
 
+    // get searched rooms
+    app.get("/room-search", async (req, res) => {
+      try {
+        const city = req.query.city;
+        const startDate = new Date(req.query.startDate).toISOString();
+        const endDate = new Date(req.query.endDate).toISOString();
+        const rooms = parseInt(req.query.rooms);
+        const guests = parseInt(req.query.guests);
+        console.log({ city, startDate, endDate, rooms, guests });
+        const result = await roomCollection
+          .aggregate([
+            {
+              $addFields: {
+                guestNumeric: { $toInt: "$guest" },
+                bedroomsNumeric: { $toInt: "$bedrooms" },
+              },
+            },
+            {
+              $match: {
+                startDate: {
+                  $gte: startDate,
+                },
+                endDate: {
+                  $lte: endDate,
+                },
+                guestNumeric: { $gte: guests },
+                bedroomsNumeric: {
+                  $gte: rooms,
+                },
+                location: { $regex: city, $options: "i" },
+                status: "available",
+              },
+            },
+          ])
+          .toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(400).send({ message: error.message });
+      }
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

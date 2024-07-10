@@ -18,15 +18,15 @@ import { MdCancel } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
 import City from "./City";
 import { RxCross2 } from "react-icons/rx";
-const FilterByPlace = ({ saveSearchData, searchData }) => {
+const FilterByPlace = ({ saveSearchData, searchData, errMsg, setErrMsg }) => {
   const [searchText, setSearchText] = useState("");
   const [filteredCities, setFilteredCities] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef();
   const panelRef = useRef();
   const removeTextBtn = useRef();
-  console.log("searchText -->", searchText);
-  console.log("filtered cities -->", filteredCities);
+  // console.log("searchText -->", searchText);
+  // console.log("filtered cities -->", filteredCities);
   const handleInputText = (e) => {
     if (e.target.value.length === 0) {
       setFilteredCities([]);
@@ -67,9 +67,9 @@ const FilterByPlace = ({ saveSearchData, searchData }) => {
     <div className="w-full ">
       <Popover className={"relative hidden lg:block"}>
         <PopoverButton
-          className={
-            "text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] "
-          }
+          className={`text-xl w-full h-12 border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] ${
+            errMsg ? "outline outline-[#e41b43] mb-1" : "border"
+          } `}
         >
           <IoLocationSharp />
           <div>
@@ -79,6 +79,10 @@ const FilterByPlace = ({ saveSearchData, searchData }) => {
             )}
           </div>
         </PopoverButton>
+        {/* error message */}
+        {errMsg && (
+          <span className="text-rose-600 text-[14px] ml-[.4rem]">{errMsg}</span>
+        )}
         <PopoverPanel
           transition
           ref={panelRef}
@@ -115,6 +119,7 @@ const FilterByPlace = ({ saveSearchData, searchData }) => {
                 <City
                   key={idx}
                   city={city}
+                  setErrMsg={setErrMsg}
                   icon={IoLocationSharp}
                   closeModal={closeModal}
                   saveSearchData={saveSearchData}
@@ -138,13 +143,22 @@ const FilterByPlace = ({ saveSearchData, searchData }) => {
       <div className="relative block lg:hidden">
         <Button
           onClick={openModal}
-          className={
-            "text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] "
-          }
+          className={`text-xl w-full h-12  border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] ${
+            errMsg ? "outline outline-[#e41b43] mb-1" : "border"
+          } `}
         >
-          <IoLocationSharp /> Where to?
+          <IoLocationSharp />
+          <div>
+            <span>Where to?</span>
+            {searchData && searchData?.city && (
+              <p className="text-sm ">{searchData?.city}</p>
+            )}
+          </div>
         </Button>
-
+        {/* error message */}
+        {errMsg && (
+          <span className="text-rose-600 text-[14px] ml-[.4rem]">{errMsg}</span>
+        )}
         <Dialog
           open={isOpen}
           as="div"
@@ -187,6 +201,7 @@ const FilterByPlace = ({ saveSearchData, searchData }) => {
                       <City
                         key={idx}
                         city={city}
+                        setErrMsg={setErrMsg}
                         icon={IoLocationSharp}
                         closeModal={closeModal}
                         saveSearchData={saveSearchData}
