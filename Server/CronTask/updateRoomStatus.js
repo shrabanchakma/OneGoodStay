@@ -1,6 +1,5 @@
 const cron = require("node-cron");
 
-// update Room status
 const task = async (roomCollection, bookedRoomsCollection) => {
   console.log("operation started");
   try {
@@ -57,7 +56,6 @@ const task = async (roomCollection, bookedRoomsCollection) => {
   }
 };
 
-// cron task function
 const updateRoomStatus = (roomCollection, bookedRoomsCollection) => {
   cron.schedule("0 13 * * *", async () => {
     await task(roomCollection, bookedRoomsCollection);

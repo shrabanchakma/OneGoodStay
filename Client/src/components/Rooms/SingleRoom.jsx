@@ -50,6 +50,6 @@ const SingleRoom = ({ room, userEmail }) => {
   );
 };
 
-SingleRoom.propTypes = { room: PropTypes.object };
+SingleRoom.propTypes = { room: PropTypes.object, userEmail: PropTypes.string };
 
 export default SingleRoom;

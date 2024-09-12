@@ -5,12 +5,11 @@ import SearchedRoom from "./SearchedRoom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-
+const options = ["Recommended", "Price high to low", "price low to high"];
 const SearchedRooms = () => {
   const rooms = useLoaderData();
   const [selectedOption, setSelectedOption] = useState("Recommended");
   console.log("loader rooms -->", rooms);
-  const options = ["Recommended", "Price high to low", "price low to high"];
   const selectOption = (option) => {
     setSelectedOption(option);
   };

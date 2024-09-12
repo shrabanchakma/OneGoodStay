@@ -602,9 +602,9 @@ async function run() {
     // check if user is allowed to give review
     app.get("/can-review/:id", verifyToken, async (req, res) => {
       const email = req.query.email;
-      const id = req.params.id;
+      const roomID = req.params.id;
       const query = {
-        $and: [{ "guest.email": email }, { "roomDetails._id": id }],
+        $and: [{ "guest.email": email }, { roomID }],
       };
       const isUserExist = await bookedRoomsCollection.findOne(query);
       if (isUserExist) {
@@ -1458,8 +1458,8 @@ async function run() {
     app.get("/room-search", async (req, res) => {
       try {
         const city = req.query.city;
-        const startDate = new Date(req.query.startDate).toISOString();
-        const endDate = new Date(req.query.endDate).toISOString();
+        const startDate = new Date(req.query.startDate);
+        const endDate = new Date(req.query.endDate);
         const rooms = parseInt(req.query.rooms);
         const guests = parseInt(req.query.guests);
         console.log({ city, startDate, endDate, rooms, guests });
@@ -1469,15 +1469,19 @@ async function run() {
               $addFields: {
                 guestNumeric: { $toInt: "$guest" },
                 bedroomsNumeric: { $toInt: "$bedrooms" },
+                startDateAsDate: {
+                  $dateFromString: { dateString: "$startDate" },
+                },
+                endDateAsDate: { $dateFromString: { dateString: "$endDate" } },
               },
             },
             {
               $match: {
-                startDate: {
-                  $gte: startDate,
-                },
-                endDate: {
+                startDateAsDate: {
                   $lte: endDate,
+                },
+                endDateAsDate: {
+                  $gte: startDate,
                 },
                 guestNumeric: { $gte: guests },
                 bedroomsNumeric: {

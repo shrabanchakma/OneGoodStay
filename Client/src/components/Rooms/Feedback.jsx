@@ -75,9 +75,10 @@ const Feedback = ({ room, isRoomHost }) => {
 
   // check if user can review this room
   useEffect(() => {
-    isReviewAllowed(user?.email, room?._id).then((data) =>
-      setCanReview(data.isAllowed)
-    );
+    isReviewAllowed(user?.email, room?._id).then((data) => {
+      setCanReview(data.isAllowed);
+      console.log("isAllowed--->", data.isAllowed);
+    });
   }, [room]);
 
   return (
