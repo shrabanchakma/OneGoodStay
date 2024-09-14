@@ -523,7 +523,7 @@ async function run() {
     });
 
     // total reviews
-    app.get("/rooms/total-reviews/:id", verifyToken, async (req, res) => {
+    app.get("/rooms/ratings/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const result = await reviewCollection
         .aggregate([
@@ -533,7 +533,22 @@ async function run() {
             },
           },
           {
-            $count: "total_reviews",
+            $group: {
+              _id: null,
+              totalRatings: { $sum: 1 },
+              avgRatings: {
+                $avg: "$ratings.overall satisfaction",
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              totalRatings: 1,
+              averageRatings: {
+                $multiply: [{ $round: ["$avgRatings", 1] }, 2],
+              },
+            },
           },
         ])
         .toArray();
@@ -1462,7 +1477,7 @@ async function run() {
         const endDate = new Date(req.query.endDate);
         const rooms = parseInt(req.query.rooms);
         const guests = parseInt(req.query.guests);
-        console.log({ city, startDate, endDate, rooms, guests });
+        // console.log({ city, startDate, endDate, rooms, guests });
         const result = await roomCollection
           .aggregate([
             {
@@ -1470,9 +1485,15 @@ async function run() {
                 guestNumeric: { $toInt: "$guest" },
                 bedroomsNumeric: { $toInt: "$bedrooms" },
                 startDateAsDate: {
-                  $dateFromString: { dateString: "$startDate" },
+                  $dateFromString: {
+                    dateString: "$startDate",
+                  },
                 },
-                endDateAsDate: { $dateFromString: { dateString: "$endDate" } },
+                endDateAsDate: {
+                  $dateFromString: {
+                    dateString: "$endDate",
+                  },
+                },
               },
             },
             {
@@ -1487,8 +1508,60 @@ async function run() {
                 bedroomsNumeric: {
                   $gte: rooms,
                 },
-                location: { $regex: city, $options: "i" },
+                location: {
+                  $regex: city,
+                  $options: "i",
+                },
                 status: "available",
+              },
+            },
+            {
+              $lookup: {
+                from: "reviews",
+                let: { roomId: "$_id" },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: [{ $toObjectId: "$roomId" }, "$$roomId"],
+                      },
+                    },
+                  },
+                ],
+                as: "ratingDetails",
+              },
+            },
+            {
+              $addFields: {
+                averageRatings: {
+                  $multiply: [
+                    {
+                      $round: [
+                        {
+                          $avg: "$ratingDetails.ratings.overall satisfaction",
+                        },
+                        1,
+                      ],
+                    },
+                    2,
+                  ],
+                },
+              },
+            },
+            {
+              $sort: {
+                averageRatings: -1,
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                title: 1,
+                location: 1,
+                image: 1,
+                reviewDetails: 1,
+                averageRatings: 1,
+                price: 1,
               },
             },
           ])

@@ -3,16 +3,30 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import SearchedRoomsSidebar from "./SearchedRoomsSidebar";
 import SearchedRoom from "./SearchedRoom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 const options = ["Recommended", "Price high to low", "price low to high"];
 const SearchedRooms = () => {
   const rooms = useLoaderData();
+  const [filteredRooms, setFilteredRooms] = useState([]);
+
   const [selectedOption, setSelectedOption] = useState("Recommended");
-  console.log("loader rooms -->", rooms);
   const selectOption = (option) => {
     setSelectedOption(option);
   };
+
+  useEffect(() => {
+    let sorted = [...rooms];
+    if (selectedOption === "Recommended") {
+      sorted.sort((a, b) => b["averageRatings"] - a["averageRatings"]);
+    } else if (selectedOption === "Price high to low") {
+      sorted.sort((a, b) => b.price - a.price);
+    } else {
+      sorted.sort((a, b) => a.price - b.price);
+    }
+    setFilteredRooms(sorted);
+  }, [rooms, selectedOption]);
+
   return (
     <div>
       <SearchBar />
@@ -59,7 +73,7 @@ const SearchedRooms = () => {
               </Menu>
             </div>
           </div>
-          {rooms.map((room, idx) => (
+          {filteredRooms.map((room, idx) => (
             <SearchedRoom key={idx} room={room} />
           ))}
         </div>

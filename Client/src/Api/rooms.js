@@ -69,9 +69,9 @@ export const getRoomReviews = async (id, page, limit) => {
   return data;
 };
 
-// get reviews (lazy loading)
-export const getAllReviews = async (id) => {
-  const { data } = await axiosSecure(`/rooms/total-reviews/${id}`);
+// get reviews
+export const getAverageRatings = async (id) => {
+  const { data } = await axiosSecure(`/rooms/ratings/${id}`);
   return data;
 };
 

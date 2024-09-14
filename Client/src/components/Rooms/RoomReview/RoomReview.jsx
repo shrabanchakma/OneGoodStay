@@ -10,28 +10,18 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { BiSad } from "react-icons/bi";
 import axiosSecure from "../../../Api";
-import { getAllReviews, getRoomReviews } from "../../../Api/rooms";
+import { getAverageRatings, getRoomReviews } from "../../../Api/rooms";
 import RatingIndicator from "./RatingIndicator";
 import RoomReviewModal from "./RoomReviewModal";
+import { getIndicatorColor } from "../../../Api/utils";
 const RoomReview = ({ room }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [averageRating, setAverageRating] = useState(0);
+  const [averageRatings, setAverageRatings] = useState(0);
   const [indicatorColor, setIndicatorColor] = useState("text-black");
-  const [totalReviews, setTotalReviews] = useState(0);
-  const getIndicatorColor = (rating) => {
-    if (rating < 4) {
-      setIndicatorColor("text-red-500");
-    } else if (rating >= 4 && rating < 6) {
-      return setIndicatorColor("text-yellow-500");
-    } else if (rating >= 6 && rating < 7) {
-      setIndicatorColor("text-green-500");
-    } else {
-      setIndicatorColor("text-blue-600");
-    }
-  };
+  const [totalRatings, setTotalRatings] = useState(0);
   const handleMouseEnter = () => {
     setIsVisible(true);
   };
@@ -53,19 +43,13 @@ const RoomReview = ({ room }) => {
     getRoomReviews(room?._id, 1, 6).then((reviewData) =>
       setReviews(reviewData)
     );
-    getAllReviews(room?._id).then((data) =>
-      setTotalReviews(data.total_reviews)
-    );
+    getAverageRatings(room?._id).then((data) => {
+      console.log("average ratings is -->", data);
+      setTotalRatings(data?.totalRatings);
+      setAverageRatings(data?.averageRatings);
+      getIndicatorColor(data?.averageRatings, setIndicatorColor, false);
+    });
   }, [room]);
-  useEffect(() => {
-    const total = reviews.reduce(
-      (acc, review) => review?.ratings?.["overall satisfaction"] + acc,
-      0
-    );
-    const avg = Math.floor(total / reviews.length) * 2;
-    setAverageRating(avg);
-    getIndicatorColor(avg);
-  }, [reviews]);
 
   return (
     <ContainerTwo>
@@ -74,18 +58,18 @@ const RoomReview = ({ room }) => {
         className="flex flex-col items-start room-section mb-36 "
       >
         {/* average review / review stat / total review */}
-        {!isNaN(averageRating) && averageRating ? (
+        {!isNaN(averageRatings) && averageRatings ? (
           <div className="lg:h-full lg:w-1/4 flex flex-col justify-start p-4 ">
             <h1
               className={`text-5xl md:text-4xl font-medium ${indicatorColor}`}
             >
-              {averageRating}/10
+              {averageRatings}/10
             </h1>
             <h2 className="text-3xl md:text-2xl font-medium">
-              <RatingIndicator rating={averageRating} />
+              <RatingIndicator rating={averageRatings} />
             </h2>
             <p className="text-sm flex items-center gap-2 ">
-              {totalReviews} verified reviews
+              {totalRatings} verified reviews
               <CiCircleInfo className="text-xl font-bold hover:cursor-pointer" />
             </p>
           </div>
@@ -95,7 +79,7 @@ const RoomReview = ({ room }) => {
             <h1>No Ratings Yet</h1>
           </div>
         )}
-        {!isNaN(averageRating) && averageRating && (
+        {!isNaN(averageRatings) && averageRatings && (
           <div className="w-full lg:w-11/12  p-4   ">
             <h1 className="font-medium text-gray-700 ">RecentReviews</h1>
             <div
@@ -153,9 +137,9 @@ const RoomReview = ({ room }) => {
               isOpen={isModalOpen}
               setIsOpen={setIsModalOpen}
               roomId={room?._id}
-              averageRating={averageRating}
+              averageRating={averageRatings}
               reviews={reviews}
-              totalReviews={totalReviews}
+              totalReviews={totalRatings}
             />
           </div>
         )}

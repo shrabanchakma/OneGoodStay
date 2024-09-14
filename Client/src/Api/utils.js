@@ -84,3 +84,19 @@ export const getMonths = (monthsIdx) => {
   const months = monthNames.filter((_, idx) => monthsIdx.includes(idx));
   return months;
 };
+//
+export const getIndicatorColor = (rating, setIndicatorColor, isBgColor) => {
+  if (rating < 4) {
+    if (isBgColor) setIndicatorColor("bg-red-500");
+    else setIndicatorColor("text-red-500");
+  } else if (rating >= 4 && rating < 6) {
+    if (isBgColor) setIndicatorColor("bg-yellow-500");
+    else setIndicatorColor("text-yellow-500");
+  } else if (rating >= 6 && rating < 7) {
+    if (isBgColor) setIndicatorColor("bg-green-500");
+    else setIndicatorColor("text-green-500");
+  } else {
+    if (isBgColor) setIndicatorColor("bg-blue-600");
+    else setIndicatorColor("text-blue-600");
+  }
+};
