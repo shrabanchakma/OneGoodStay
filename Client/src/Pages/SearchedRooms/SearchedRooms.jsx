@@ -5,9 +5,12 @@ import SearchedRoom from "./SearchedRoom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import RoomSkeleton from "./RoomSkeleton.jsx";
 const options = ["Recommended", "Price high to low", "price low to high"];
 const SearchedRooms = () => {
   const rooms = useLoaderData();
+  const numberOfSkeletons = [1, 2, 3, 4, 5, 6, 7];
+  const isLoading = true;
   console.log("rooms----->", rooms);
 
   const [filteredRooms, setFilteredRooms] = useState([]);
@@ -75,9 +78,13 @@ const SearchedRooms = () => {
               </Menu>
             </div>
           </div>
-          {filteredRooms.map((room, idx) => (
-            <SearchedRoom key={idx} room={room} />
-          ))}
+          {isLoading
+            ? numberOfSkeletons.map((skeleton) => (
+                <RoomSkeleton key={skeleton} />
+              ))
+            : filteredRooms.map((room, idx) => (
+                <SearchedRoom key={idx} room={room} />
+              ))}
         </div>
       </section>
     </div>
