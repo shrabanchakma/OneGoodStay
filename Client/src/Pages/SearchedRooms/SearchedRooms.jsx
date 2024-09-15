@@ -6,12 +6,14 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import RoomSkeleton from "./RoomSkeleton.jsx";
-const options = ["Recommended", "Price high to low", "price low to high"];
+import { getFilteredRooms } from "../../Api/rooms.js";
+const options = ["Recommended", "Price high to low", "Price low to high"];
 const SearchedRooms = () => {
-  const rooms = useLoaderData();
+  const roomsData = useLoaderData();
+  const rooms = roomsData.rooms;
   const numberOfSkeletons = [1, 2, 3, 4, 5, 6, 7];
-  const isLoading = true;
-  console.log("rooms----->", rooms);
+  const isLoading = false;
+  console.log("roomsData----->", roomsData);
 
   const [filteredRooms, setFilteredRooms] = useState([]);
 
@@ -31,6 +33,12 @@ const SearchedRooms = () => {
     }
     setFilteredRooms(sorted);
   }, [rooms, selectedOption]);
+
+  useEffect(() => {
+    getFilteredRooms(roomsData?.queryData, { sortOption: selectedOption }).then(
+      (data) => console.log("receiving filter data-->", data)
+    );
+  }, [roomsData, selectedOption]);
 
   return (
     <div>

@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import axiosSecure from ".";
 
 // save new rooms in database
@@ -111,6 +112,21 @@ export const getSearchedRooms = async (location) => {
   const guests = location.searchParams.get("guests");
   const { data } = await axiosSecure.get(
     `/room-search?city=${city}&startDate=${startDate}&endDate=${endDate}&rooms=${rooms}&guests=${guests}`
+  );
+  return data;
+};
+
+// filter rooms
+export const getFilteredRooms = async (queryData, filterOptions) => {
+  console.log("from rooms.js-->", queryData, filterOptions);
+  const city = queryData?.city;
+  const startDate = queryData?.startDate;
+  const endDate = queryData?.endDate;
+  const rooms = queryData?.rooms;
+  const guests = queryData?.guests;
+  const sortOption = filterOptions?.sortOption;
+  const { data } = await axiosSecure.get(
+    `/rooms-filter?city=${city}&startDate=${startDate}&endDate=${endDate}&rooms=${rooms}&guests=${guests}&sortOption=${sortOption}`
   );
   return data;
 };

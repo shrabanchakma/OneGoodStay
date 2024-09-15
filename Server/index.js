@@ -1575,6 +1575,132 @@ async function run() {
             },
           ])
           .toArray();
+        res.send({
+          rooms: result,
+          queryData: { city, startDate, endDate, rooms, guests },
+        });
+      } catch (error) {
+        res.status(400).send({ message: error.message });
+      }
+    });
+
+    // filter searched rooms
+    app.get("/rooms-filter", async (req, res) => {
+      try {
+        const city = req.query.city;
+        const startDate = new Date(req.query.startDate);
+        const endDate = new Date(req.query.endDate);
+        const rooms = parseInt(req.query.rooms);
+        const guests = parseInt(req.query.guests);
+        const sortOption = req.query.sortOption || "Recommended";
+
+        const sortOptionsMap = {
+          Recommended: { field: "averageRatings", value: -1 },
+          "Price high to low": { field: "price", value: -1 },
+          "Price low to high": { field: "price", value: 1 },
+        };
+
+        const { field: sortBy, value: sortValue } =
+          sortOptionsMap[sortOption] || sortOptionsMap["Recommended"];
+
+        console.log({ sortBy, sortValue });
+        const result = await roomCollection
+          .aggregate([
+            {
+              $addFields: {
+                guestNumeric: { $toInt: "$guest" },
+                bedroomsNumeric: { $toInt: "$bedrooms" },
+                startDateAsDate: {
+                  $dateFromString: {
+                    dateString: "$startDate",
+                  },
+                },
+                endDateAsDate: {
+                  $dateFromString: {
+                    dateString: "$endDate",
+                  },
+                },
+              },
+            },
+            {
+              $match: {
+                startDateAsDate: {
+                  $lte: endDate,
+                },
+                endDateAsDate: {
+                  $gte: startDate,
+                },
+                guestNumeric: { $gte: guests },
+                bedroomsNumeric: {
+                  $gte: rooms,
+                },
+                location: {
+                  $regex: city,
+                  $options: "i",
+                },
+                status: "available",
+              },
+            },
+            {
+              $lookup: {
+                from: "reviews",
+                let: { roomId: "$_id" },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: [{ $toObjectId: "$roomId" }, "$$roomId"],
+                      },
+                    },
+                  },
+                ],
+                as: "ratingDetails",
+              },
+            },
+            {
+              $addFields: {
+                totalReviews: {
+                  $cond: {
+                    if: { $isArray: "$ratingDetails" },
+                    then: { $size: "$ratingDetails" },
+                    else: 0,
+                  },
+                },
+                averageRatings: {
+                  $multiply: [
+                    {
+                      $round: [
+                        {
+                          $avg: "$ratingDetails.ratings.overall satisfaction",
+                        },
+                        1,
+                      ],
+                    },
+                    2,
+                  ],
+                },
+              },
+            },
+            {
+              $sort: {
+                [sortBy]: sortValue,
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                title: 1,
+                location: 1,
+                image: 1,
+                reviewDetails: 1,
+                averageRatings: 1,
+                totalReviews: 1,
+                amenities: 1,
+                price: 1,
+              },
+            },
+          ])
+          .toArray();
         res.send(result);
       } catch (error) {
         res.status(400).send({ message: error.message });
