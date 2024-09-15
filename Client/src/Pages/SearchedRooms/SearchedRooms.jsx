@@ -8,6 +8,8 @@ import { FaChevronDown } from "react-icons/fa";
 const options = ["Recommended", "Price high to low", "price low to high"];
 const SearchedRooms = () => {
   const rooms = useLoaderData();
+  console.log("rooms----->", rooms);
+
   const [filteredRooms, setFilteredRooms] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState("Recommended");

@@ -1533,6 +1533,13 @@ async function run() {
             },
             {
               $addFields: {
+                totalReviews: {
+                  $cond: {
+                    if: { $isArray: "$ratingDetails" },
+                    then: { $size: "$ratingDetails" },
+                    else: 0,
+                  },
+                },
                 averageRatings: {
                   $multiply: [
                     {
@@ -1561,6 +1568,8 @@ async function run() {
                 image: 1,
                 reviewDetails: 1,
                 averageRatings: 1,
+                totalReviews: 1,
+                amenities: 1,
                 price: 1,
               },
             },
