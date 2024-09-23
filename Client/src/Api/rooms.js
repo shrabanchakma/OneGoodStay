@@ -125,8 +125,9 @@ export const getFilteredRooms = async (queryData, filterOptions) => {
   const rooms = queryData?.rooms;
   const guests = queryData?.guests;
   const sortOption = filterOptions?.sortOption;
+  const filterOptionsString = encodeURIComponent(JSON.stringify(filterOptions));
   const { data } = await axiosSecure.get(
-    `/rooms-filter?city=${city}&startDate=${startDate}&endDate=${endDate}&rooms=${rooms}&guests=${guests}&sortOption=${sortOption}`
+    `/rooms-filter?city=${city}&startDate=${startDate}&endDate=${endDate}&rooms=${rooms}&guests=${guests}&sortOption=${sortOption}&filterOptions=${filterOptionsString}`
   );
   return data;
 };

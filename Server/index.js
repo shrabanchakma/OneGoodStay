@@ -1592,7 +1592,9 @@ async function run() {
         const endDate = new Date(req.query.endDate);
         const rooms = parseInt(req.query.rooms);
         const guests = parseInt(req.query.guests);
+        const filterOptions = JSON.parse(req.query.filterOptions);
         const sortOption = req.query.sortOption || "Recommended";
+        console.log("query info--->", req.query);
 
         const sortOptionsMap = {
           Recommended: { field: "averageRatings", value: -1 },
@@ -1603,7 +1605,34 @@ async function run() {
         const { field: sortBy, value: sortValue } =
           sortOptionsMap[sortOption] || sortOptionsMap["Recommended"];
 
-        console.log({ sortBy, sortValue });
+        const matchStage = {
+          $match: {
+            startDateAsDate: {
+              $lte: endDate,
+            },
+            endDateAsDate: {
+              $gte: startDate,
+            },
+            guestNumeric: { $gte: guests },
+            bedroomsNumeric: {
+              $gte: rooms,
+            },
+            location: {
+              $regex: city,
+              $options: "i",
+            },
+            status: "available",
+          },
+        };
+
+        // if (filterOptions.title) {
+        //   matchStage["$match"].title = {
+        //     $regex: filterOptions.title,
+        //     $options: "i",
+        //   };
+        // }
+        // console.log(matchStage);
+
         const result = await roomCollection
           .aggregate([
             {
@@ -1622,25 +1651,7 @@ async function run() {
                 },
               },
             },
-            {
-              $match: {
-                startDateAsDate: {
-                  $lte: endDate,
-                },
-                endDateAsDate: {
-                  $gte: startDate,
-                },
-                guestNumeric: { $gte: guests },
-                bedroomsNumeric: {
-                  $gte: rooms,
-                },
-                location: {
-                  $regex: city,
-                  $options: "i",
-                },
-                status: "available",
-              },
-            },
+            matchStage,
             {
               $lookup: {
                 from: "reviews",
@@ -1679,10 +1690,24 @@ async function run() {
                     2,
                   ],
                 },
+                isSearchedRooms: {
+                  $cond: {
+                    if: {
+                      $regexMatch: {
+                        input: "$title",
+                        regex: filterOptions?.title || "",
+                        options: "i",
+                      },
+                    },
+                    then: 1,
+                    else: 0,
+                  },
+                },
               },
             },
             {
               $sort: {
+                isSearchedRooms: -1,
                 [sortBy]: sortValue,
               },
             },
