@@ -8,6 +8,8 @@ import { FaChevronDown } from "react-icons/fa";
 import RoomSkeleton from "./RoomSkeleton.jsx";
 import { getFilteredRooms } from "../../Api/rooms.js";
 import toast from "react-hot-toast";
+import SortingOptions from "./SortingOptions.jsx";
+import FilteringAndSorting from "./FilteringAndSorting.jsx";
 const options = ["Recommended", "Price high to low", "Price low to high"];
 const SearchedRooms = () => {
   const roomsData = useLoaderData();
@@ -54,58 +56,37 @@ const SearchedRooms = () => {
   return (
     <div>
       <SearchBar />
-      <section className="w-full  flex items-start mt-14 gap-5">
+      <section className="w-full  block lg:flex items-start mt-14 gap-5">
         <SearchedRoomsSidebar
           saveFilterData={saveFilterData}
           rooms={filteredRooms}
         />
-        <div className=" w-4/6 grid cols-span-1 h-auto gap-2 ">
-          {/* filter */}
-          <div className="flex items-center w-10/12">
+        <div className=" w-full lg:w-4/6 grid cols-span-1 mx-auto h-auto gap-2 ">
+          <div className="hidden lg:flex items-center w-10/12">
             <p className="w-1/2 font-semibold text-gray-700 text-[14px]">
               Total {rooms.length} rooms
             </p>
-            <div className="w-1/2  border border-black rounded-xl">
-              <Menu>
-                <MenuButton
-                  className={
-                    "text-gray-700 w-full text-start py-1 px-4 flex items-center justify-between"
-                  }
-                >
-                  <div>
-                    <p className="text-[14px] font-semibold text-gray-900">
-                      Sort by
-                    </p>
-                    <span>{selectedOption}</span>
-                  </div>
-                  <FaChevronDown />
-                </MenuButton>
-                <MenuItems
-                  anchor="bottom"
-                  className={
-                    "bg-white w-[var(--button-width)] [--anchor-gap:4px] border border-gray-500 "
-                  }
-                >
-                  {options.map((option, idx) => (
-                    <MenuItem key={idx}>
-                      <p
-                        onClick={() => selectOption(option)}
-                        className="block data-[focus]:bg-blue-500 data-[focus]:text-white w-full px-2 cursor-pointer"
-                      >
-                        {option}
-                      </p>
-                    </MenuItem>
-                  ))}
-                </MenuItems>
-              </Menu>
-            </div>
+            <SortingOptions
+              selectOption={selectOption}
+              options={options}
+              selectedOption={selectedOption}
+            />
+          </div>
+          <div className="lg:hidden flex flex-col items-center mb-10 ">
+            <FilteringAndSorting />
+            <p className="text-center text-[14px]">{rooms.length} rooms</p>
           </div>
           {isLoading
             ? numberOfSkeletons.map((skeleton) => (
                 <RoomSkeleton key={skeleton} />
               ))
             : filteredRooms.map((room, idx) => (
-                <SearchedRoom key={idx} serial={idx + 1} room={room} />
+                <SearchedRoom
+                  key={idx}
+                  serial={idx + 1}
+                  room={room}
+                  filterOptions={filterOptions}
+                />
               ))}
         </div>
       </section>

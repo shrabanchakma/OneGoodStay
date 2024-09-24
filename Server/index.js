@@ -1690,7 +1690,7 @@ async function run() {
                     2,
                   ],
                 },
-                isSearchedRooms: {
+                isSearchedRoom: {
                   $cond: {
                     if: {
                       $regexMatch: {
@@ -1707,7 +1707,7 @@ async function run() {
             },
             {
               $sort: {
-                isSearchedRooms: -1,
+                isSearchedRoom: -1,
                 [sortBy]: sortValue,
               },
             },
