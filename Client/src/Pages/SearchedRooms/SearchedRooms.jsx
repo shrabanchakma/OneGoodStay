@@ -10,6 +10,7 @@ import { getFilteredRooms } from "../../Api/rooms.js";
 import toast from "react-hot-toast";
 import SortingOptions from "./SortingOptions.jsx";
 import FilteringAndSorting from "./FilteringAndSorting.jsx";
+import ToggleVisibility from "./ToggleVisibility.jsx";
 const options = ["Recommended", "Price high to low", "Price low to high"];
 const SearchedRooms = () => {
   const roomsData = useLoaderData();
@@ -23,6 +24,7 @@ const SearchedRooms = () => {
     sortOption: "Recommended",
   });
   const [selectedOption, setSelectedOption] = useState("Recommended");
+  const [isHidden, setIsHidden] = useState(true);
 
   const selectOption = (option) => {
     setSelectedOption(option);
@@ -45,6 +47,9 @@ const SearchedRooms = () => {
       setIsLoading(false);
     }
   };
+  const toggleIsHiddenVisibility = () => {
+    setIsHidden((prev) => !prev);
+  };
   useEffect(() => {
     setFilteredRooms(roomsData?.rooms);
   }, [roomsData]);
@@ -55,8 +60,11 @@ const SearchedRooms = () => {
 
   return (
     <div>
-      <SearchBar />
-      <section className="w-full  block lg:flex items-start mt-14 gap-5">
+      <ToggleVisibility
+        toggleIsHiddenVisibility={toggleIsHiddenVisibility}
+        isHidden={isHidden}
+      />
+      <section className="w-full  block lg:flex items-start mt-2 md:mt-14 gap-5">
         <SearchedRoomsSidebar
           saveFilterData={saveFilterData}
           rooms={filteredRooms}

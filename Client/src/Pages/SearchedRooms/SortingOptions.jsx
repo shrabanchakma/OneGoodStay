@@ -1,8 +1,6 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
-
 const SortingOptions = ({ selectOption, options, selectedOption }) => {
   return (
     <div className="w-1/2  border border-black rounded-xl">

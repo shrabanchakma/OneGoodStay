@@ -50,9 +50,9 @@ const FilterByGuestNumbers = ({ saveSearchData }) => {
   }, [roomCount, guestCount]);
 
   return (
-    <div className="w-full">
+    <div className="w-full flex-grow">
       <Popover className={"relative hidden md:block"}>
-        <PopoverButton className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]">
+        <PopoverButton className="text-xl w-full h-12 border border-gray-400 rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]">
           <FaUser className="text-2xl" />
           <div>
             <h3 className="font-medium mb-0 ">Guests</h3>
@@ -101,7 +101,7 @@ const FilterByGuestNumbers = ({ saveSearchData }) => {
       <div className="md:hidden">
         <Button
           onClick={openModal}
-          className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]"
+          className="text-xl w-full h-12 border border-gray-400 rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]"
         >
           <FaUser className="text-2xl" />
           <div>

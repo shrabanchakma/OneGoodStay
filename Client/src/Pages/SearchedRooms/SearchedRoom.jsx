@@ -45,7 +45,7 @@ const SearchedRoom = ({ room, serial, filterOptions }) => {
   return (
     <Link
       to={`/room-details/${room?._id}`}
-      className="mx-auto w-11/12 h-full lg:w-10/12 "
+      className="mx-auto w-11/12 h-[20rem] md:h-full lg:w-10/12 "
     >
       {isRoomNameSearched && (
         <div className="bg-[#2563EB] w-full rounded-t-xl px-3 py-1 ">
@@ -59,7 +59,7 @@ const SearchedRoom = ({ room, serial, filterOptions }) => {
           isRoomNameSearched ? "rounded-b-xl" : "rounded-xl"
         } `}
       >
-        <div className="w-1/2 lg:w-2/6 relative bg-green-200 ">
+        <div className="w-2/5 md:w-1/2 lg:w-2/6 h-full relative bg-green-200 ">
           <img
             src={room?.image}
             className={`${
@@ -70,13 +70,13 @@ const SearchedRoom = ({ room, serial, filterOptions }) => {
             <BookmarkBtn />
           </div>
         </div>
-        <div className="w-1/2 lg:w-3/4 grid grid-cols-2 h-full p-2 text-gray-700 bg-green-200">
-          <div className="flex flex-col justify-between">
-            <div className="mb-3">
-              <h1 className="font-semibold">{room?.title}</h1>
+        <div className="w-3/5 md:w-1/2 lg:w-3/4 grid grid-cols-1 md:grid-cols-2 h-full p-2 text-gray-700 bg-green-200">
+          <div className="flex flex-col justify-evenly md:justify-between w-full ">
+            <div className="md:mb-3 w-full ">
+              <h1 className="font-semibold  ">{room?.title}</h1>
               <p className="text-[14px]">{room?.location.split(",")[0]}</p>
               <span>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center flex-wrap gap-3">
                   {displayAmenities.map((amenity, idx) => (
                     <div key={idx}>
                       <div className="flex items-center justify-start gap-1">

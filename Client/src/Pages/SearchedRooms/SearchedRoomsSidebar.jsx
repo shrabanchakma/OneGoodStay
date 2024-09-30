@@ -10,7 +10,7 @@ const SearchedRoomsSidebar = ({ saveFilterData, rooms }) => {
         <FilterByRoomName rooms={rooms} saveFilterData={saveFilterData} />
         <FilterByCategory />
       </div>
-      <div className="block lg:hidden">hi</div>
+      {/* <div className="block lg:hidden">hi</div> */}
     </>
   );
 };

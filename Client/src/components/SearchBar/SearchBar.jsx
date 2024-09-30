@@ -35,7 +35,7 @@ const SearchBar = () => {
         <Heading label="Where to?" />
       </div>
       {/* filter search */}
-      <div className="w-10/12 md:w-full grid  grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="w-10/12 md:w-full flex flex-col md:flex-row  items-center justify-center   gap-3">
         <FilterByPlace
           saveSearchData={saveSearchData}
           searchData={searchData}

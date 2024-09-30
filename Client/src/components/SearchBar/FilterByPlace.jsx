@@ -64,10 +64,10 @@ const FilterByPlace = ({ saveSearchData, searchData, errMsg, setErrMsg }) => {
     };
   }, []);
   return (
-    <div className="w-full ">
+    <div className="w-full flex-grow">
       <Popover className={"relative hidden lg:block"}>
         <PopoverButton
-          className={`text-xl w-full h-12 border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] ${
+          className={`text-xl w-full h-12 border-gray-400 rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] ${
             errMsg ? "outline outline-[#e41b43] mb-1" : "border"
           } `}
         >
@@ -143,7 +143,7 @@ const FilterByPlace = ({ saveSearchData, searchData, errMsg, setErrMsg }) => {
       <div className="relative block lg:hidden">
         <Button
           onClick={openModal}
-          className={`text-xl w-full h-12  border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] ${
+          className={`text-xl w-full h-12   border-gray-400 rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] ${
             errMsg ? "outline outline-[#e41b43] mb-1" : "border"
           } `}
         >

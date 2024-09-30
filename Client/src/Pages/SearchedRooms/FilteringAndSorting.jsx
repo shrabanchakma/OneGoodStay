@@ -2,7 +2,7 @@ import { DialogPanel, Dialog, Button, DialogBackdrop } from "@headlessui/react";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
-
+import { HiAdjustments } from "react-icons/hi";
 const FilteringAndSorting = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const closeBtnRef = useRef(null);
@@ -18,9 +18,10 @@ const FilteringAndSorting = (props) => {
     <div>
       <Button
         onClick={openModal}
-        className={`w-[20rem] bg-white text-[#1668E3] font-bold  h-10 rounded-3xl border-[1px] border-gray-700 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]
+        className={`w-[20rem] flex justify-center items-center gap-2  bg-white text-[#1668E3] font-bold  h-10 rounded-3xl border-[1px] border-gray-400 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]
           } `}
       >
+        <HiAdjustments size={20} className="rotate-90" />
         Sort & filter
       </Button>
       <Dialog

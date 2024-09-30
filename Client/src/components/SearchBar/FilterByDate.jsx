@@ -48,9 +48,9 @@ const FilterByDate = ({ saveSearchData }) => {
     saveSearchData("endDate", value?.endDate);
   }, [value]);
   return (
-    <div className="w-full">
+    <div className="w-full flex-grow">
       <Popover className={"relative hidden lg:block"}>
-        <PopoverButton className="text-xl w-full h-12 border border-black rounded-lg text-start hidden lg:flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]  ">
+        <PopoverButton className="text-xl w-full h-12 border border-gray-400 rounded-lg text-start hidden lg:flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43]  ">
           <MdDateRange className="text-2xl" />
           <div>
             <h3 className="font-medium">Dates</h3>
@@ -89,7 +89,7 @@ const FilterByDate = ({ saveSearchData }) => {
       <div className="relative block lg:hidden">
         <Button
           onClick={openModal}
-          className="text-xl w-full h-12 border border-black rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] "
+          className="text-xl w-full h-12 border border-gray-400 rounded-lg text-start flex items-center gap-1 px-4 data-[active]:border-none data-[active]:outline data-[active]:outline-[#e41b43] "
         >
           <MdDateRange className="text-2xl" />{" "}
           <div>
